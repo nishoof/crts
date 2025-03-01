@@ -1,60 +1,80 @@
-class Vehicle{
-    shape: Body;
-    acceleration: number;
-    rotVelocity: number;
+class Vehicle {
+    shape: Shape;
+    accelerationStat: number;
+    maxSpeedStat: number;
+    rotationSpeedStat: number;
+    possibleEvolutions: string[];
 
-    constructor(shape: Body, speed: number) {
+    constructor(shape: Shape) {
         this.shape = shape;
-        this.acceleration = 0;
-        this.rotVelocity = 0;
-        shape.speed = speed;
+        this.accelerationStat = 0;
+        this.maxSpeedStat = 0;
+        this.rotationSpeedStat = 0;
+        this.possibleEvolutions = [];
     }
+
     accelerate() {
         throw new Error("accelrate() must be implemented in subclasses.");
     }
-    
+
     run() {
         throw new Error("run() must be implemented in subclasses.")
     }
 
 }
-//Thin rectangle
-class Bike extends Vehicle{
 
+class Bike extends Vehicle {
+    constructor(position: { x: number, y: number }) {
+        super(new Rect("grey", position, 80, 10))
+        this.possibleEvolutions = ["Car", "Moped", "Hoverboard"];
+    }
 }
 
-
-//Normal rectangle
-class Car extends Vehicle{
-
+class Car extends Vehicle {
+    constructor(position: { x: number, y: number }) {
+        super(new Rect("blue", position, 80, 40))
+        this.possibleEvolutions = ["Truck", "Racecar"];
+    }
 }
 
-//Square
-class Truck extends Car{
-
+class Truck extends Vehicle {
+    constructor(position: { x: number, y: number }) {
+        super(new Rect("grey", position, 50, 50));
+        this.possibleEvolutions = [];
+    }
 }
 
-//Long triangle
-class RaceCar extends Car{
-
+class RaceCar extends Vehicle {
+    constructor(position: { x: number, y: number }) {
+        super(new Triangle("green", position, 50, 50));
+        this.possibleEvolutions = [];
+    }
 }
 
-//Equaliteral triangle 
-class Moped extends Vehicle{
-
+class Moped extends Vehicle {
+    constructor(position: { x: number, y: number }) {
+        super(new Triangle("green", position, 50, 44));
+        this.possibleEvolutions = [];
+    }
 }
 
-//Circle
-class Hoverboard extends Vehicle{
-
+class Hoverboard extends Vehicle {
+    constructor(position: { x: number, y: number }) {
+        super(new Circle("white", position, 50, 50));
+        this.possibleEvolutions = ["Cybertruck", "UFO"];
+    }
 }
 
-//Big rectangle
-class Cybertruck extends Hoverboard{
-
+class Cybertruck extends Vehicle {
+    constructor(position: { x: number, y: number }) {
+        super(new Rect("gray", position, 100, 50));
+        this.possibleEvolutions = [];
+    }
 }
 
-//Larger circle
-class UFO extends Hoverboard{
-
+class UFO extends Vehicle {
+    constructor(position: { x: number, y: number }) {
+        super(new Circle("green", position, 75, 75));
+        this.possibleEvolutions = [];
+    }
 }
