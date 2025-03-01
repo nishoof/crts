@@ -1,4 +1,6 @@
-class Character {
+import { Circle, Shape } from "../shapes.js";
+
+export class Character {
     shape: Shape;
     bulletSpeed: number;
     bulletRadius: number;
@@ -30,14 +32,14 @@ class Character {
 
 }
 
-class Rifleman extends Character {
+export class Rifleman extends Character {
     constructor(position: { x: number, y: number }) {
         super(new Circle("red", position, 10));
         this.possibleEvolutions = ["Gunner", "Sniper", "Cannoneer"];
     }
 }
 
-class Gunner extends Character {
+export class Gunner extends Character {
     constructor(position: { x: number, y: number }) {
         super(new Circle("brown", position, 11));
         this.bulletSpeed = 150;
@@ -46,7 +48,7 @@ class Gunner extends Character {
     }
 }
 
-class Sniper extends Character {
+export class Sniper extends Character {
     constructor(position: { x: number, y: number }) {
         super(new Circle("black", position, 13));
         this.bulletSpeed = 500;
@@ -56,7 +58,7 @@ class Sniper extends Character {
     }
 }
 
-class Cannoneer extends Character {
+export class Cannoneer extends Character {
     constructor(position: { x: number, y: number }) {
         super(new Circle("brown", position, 12));
         this.bulletSpeed = 100;

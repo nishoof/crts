@@ -1,4 +1,7 @@
-class Player {
+import { Character, Rifleman } from "./characters.js";
+import { Vehicle, Bike } from "./vehicles.js"
+
+export default class Player {
     vehicle: Vehicle;
     character: Character;
 

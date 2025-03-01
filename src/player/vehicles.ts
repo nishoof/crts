@@ -1,4 +1,6 @@
-class Vehicle {
+import { Circle, Rect, Shape, Triangle } from "../shapes.js";
+
+export class Vehicle {
     shape: Shape;
     accelerationStat: number;
     maxSpeedStat: number;
@@ -33,59 +35,59 @@ class Vehicle {
 
 }
 
-class Bike extends Vehicle {
+export class Bike extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Rect("grey", position, 80, 10));
         this.possibleEvolutions = ["Car", "Moped", "Hoverboard"];
     }
 }
 
-class Car extends Vehicle {
+export class Car extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Rect("blue", position, 80, 40));
         this.possibleEvolutions = ["Truck", "Racecar"];
     }
 }
 
-class Truck extends Vehicle {
+export class Truck extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Rect("grey", position, 50, 50));
     }
 }
 
-class RaceCar extends Vehicle {
+export class RaceCar extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Triangle("green", position, 50, 50));
     }
 }
 
-class Moped extends Vehicle {
+export class Moped extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Triangle("green", position, 50, 44));
         this.possibleEvolutions = ["Motorcycle"];
     }
 }
 
-class Motorcycle extends Vehicle {
+export class Motorcycle extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Rect("red", position, 60, 10));
     }
 }
 
-class Hoverboard extends Vehicle {
+export class Hoverboard extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Circle("white", position, 50, 50));
         this.possibleEvolutions = ["Cybertruck", "UFO"];
     }
 }
 
-class Cybertruck extends Vehicle {
+export class Cybertruck extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Rect("gray", position, 100, 50));
     }
 }
 
-class UFO extends Vehicle {
+export class UFO extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Circle("green", position, 75, 75));
     }

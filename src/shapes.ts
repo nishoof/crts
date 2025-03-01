@@ -1,11 +1,13 @@
 // Physical thing on the map (pretend it's an abstract class)
-class Shape {
+export class Shape {
     color: string;
     center: Point;
     rotation: number;
     speed: number;
 
     constructor(color: string, center: Point, rotation: number) {
+        console.log(`Making a shape with ${color}  ${center} ${rotation}`);
+
         this.color = color;
         this.center = center;
         this.rotation = rotation;
@@ -30,7 +32,7 @@ class Shape {
     }
 }
 
-class Rect extends Shape {
+export class Rect extends Shape {
     width: number;
     height: number;
 
@@ -74,17 +76,17 @@ class Rect extends Shape {
     }
 }
 
-class Circle extends Shape {
+export class Circle extends Shape {
     radius: number;
 
-    constructor(color: string, center: Point, radius: number, rotation=0) {
+    constructor(color: string, center: Point, radius: number, rotation = 0) {
         super(color, center, rotation);
         this.radius = radius;
     }
 
     draw(ctx: CanvasRenderingContext2D, topleft: Point) {
         ctx.beginPath();
-        ctx.arc(this.center.x - topleft.x, this.center.y - topleft.y, this.radius, 0, 2*Math.PI);
+        ctx.arc(this.center.x - topleft.x, this.center.y - topleft.y, this.radius, 0, 2 * Math.PI);
 
         ctx.stroke();
         ctx.fillStyle = this.color;
@@ -108,7 +110,7 @@ class Circle extends Shape {
     }
 }
 
-class Triangle extends Shape {
+export class Triangle extends Shape {
     width: number;
     height: number;
 
@@ -166,7 +168,7 @@ class Triangle extends Shape {
 function detectCollisionCircleCircle(c1: Circle, c2: Circle): boolean {
     const dx = c1.center.x - c2.center.x;
     const dy = c1.center.y - c2.center.y;
-    return Math.sqrt(dx*dx + dy*dy) <= c1.radius+c2.radius;
+    return Math.sqrt(dx * dx + dy * dy) <= c1.radius + c2.radius;
 }
 
 type Point = { x: number; y: number };
