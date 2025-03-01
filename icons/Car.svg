@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <bx:export>
+      <bx:file format="svg"/>
+    </bx:export>
+  </defs>
+  <rect x="15" y="35" width="80" height="40" style="fill: rgb(216, 216, 216); stroke: rgb(0, 0, 0);"/>
+</svg>

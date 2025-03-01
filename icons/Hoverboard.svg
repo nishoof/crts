@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" xmlns:bx="https://boxy-svg.com">
+  <defs>
+    <bx:export>
+      <bx:file format="svg"/>
+    </bx:export>
+  </defs>
+  <ellipse style="fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0);" cx="55" cy="55" rx="25" ry="25"/>
+</svg>
