@@ -73,7 +73,7 @@ export class RaceCar extends Vehicle {
 
 export class Moped extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Triangle("green", position, 50, 44));
+        super(new Triangle("blue", position, 50, 44));
         this.possibleEvolutions = ["Motorcycle"];
         this.levelUp = 30;
     }
