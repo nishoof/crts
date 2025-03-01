@@ -1,5 +1,5 @@
 // Physical thing on the map (pretend it's an abstract class)
-class Body {
+class Shape {
     color: string;
     center: { x: number, y: number };
     rotation: number;
@@ -25,12 +25,12 @@ class Body {
         this.rotation += amount;
     }
 
-    detectCollision(other: Body) {
+    detectCollision(other: Shape) {
         throw new Error("detectCollision() must be implemented in subclass");
     }
 }
 
-class Rect extends Body {
+class Rect extends Shape {
     width: number;
     height: number;
 
@@ -44,7 +44,7 @@ class Rect extends Body {
         const points = this.calculatePoints();
     }
 
-    detectCollision(other: Body): boolean {
+    detectCollision(other: Shape): boolean {
         const points = this.calculatePoints();
 
         function detectCollisionRect(other: Rect): boolean {
@@ -75,7 +75,7 @@ class Rect extends Body {
     }
 }
 
-class Circle extends Body {
+class Circle extends Shape {
     radius: number;
 
     constructor(color: string, center: { x: number, y: number }, radius: number, rotation = 0) {
@@ -86,7 +86,7 @@ class Circle extends Body {
     draw() {
     }
 
-    detectCollision(other: Body): boolean {
+    detectCollision(other: Shape): boolean {
         function detectCollisionRect(other: Rect): boolean {
             return false;
         }
@@ -103,11 +103,11 @@ class Circle extends Body {
         if (other instanceof Circle) return detectCollisionCircle(other);
         if (other instanceof Triangle) return detectCollisionTriangle(other);
 
-        throw new Error("Unknown body type for collision detection");
+        throw new Error("Unknown Shape type for collision detection");
     }
 }
 
-class Triangle extends Body {
+class Triangle extends Shape {
     width: number;
     height: number;
 
@@ -130,7 +130,7 @@ class Triangle extends Body {
         this.rotation += amount;
     }
 
-    detectCollision(other: Body): boolean {
+    detectCollision(other: Shape): boolean {
         const points = this.calculatePoints();
 
         function detectCollisionRect(other: Rect): boolean {
@@ -149,7 +149,7 @@ class Triangle extends Body {
         if (other instanceof Circle) return detectCollisionCircle(other);
         if (other instanceof Triangle) return detectCollisionTriangle(other);
 
-        throw new Error("Unknown body type for collision detection");
+        throw new Error("Unknown Shape type for collision detection");
     }
 
     calculatePoints() {
