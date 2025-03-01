@@ -1,0 +1,12 @@
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden; /* hide scroll bar */
+}
+
+div#canvas-support {
+    padding: 10px;
+    font-size: 40pt;
+    position: absolute;
+    display: none;
+}
