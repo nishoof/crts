@@ -17,7 +17,7 @@ let multiplier: number;
 
 function calculateFPSMultiplier(previousFrame: number): [number, number] {
     const now = performance.now();
-    return [now, (now-previousFrame) * FPS / 1000];
+    return [now, (now - previousFrame) * FPS / 1000];
 }
 
 window.onload = function start() {
@@ -26,10 +26,13 @@ window.onload = function start() {
     c.width = window.innerWidth;
     c.height = window.innerHeight;
 
+    console.log(c.width + " " + c.height);
+
+
     const ctx: CanvasRenderingContext2D = c.getContext("2d") as CanvasRenderingContext2D;
 
     // TODO: Walls
-    const walls: Rect[] = [new Rect("rgb(0 0 0)", {x: 50, y: 50}, 100, 40)];
+    const walls: Rect[] = [new Rect("rgb(30 30 30)", { x: 0, y: 20 }, 10000, 40)];
 
     // Players
     plr.draw(ctx, screenPosition);
@@ -49,24 +52,35 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, walls: Rect[]) {
 
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-    if (turningLeft)
-        plr.vehicle.rotate(-0.03 * multiplier);
-    if (turningRight)
-        plr.vehicle.rotate(0.03 * multiplier);
-    if (movingInCurrDirection)
-        plr.moveInCurrentDirection(2 * multiplier);
-    plr.draw(ctx, screenPosition);
-
     walls.forEach((wall) => {
         wall.draw(ctx, screenPosition);
-        if (plr.vehicle.shape.detectCollision(wall)) console.log("collide");
     })
+
+    if (turningLeft)
+        plr.rotate(-0.03 * multiplier);
+    if (turningRight)
+        plr.rotate(0.03 * multiplier);
+    handlePlayerWallCollisions(plr, walls);
+
+    if (movingInCurrDirection)
+        plr.move(2 * multiplier);
+    handlePlayerWallCollisions(plr, walls);
+
+    plr.draw(ctx, screenPosition);
 
     // Rotate the Character to point to the mouse
     const angle = Math.atan2(mousePosition.y - (plr.character.shape.center.y - screenPosition.y), mousePosition.x - (plr.character.shape.center.x - screenPosition.x));
     plr.character.shape.rotation = angle;
 
     // console.log(plr.character.shape.center.x);
+}
+
+function handlePlayerWallCollisions(plr: Player, walls: Rect[]) {
+    walls.forEach((wall) => {
+        while (plr.vehicle.shape.detectCollision(wall)) {
+            plr.undoLastMovement();
+        }
+    });
 }
 
 // Update mouse position
