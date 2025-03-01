@@ -1,11 +1,6 @@
 {
   "private": true,
   "dependencies": {
-    "@vercel/edge": "^0.1.2",
-    "typescript": "^5.6.3"
-  },
-  "scripts": {
-    "build": "tsc --outDir dist",
-    "dev": "tsc --watch"
+    "@vercel/edge": "^0.1.2"
   }
 }
