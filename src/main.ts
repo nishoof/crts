@@ -19,14 +19,14 @@ window.onload = function start() {
     const ctx: CanvasRenderingContext2D = c.getContext("2d") as CanvasRenderingContext2D;
 
     // TODO: Walls
-    const walls: Rect[] = [];
+    const walls: Rect[] = [new Rect("rgb(0 0 0)", {x: 50, y: 50}, 100, 40)];
 
     // Players
     plr.draw(ctx, screenPosition);
 
     // TODO: fix frame rate shit
     function gameLoop() {
-        act(ctx, plr);
+        act(ctx, plr, walls);
         requestAnimationFrame(gameLoop);
     }
 
@@ -34,7 +34,7 @@ window.onload = function start() {
 }
 
 // Called every frame. Updates player position and draws
-function act(ctx: CanvasRenderingContext2D, plr: Player) {
+function act(ctx: CanvasRenderingContext2D, plr: Player, walls: Rect[]) {
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
     if (turningLeft)
@@ -45,10 +45,10 @@ function act(ctx: CanvasRenderingContext2D, plr: Player) {
         plr.moveInCurrentDirection(2);
     plr.draw(ctx, screenPosition);
 
-    // Update mouse position
-    document.addEventListener("mousemove", (event) => {
-        mousePosition = { x: event.clientX, y: event.clientY };
-    });
+    walls.forEach((wall) => {
+        wall.draw(ctx, screenPosition);
+        if (plr.vehicle.shape.detectCollision(wall)) console.log("collide");
+    })
 
     // Rotate the Character to point to the mouse
     const angle = Math.atan2(mousePosition.y - (plr.character.shape.center.y - screenPosition.y), mousePosition.x - (plr.character.shape.center.x - screenPosition.x));
@@ -56,6 +56,11 @@ function act(ctx: CanvasRenderingContext2D, plr: Player) {
 
     // console.log(plr.character.shape.center.x);
 }
+
+// Update mouse position
+document.addEventListener("mousemove", (event) => {
+    mousePosition = { x: event.clientX, y: event.clientY };
+});
 
 document.addEventListener("keydown", keyDownHandler);
 document.addEventListener("keyup", keyUpHandler);

@@ -13,7 +13,7 @@ div#canvas-support {
 
 /* Upgrades */
 div.upgrades {
-    /* display: none */
+    /* display: none; */
     position: absolute;
     top: 0;
     left: 0;
@@ -22,7 +22,7 @@ div.upgrades {
 
 div.upgrade-row {
     display: flex;
-    /* display: none */
+    /* display: none; */
 }
 
 div.upgrade-button {
@@ -85,10 +85,10 @@ div.upgrade-button > p {
     top: 0;
     left: 0;
     height: 100%;
-    /* width: 35%; */
+    /* width: 95%; */
     background-color: tomato;
 }
 
-#level-container > p {
+#level-progress-text {
     margin: 0;
 }
