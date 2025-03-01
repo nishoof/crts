@@ -3,6 +3,8 @@ import { Rect } from "./shapes.js";
 
 const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
 
+let screenPosition = { x: 0, y: 0 };        // position of the top left corner of the screen relative to the top left corner of the real map
+
 function start() {
     console.log("started");
 
@@ -13,17 +15,29 @@ function start() {
     // ctx.strokeStyle = "rgb(0 0 0)";
 
     const walls: Rect[] = [];
-    console.log("lalala");
 
-    let plr: Player = new Player();
-    plr.draw(ctx, { x: 0, y: 0 });
+    let plr: Player = new Player({ x: 200, y: 200 });
+    plr.draw(ctx, screenPosition);
 
-    // let x = plr;
-    let xsdflkjsdf = plr;
+    // TODO: fix frame rate shit
+    function gameLoop() {
+        draw(ctx, plr);
+        requestAnimationFrame(gameLoop);
+    }
 
-    console.log("lalala");
-    console.log("lsdfkljsdf");
+    gameLoop();
+}
 
+// Called every frame
+function draw(ctx: CanvasRenderingContext2D, plr: Player) {
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    // console.log("run");
+
+    plr.move(1, 1);
+    plr.draw(ctx, screenPosition);
+
+    // console.log(plr.character.shape.center.x);
 }
 
 window.onload = start;

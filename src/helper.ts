@@ -5,7 +5,7 @@
  * @param rotation 
  * @returns 
  */
-function rotation(origin: { x: number, y: number }, point: { x: number, y: number }, rotation: number): { x: number, y: number } {
+export function rotate(origin: { x: number, y: number }, point: { x: number, y: number }, rotation: number): { x: number, y: number } {
     let relX = point.x - origin.x, relY = point.y - origin.y;
 
     return {

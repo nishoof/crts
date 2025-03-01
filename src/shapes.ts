@@ -1,3 +1,5 @@
+import { rotate } from "./helper.js"
+
 // Physical thing on the map (pretend it's an abstract class)
 export class Shape {
     color: string;
@@ -6,8 +8,6 @@ export class Shape {
     speed: number;
 
     constructor(color: string, center: Point, rotation: number) {
-        console.log(`Making a shape with ${color}  ${center} ${rotation}`);
-
         this.color = color;
         this.center = center;
         this.rotation = rotation;
@@ -37,7 +37,7 @@ export class Rect extends Shape {
     height: number;
 
     constructor(color: string, center: Point, width: number, height: number, rotation = 0) {
-        super(color, center, rotation);
+        super(color, center, 0);
         this.width = width;
         this.height = height;
     }
@@ -68,10 +68,10 @@ export class Rect extends Shape {
     }
 
     calculatePoints(): Point[] {
-        let p1 = rotation(this.center, { x: this.center.x - this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
-        let p2 = rotation(this.center, { x: this.center.x + this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
-        let p3 = rotation(this.center, { x: this.center.x + this.width / 2, y: this.center.y + this.height / 2 }, this.rotation);
-        let p4 = rotation(this.center, { x: this.center.x - this.width / 2, y: this.center.y + this.height / 2 }, this.rotation);
+        let p1 = rotate(this.center, { x: this.center.x - this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
+        let p2 = rotate(this.center, { x: this.center.x + this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
+        let p3 = rotate(this.center, { x: this.center.x + this.width / 2, y: this.center.y + this.height / 2 }, this.rotation);
+        let p4 = rotate(this.center, { x: this.center.x - this.width / 2, y: this.center.y + this.height / 2 }, this.rotation);
         return [p1, p2, p3, p4];
     }
 }
@@ -158,9 +158,9 @@ export class Triangle extends Shape {
     }
 
     calculatePoints(): Point[] {
-        let p1 = rotation(this.center, { x: this.center.x + this.width / 2, y: this.center.y }, this.rotation);
-        let p2 = rotation(this.center, { x: this.center.x - this.width / 2, y: this.center.y + this.height / 2 }, this.rotation);
-        let p3 = rotation(this.center, { x: this.center.x - this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
+        let p1 = rotate(this.center, { x: this.center.x + this.width / 2, y: this.center.y }, this.rotation);
+        let p2 = rotate(this.center, { x: this.center.x - this.width / 2, y: this.center.y + this.height / 2 }, this.rotation);
+        let p3 = rotate(this.center, { x: this.center.x - this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
         return [p1, p2, p3];
     }
 }
