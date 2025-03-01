@@ -25,7 +25,7 @@ class Shape {
         this.rotation += amount;
     }
 
-    detectCollision(other: Shape) {
+    detectCollision(other: Shape): boolean {
         throw new Error("detectCollision() must be implemented in subclass");
     }
 }
