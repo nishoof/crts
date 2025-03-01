@@ -10,6 +10,16 @@ let movingInCurrDirection = false;
 let turningLeft = false;
 let turningRight = false;
 
+const FPS = 60;
+const startTime = performance.now();
+let currentFrame = startTime;
+let multiplier: number;
+
+function calculateFPSMultiplier(previousFrame: number): [number, number] {
+    const now = performance.now();
+    return [now, (now-previousFrame) * FPS / 1000];
+}
+
 window.onload = function start() {
     console.log("started");
 
@@ -35,14 +45,16 @@ window.onload = function start() {
 
 // Called every frame. Updates player position and draws
 function act(ctx: CanvasRenderingContext2D, plr: Player, walls: Rect[]) {
+    [currentFrame, multiplier] = calculateFPSMultiplier(currentFrame);
+
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
     if (turningLeft)
-        plr.vehicle.rotate(-0.03);
+        plr.vehicle.rotate(-0.03 * multiplier);
     if (turningRight)
-        plr.vehicle.rotate(0.03);
+        plr.vehicle.rotate(0.03 * multiplier);
     if (movingInCurrDirection)
-        plr.moveInCurrentDirection(2);
+        plr.moveInCurrentDirection(2 * multiplier);
     plr.draw(ctx, screenPosition);
 
     walls.forEach((wall) => {
