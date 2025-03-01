@@ -31,4 +31,15 @@ export default class Player {
         this.character.shape.center.x += deltaX;
         this.character.shape.center.y += deltaY;
     }
+
+    moveInCurrentDirection(delta: number) {
+        let direction: number = this.vehicle.shape.rotation;
+        let deltaX = delta * Math.cos(direction);
+        let deltaY = delta * Math.sin(direction);
+        this.move(deltaX, deltaY);
+    }
+
+    setRotation(angle: number) {
+        this.vehicle.shape.rotation = angle;
+    }
 }

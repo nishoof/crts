@@ -33,6 +33,10 @@ export class Vehicle {
         this.shape.draw(ctx, topLeft);
     }
 
+    rotate(amount: number) {
+        this.shape.rotate(amount);
+    }
+
 }
 
 export class Bike extends Vehicle {

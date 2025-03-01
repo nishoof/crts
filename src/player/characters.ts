@@ -1,4 +1,4 @@
-import { Circle, Shape } from "../shapes.js";
+import { Circle, Rect, Shape } from "../shapes.js";
 
 export class Character {
     shape: Shape;
@@ -29,12 +29,11 @@ export class Character {
     draw(ctx: CanvasRenderingContext2D, topLeft: { x: number; y: number; }) {
         this.shape.draw(ctx, topLeft);
     }
-
 }
 
 export class Rifleman extends Character {
     constructor(position: { x: number, y: number }) {
-        super(new Circle("red", position, 10));
+        super(new Circle("red", position, 7));
         this.possibleEvolutions = ["Gunner", "Sniper", "Cannoneer"];
     }
 }
