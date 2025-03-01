@@ -4,6 +4,8 @@ class Vehicle {
     maxSpeedStat: number;
     rotationSpeedStat: number;
     possibleEvolutions: string[];
+    currentHealth: number;
+    maxHealth: number;
 
     constructor(shape: Shape) {
         this.shape = shape;
@@ -11,6 +13,8 @@ class Vehicle {
         this.maxSpeedStat = 0;
         this.rotationSpeedStat = 0;
         this.possibleEvolutions = [];
+        this.currentHealth = 100;
+        this.maxHealth = 100;
     }
 
     // TODO:
@@ -22,6 +26,10 @@ class Vehicle {
     // run() {
     //     throw new Error("run() must be implemented in subclasses.")
     // }
+
+    draw(ctx: CanvasRenderingContext2D, topLeft: { x: number; y: number; }) {
+        this.shape.draw(ctx, topLeft);
+    }
 
 }
 

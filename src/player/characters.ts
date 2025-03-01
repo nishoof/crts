@@ -22,6 +22,10 @@ class Character {
     //     throw new Error("fireGun() should be implmented in subclasses")
     // }
 
+    draw(ctx: CanvasRenderingContext2D, topLeft: { x: number; y: number; }) {
+        this.shape.draw(ctx, topLeft);
+    }
+
 }
 
 class Rifleman extends Character {
