@@ -44,7 +44,6 @@ export default class Player {
         const lastTransformationWasAMovement = this.lastTransformation.movement;
         const delta = this.lastTransformation.delta;
 
-        console.log("Undoing last " + (lastTransformationWasAMovement ? "movement" : "rotation"));
 
         if (lastTransformationWasAMovement) {
             this._move(-1 * delta);
