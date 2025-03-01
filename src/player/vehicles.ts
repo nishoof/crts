@@ -13,13 +13,15 @@ class Vehicle {
         this.possibleEvolutions = [];
     }
 
-    accelerate() {
-        throw new Error("accelrate() must be implemented in subclasses.");
-    }
+    // TODO:
 
-    run() {
-        throw new Error("run() must be implemented in subclasses.")
-    }
+    // accelerate() {
+    //     throw new Error("accelrate() must be implemented in subclasses.");
+    // }
+
+    // run() {
+    //     throw new Error("run() must be implemented in subclasses.")
+    // }
 
 }
 
@@ -52,6 +54,13 @@ class RaceCar extends Vehicle {
 class Moped extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Triangle("green", position, 50, 44));
+        this.possibleEvolutions = ["Motorcycle"];
+    }
+}
+
+class Motorcycle extends Vehicle {
+    constructor(position: { x: number, y: number }) {
+        super(new Rect("red", position, 60, 10));
     }
 }
 
