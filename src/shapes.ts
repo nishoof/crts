@@ -105,6 +105,12 @@ export class Circle extends Shape {
 
         throw new Error("Unknown Shape type for collision detection");
     }
+    move(speed: number) {
+        let deltaX: number = Math.sin(this.rotation) * speed;
+        let deltaY: number = Math.cos(this.rotation) * speed;
+        this.center.x += deltaX;
+        this.center.y += deltaY;
+    }
 }
 
 export class Triangle extends Shape {

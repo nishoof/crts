@@ -19,7 +19,7 @@ export class Character {
         this.possibleEvolutions = [];
     }
 
-    fire(mousePoint: { x: number, y: number }) {
+    fire(mousePoint: { x: number, y: number }): Circle {
         let bullet = new Circle("black", this.shape.center, this.bulletRadius);
         bullet.rotation = Math.atan(mousePoint.x / mousePoint.y);
         bullet.speed = this.bulletSpeed;
