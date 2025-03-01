@@ -23,6 +23,11 @@ export class Shape {
         this.center.y += Math.sin(this.rotation) * speed;
     }
 
+    moveWithRotation(speed: number, rotation: number) {
+        this.center.x += Math.cos(rotation) * speed;
+        this.center.y += Math.sin(rotation) * speed;
+    }
+
     rotate(amount: number) {
         this.rotation += amount;
     }
@@ -126,15 +131,6 @@ export class Triangle extends Shape {
         ctx.fill(drawing);
     }
 
-    move(speed: number) {
-        this.center.x += Math.cos(this.rotation) * speed;
-        this.center.y += Math.sin(this.rotation) * speed;
-    }
-
-    rotate(amount: number) {
-        this.rotation += amount;
-    }
-
     detectCollision(other: Shape): boolean {
         const points = this.calculatePoints();
 
@@ -153,11 +149,7 @@ export class Triangle extends Shape {
     }
 }
 
-function detectCollisionCircleCircle(c1: Circle, c2: Circle): boolean {
-    const dx = c1.center.x - c2.center.x;
-    const dy = c1.center.y - c2.center.y;
-    return Math.sqrt(dx * dx + dy * dy) <= c1.radius + c2.radius;
-}
+
 
 type Point = { x: number; y: number };
 type Polygon = Point[];
@@ -213,10 +205,6 @@ function polygonsCollide(polygon1: Polygon, polygon2: Polygon): boolean {
     return true; // No separating axis found, polygons are colliding
 }
 
-
-/**
- * Checks for collision between a circle and a polygon.
- */
 function circleCollidesWithPolygon(circle: Circle, polygon: Polygon): boolean {
     function squaredDistance(p1: Point, p2: Point): number {
         return (p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2;
@@ -265,4 +253,10 @@ function circleCollidesWithPolygon(circle: Circle, polygon: Polygon): boolean {
     }
 
     return false; // No collision
+}
+
+function detectCollisionCircleCircle(c1: Circle, c2: Circle): boolean {
+    const dx = c1.center.x - c2.center.x;
+    const dy = c1.center.y - c2.center.y;
+    return Math.sqrt(dx * dx + dy * dy) <= c1.radius + c2.radius;
 }
