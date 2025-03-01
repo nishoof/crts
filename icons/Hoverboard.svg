@@ -1,9 +1,16 @@
-<?xml version="1.0" encoding="utf-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 110 110" xmlns:bx="https://boxy-svg.com">
-  <defs>
-    <bx:export>
-      <bx:file format="svg"/>
-    </bx:export>
-  </defs>
-  <ellipse style="fill: rgb(255, 255, 255); stroke: rgb(0, 0, 0);" cx="55" cy="55" rx="25" ry="25"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="300" height="300" viewBox="14.29 27.14 300 300" xml:space="preserve">
+<desc>Created with Fabric.js 5.2.4</desc>
+<defs>
+</defs>
+<rect x="0" y="0" width="100%" height="100%" fill="transparent"></rect>
+<g transform="matrix(1 0 0 1 150 150)" id="5680a524-7e6f-4189-86e7-dfe50cae535a"  >
+<rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  x="-150" y="-150" rx="0" ry="0" width="300" height="300" />
+</g>
+<g transform="matrix(Infinity NaN NaN Infinity 0 0)" id="77598e88-a212-4c0c-b7c2-5fdaeebdadb8"  >
+</g>
+<g transform="matrix(1.78 0 0 1.78 150 150)" id="cb3b86ea-1d87-46e7-a342-c62bfd0d51b1"  >
+<circle style="stroke: rgb(0,0,0); stroke-width: 4; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  cx="0" cy="0" r="35" />
+</g>
 </svg>

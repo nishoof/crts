@@ -2,6 +2,7 @@ html, body {
     margin: 0 !important;
     padding: 0 !important;
     overflow: hidden; /* hide scroll bar */
+    font-family: "Lato", sans-serif;
 }
 
 div#canvas-support {
@@ -35,11 +36,15 @@ div.upgrade-button {
     padding: 3px;
 }
 
+div.upgrade-button > img {
+    max-width: 60px;
+}
+
 div.upgrade-button > p {
-    font-size: small;
+    font-size: 8pt;
     text-align: center;
     position: relative;
-    transform: translateY(-34px);
+    transform: translateY(-28px);
 }
 
 /* upgrade button background colors */
@@ -51,6 +56,12 @@ div.upgrade-button > p {
 }
 #Hoverboard-button {
     background-color: skyblue;
+}
+#Truck-button {
+    background-color: lightblue;
+}
+#Racecar-button {
+    background-color: blanchedalmond;
 }
 
 /* Lower HUD */

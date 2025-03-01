@@ -5,12 +5,12 @@
 <defs>
 </defs>
 <rect x="0" y="0" width="100%" height="100%" fill="transparent"></rect>
+<g transform="matrix(0 0 0 0 0 0)" id="77598e88-a212-4c0c-b7c2-5fdaeebdadb8"  >
+</g>
 <g transform="matrix(1 0 0 1 150 150)" id="5680a524-7e6f-4189-86e7-dfe50cae535a"  >
 <rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1; visibility: hidden;" vector-effect="non-scaling-stroke"  x="-150" y="-150" rx="0" ry="0" width="300" height="300" />
 </g>
-<g transform="matrix(Infinity NaN NaN Infinity 0 0)" id="77598e88-a212-4c0c-b7c2-5fdaeebdadb8"  >
-</g>
-<g transform="matrix(2.5 0 0 1.26 150 150)" id="d64c849d-cf06-4ffe-b6a9-0a4a209ac6be"  >
+<g transform="matrix(2.01 0 0 2.01 152 152)" id="e4aec132-90b2-4692-9310-9501085ecbcf"  >
 <rect style="stroke: rgb(0,0,0); stroke-width: 4; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(101,101,101); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  x="-33.0835" y="-33.0835" rx="0" ry="0" width="66.167" height="66.167" />
 </g>
 </svg>

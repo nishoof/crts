@@ -10,7 +10,7 @@
 </g>
 <g transform="matrix(Infinity NaN NaN Infinity 0 0)" id="77598e88-a212-4c0c-b7c2-5fdaeebdadb8"  >
 </g>
-<g transform="matrix(2.5 0 0 1.26 150 150)" id="d64c849d-cf06-4ffe-b6a9-0a4a209ac6be"  >
-<rect style="stroke: rgb(0,0,0); stroke-width: 4; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(101,101,101); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  x="-33.0835" y="-33.0835" rx="0" ry="0" width="66.167" height="66.167" />
+<g transform="matrix(0 1.74 -2.09 0 152 148)" id="d1fa7482-8005-490e-baa3-b6878a209c46"  >
+<polygon style="stroke: rgb(0,0,0); stroke-width: 4; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,255); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke"  points="-37.43,32.41 0,-32.41 37.43,32.41 " />
 </g>
 </svg>
