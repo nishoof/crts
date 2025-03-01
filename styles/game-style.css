@@ -10,3 +10,76 @@ div#canvas-support {
     position: absolute;
     display: none;
 }
+
+/* Upgrades */
+div.upgrades {
+    /* display: none */
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 10px;
+}
+
+div.upgrade-row {
+    display: flex;
+    /* display: none */
+}
+
+div.upgrade-button {
+    width: 60px;
+    height: 60px;
+    border-style: solid;
+    border-radius: 5%;
+    border-width: 5px;
+    margin-right: 20px;
+    padding: 3px;
+}
+
+div.upgrade-button > p {
+    font-size: small;
+    text-align: center;
+    position: relative;
+    transform: translateY(-34px);
+}
+
+/* upgrade button background colors */
+#Car-button {
+    background-color: lawngreen;
+}
+#Moped-button {
+    background-color: red;
+}
+#Hoverboard-button {
+    background-color: skyblue;
+}
+
+/* Lower HUD */
+#ign {
+    position: fixed;
+    font-size: large;
+    text-align: center;
+    margin: auto;
+    bottom: 60px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+#level-container {
+    text-align: center;
+    position: fixed;
+    border-style: solid;
+    border-width: 3px;
+    border-radius: 30px;
+    bottom: 10px;
+    width: 60%;
+    margin: auto;
+    padding: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+}
+
+#level-progress-bar {
+
+    background-color: tomato;
+}
