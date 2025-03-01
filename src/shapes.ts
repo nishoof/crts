@@ -14,7 +14,7 @@ export class Shape {
         this.speed = 0;
     }
 
-    draw(ctx: CanvasRenderingContext2D, topleft: Point) {
+    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke: boolean) {
         throw new Error("draw() must be implemented in subclass");
     }
 
@@ -47,7 +47,7 @@ export class Rect extends Shape {
         this.height = height;
     }
 
-    draw(ctx: CanvasRenderingContext2D, topleft: Point): void {
+    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke=true): void {
         let [p1, p2, p3, p4] = this.calculatePoints();
 
         let drawing = new Path2D();
@@ -57,7 +57,7 @@ export class Rect extends Shape {
         drawing.lineTo(p4.x - topleft.x, p4.y - topleft.y);
         drawing.closePath();
 
-        ctx.stroke(drawing);
+        if (stroke) ctx.stroke(drawing);
         ctx.fillStyle = this.color;
         ctx.fill(drawing);
     }
@@ -89,11 +89,11 @@ export class Circle extends Shape {
         this.radius = radius;
     }
 
-    draw(ctx: CanvasRenderingContext2D, topleft: Point) {
+    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke=true) {
         ctx.beginPath();
         ctx.arc(this.center.x - topleft.x, this.center.y - topleft.y, this.radius, 0, 2 * Math.PI);
 
-        ctx.stroke();
+        if (stroke) ctx.stroke();
         ctx.fillStyle = this.color;
         ctx.fill();
     }
@@ -123,7 +123,7 @@ export class Triangle extends Shape {
         this.height = height;
     }
 
-    draw(ctx: CanvasRenderingContext2D, topleft: Point) {
+    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke=true) {
         let [p1, p2, p3] = this.calculatePoints();
 
         let drawing = new Path2D();
@@ -132,7 +132,7 @@ export class Triangle extends Shape {
         drawing.lineTo(p3.x - topleft.x, p3.y - topleft.y);
         drawing.closePath();
 
-        ctx.stroke(drawing);
+        if (stroke) ctx.stroke(drawing);
         ctx.fillStyle = this.color;
         ctx.fill(drawing);
     }
