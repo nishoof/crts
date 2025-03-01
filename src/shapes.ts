@@ -161,6 +161,22 @@ export class Triangle extends Shape {
 }
 
 
+export class pivotRect extends Rect{
+    constructor(color: string, center: Point, width: number, height: number, rotation = 0) {
+        super(color, center, width, height, rotation);
+       
+    }
+    calculatePoints(): Point[] {
+        this.center = { x: this.center.x, y: this.center.y - this.height/2}; //change center to bottom of rect
+        let p1 = rotate(this.center, { x: this.center.x - this.width / 2, y: this.center.y}, this.rotation);
+        let p2 = rotate(this.center, { x: this.center.x + this.width / 2, y: this.center.y}, this.rotation);
+        let p3 = rotate(this.center, { x: this.center.x + this.width / 2, y: this.center.y + this.height}, this.rotation);
+        let p4 = rotate(this.center, { x: this.center.x - this.width / 2, y: this.center.y + this.height }, this.rotation);
+        
+        
+        return [p1, p2, p3, p4];    
+    }
+}
 
 type Point = { x: number; y: number };
 type Polygon = Point[];

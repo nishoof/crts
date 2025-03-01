@@ -1,8 +1,8 @@
-import { Circle, Rect, Shape } from "../shapes.js";
+import { Circle, pivotRect, Rect, Shape } from "../shapes.js";
 
 export class Character {
     shape: Shape;
-    turret: Rect;
+    turret: pivotRect;
     bulletSpeed: number;
     bulletRadius: number;
     bulletDamage: number;
@@ -10,7 +10,7 @@ export class Character {
     fireRate: number;               // bullets per second
     possibleEvolutions: string[];
 
-    constructor(shape: Shape, turret: Rect) {
+    constructor(shape: Shape, turret: pivotRect) {
         this.shape = shape;
         this.turret = turret; 
         this.bulletSpeed = 100;
@@ -38,14 +38,14 @@ export class Character {
 
 export class Rifleman extends Character {
     constructor(position: { x: number, y: number }) {
-        super(new Circle("red", position, 7), new Rect("red", position, 20, 5));
+        super(new Circle("red", position, 7), new pivotRect("red", position, 20, 5));
         this.possibleEvolutions = ["Gunner", "Sniper", "Cannoneer"];
     }
 }
 
 export class Gunner extends Character {
     constructor(position: { x: number, y: number }) {
-        super(new Circle("brown", position, 11), new Rect("red", {x: position.x, y: position.y - 5}, 20, 5));
+        super(new Circle("brown", position, 11), new pivotRect("red", position, 20, 5));
         this.bulletSpeed = 150;
         this.bulletDamage = 15;
         this.fireRate = 3.5;
@@ -54,7 +54,7 @@ export class Gunner extends Character {
 
 export class Sniper extends Character {
     constructor(position: { x: number, y: number }) {
-        super(new Circle("black", position, 13), new Rect("red", {x: position.x, y: position.y - 5}, 20, 5));
+        super(new Circle("black", position, 13), new pivotRect("red", position, 20, 5));
         this.bulletSpeed = 500;
         this.bulletRadius = 4;
         this.bulletDamage = 50;
@@ -64,7 +64,7 @@ export class Sniper extends Character {
 
 export class Cannoneer extends Character {
     constructor(position: { x: number, y: number }) {
-        super(new Circle("brown", position, 12), new Rect("red", {x: position.x, y: position.y - 5}, 20, 5));
+        super(new Circle("brown", position, 12), new pivotRect("red", position, 20, 5));
         this.bulletSpeed = 100;
         this.bulletRadius = 2;
         this.bulletDamage = 10;
