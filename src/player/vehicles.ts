@@ -25,14 +25,14 @@ class Vehicle {
 
 class Bike extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Rect("grey", position, 80, 10))
+        super(new Rect("grey", position, 80, 10));
         this.possibleEvolutions = ["Car", "Moped", "Hoverboard"];
     }
 }
 
 class Car extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Rect("blue", position, 80, 40))
+        super(new Rect("blue", position, 80, 40));
         this.possibleEvolutions = ["Truck", "Racecar"];
     }
 }
@@ -40,21 +40,18 @@ class Car extends Vehicle {
 class Truck extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Rect("grey", position, 50, 50));
-        this.possibleEvolutions = [];
     }
 }
 
 class RaceCar extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Triangle("green", position, 50, 50));
-        this.possibleEvolutions = [];
     }
 }
 
 class Moped extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Triangle("green", position, 50, 44));
-        this.possibleEvolutions = [];
     }
 }
 
@@ -68,13 +65,11 @@ class Hoverboard extends Vehicle {
 class Cybertruck extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Rect("gray", position, 100, 50));
-        this.possibleEvolutions = [];
     }
 }
 
 class UFO extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super(new Circle("green", position, 75, 75));
-        this.possibleEvolutions = [];
     }
 }
