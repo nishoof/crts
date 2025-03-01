@@ -54,7 +54,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, walls: Rect[]) {
     [currentFrame, multiplier] = calculateFPSMultiplier(currentFrame);
 
     const plrPosition = plr.getPosition();
-    screenPosition = { x: plrPosition.x - 500, y: plrPosition.y - 500 }
+    screenPosition = { x: plrPosition.x - window.innerWidth / 2, y: plrPosition.y - window.innerHeight / 2 };
 
     // Clear screen so we can draw new stuff
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
