@@ -12,7 +12,7 @@ class Shape {
         this.speed = 0;
     }
 
-    draw() {
+    draw(ctx: CanvasRenderingContext2D, topleft: Point) {
         throw new Error("draw() must be implemented in subclass");
     }
 
@@ -40,25 +40,32 @@ class Rect extends Shape {
         this.height = height;
     }
 
-    draw(): void {
-        const points = this.calculatePoints();
+    draw(ctx: CanvasRenderingContext2D, topleft: Point): void {
+        let [p1, p2, p3, p4] = this.calculatePoints();
+
+        let drawing = new Path2D();
+        drawing.moveTo(p1.x - topleft.x, p1.y - topleft.y);
+        drawing.lineTo(p2.x - topleft.x, p2.y - topleft.y);
+        drawing.lineTo(p3.x - topleft.x, p3.y - topleft.y);
+        drawing.lineTo(p4.x - topleft.x, p4.y - topleft.y);
+        drawing.closePath();
+
+        ctx.stroke(drawing);
+        ctx.fillStyle = this.color;
+        ctx.fill(drawing);
     }
 
     detectCollision(other: Shape): boolean {
         const points = this.calculatePoints();
 
-        function detectCollisionCircle(other: Circle): boolean {
-            return false;
-        }
-
         if (other instanceof Rect) return polygonsCollide(points, other.calculatePoints());
-        if (other instanceof Circle) return detectCollisionCircle(other);
+        if (other instanceof Circle) return circleCollidesWithPolygon(other, points);
         if (other instanceof Triangle) return polygonsCollide(points, other.calculatePoints());
 
         return false;
     }
 
-    calculatePoints() {
+    calculatePoints(): Point[] {
         let p1 = rotation(this.center, { x: this.center.x - this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
         let p2 = rotation(this.center, { x: this.center.x + this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
         let p3 = rotation(this.center, { x: this.center.x + this.width / 2, y: this.center.y + this.height / 2 }, this.rotation);
@@ -75,7 +82,13 @@ class Circle extends Shape {
         this.radius = radius;
     }
 
-    draw() {
+    draw(ctx: CanvasRenderingContext2D, topleft: Point) {
+        ctx.beginPath();
+        ctx.arc(this.center.x - topleft.x, this.center.y - topleft.y, this.radius, 0, 2*Math.PI);
+
+        ctx.stroke();
+        ctx.fillStyle = this.color;
+        ctx.fill();
     }
 
     detectCollision(other: Shape): boolean {
@@ -105,8 +118,18 @@ class Triangle extends Shape {
         this.height = height;
     }
 
-    draw() {
-        const points = this.calculatePoints();
+    draw(ctx: CanvasRenderingContext2D, topleft: Point) {
+        let [p1, p2, p3] = this.calculatePoints();
+
+        let drawing = new Path2D();
+        drawing.moveTo(p1.x - topleft.x, p1.y - topleft.y);
+        drawing.lineTo(p2.x - topleft.x, p2.y - topleft.y);
+        drawing.lineTo(p3.x - topleft.x, p3.y - topleft.y);
+        drawing.closePath();
+
+        ctx.stroke(drawing);
+        ctx.fillStyle = this.color;
+        ctx.fill(drawing);
     }
 
     move(speed: number) {
@@ -132,7 +155,7 @@ class Triangle extends Shape {
         throw new Error("Unknown Shape type for collision detection");
     }
 
-    calculatePoints() {
+    calculatePoints(): Point[] {
         let p1 = rotation(this.center, { x: this.center.x + this.width / 2, y: this.center.y }, this.rotation);
         let p2 = rotation(this.center, { x: this.center.x - this.width / 2, y: this.center.y + this.height / 2 }, this.rotation);
         let p3 = rotation(this.center, { x: this.center.x - this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
