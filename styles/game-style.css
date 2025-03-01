@@ -19,6 +19,13 @@ div.upgrades {
     top: 0;
     left: 0;
     margin: 10px;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+div.upgrades > h3 {
+    margin: 0;
+    margin-bottom: 5px;
 }
 
 div.upgrade-row {
@@ -34,10 +41,18 @@ div.upgrade-button {
     border-width: 5px;
     margin-right: 20px;
     padding: 3px;
+    opacity: 80%;
+}
+
+div.upgrade-button:hover {
+    opacity: 100%;
+    cursor:pointer;
 }
 
 div.upgrade-button > img {
-    max-width: 60px;
+    display: block;
+    margin: 0 auto;
+    width: 60px;
 }
 
 div.upgrade-button > p {
