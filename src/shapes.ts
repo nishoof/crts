@@ -94,17 +94,9 @@ export class Circle extends Shape {
     }
 
     detectCollision(other: Shape): boolean {
-        function detectCollisionRect(other: Rect): boolean {
-            return false;
-        }
-
-        function detectCollisionTriangle(other: Triangle): boolean {
-            return false;
-        }
-
-        if (other instanceof Rect) return detectCollisionRect(other);
+        if (other instanceof Rect) return circleCollidesWithPolygon(this, other.calculatePoints());
         if (other instanceof Circle) return detectCollisionCircleCircle(this, other);
-        if (other instanceof Triangle) return detectCollisionTriangle(other);
+        if (other instanceof Triangle) return circleCollidesWithPolygon(this, other.calculatePoints());
 
         throw new Error("Unknown Shape type for collision detection");
     }
@@ -146,12 +138,8 @@ export class Triangle extends Shape {
     detectCollision(other: Shape): boolean {
         const points = this.calculatePoints();
 
-        function detectCollisionCircle(other: Circle): boolean {
-            return false;
-        }
-
         if (other instanceof Rect) return polygonsCollide(points, other.calculatePoints());
-        if (other instanceof Circle) return detectCollisionCircle(other);
+        if (other instanceof Circle) return circleCollidesWithPolygon(other, points);
         if (other instanceof Triangle) return polygonsCollide(points, other.calculatePoints());
 
         throw new Error("Unknown Shape type for collision detection");
@@ -174,40 +162,40 @@ function detectCollisionCircleCircle(c1: Circle, c2: Circle): boolean {
 type Point = { x: number; y: number };
 type Polygon = Point[];
 
-function getEdges(polygon: Polygon): Point[] {
-    const edges: Point[] = [];
-    for (let i = 0; i < polygon.length; i++) {
-        const nextIndex = (i + 1) % polygon.length;
-        edges.push({
-            x: polygon[nextIndex].x - polygon[i].x,
-            y: polygon[nextIndex].y - polygon[i].y
-        });
-    }
-    return edges;
-}
-
-function getPerpendicularAxis(edge: Point): Point {
-    return { x: -edge.y, y: edge.x };
-}
-
-function projectPolygon(polygon: Polygon, axis: Point): { min: number; max: number } {
-    let min = Infinity;
-    let max = -Infinity;
-
-    for (const point of polygon) {
-        const projection = (point.x * axis.x + point.y * axis.y) / Math.sqrt(axis.x ** 2 + axis.y ** 2);
-        if (projection < min) min = projection;
-        if (projection > max) max = projection;
-    }
-
-    return { min, max };
-}
-
-function isOverlapping(proj1: { min: number; max: number }, proj2: { min: number; max: number }): boolean {
-    return !(proj1.max < proj2.min || proj2.max < proj1.min);
-}
-
 function polygonsCollide(polygon1: Polygon, polygon2: Polygon): boolean {
+    function getEdges(polygon: Polygon): Point[] {
+        const edges: Point[] = [];
+        for (let i = 0; i < polygon.length; i++) {
+            const nextIndex = (i + 1) % polygon.length;
+            edges.push({
+                x: polygon[nextIndex].x - polygon[i].x,
+                y: polygon[nextIndex].y - polygon[i].y
+            });
+        }
+        return edges;
+    }
+
+    function getPerpendicularAxis(edge: Point): Point {
+        return { x: -edge.y, y: edge.x };
+    }
+
+    function projectPolygon(polygon: Polygon, axis: Point): { min: number; max: number } {
+        let min = Infinity;
+        let max = -Infinity;
+
+        for (const point of polygon) {
+            const projection = (point.x * axis.x + point.y * axis.y) / Math.sqrt(axis.x ** 2 + axis.y ** 2);
+            if (projection < min) min = projection;
+            if (projection > max) max = projection;
+        }
+
+        return { min, max };
+    }
+
+    function isOverlapping(proj1: { min: number; max: number }, proj2: { min: number; max: number }): boolean {
+        return !(proj1.max < proj2.min || proj2.max < proj1.min);
+    }
+
     const edges1 = getEdges(polygon1);
     const edges2 = getEdges(polygon2);
 
@@ -225,61 +213,43 @@ function polygonsCollide(polygon1: Polygon, polygon2: Polygon): boolean {
     return true; // No separating axis found, polygons are colliding
 }
 
-// // Example usage:
-// const polygonA: Polygon = [{ x: 0, y: 0 }, { x: 2, y: 0 }, { x: 2, y: 2 }, { x: 0, y: 2 }];
-// const polygonB: Polygon = [{ x: 1, y: 1 }, { x: 3, y: 1 }, { x: 3, y: 3 }, { x: 1, y: 3 }];
-
-// console.log(polygonsCollide(polygonA, polygonB)); // Output: true
-
-// type Point = { x: number; y: number };
-// type Polygon = Point[];
-// type Circle = { center: Point; radius: number };
-
-/**
- * Computes the squared distance between two points.
- */
-function squaredDistance(p1: Point, p2: Point): number {
-    return (p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2;
-}
-
-/**
- * Checks if a point is inside a polygon using the ray-casting algorithm.
- */
-function isPointInsidePolygon(point: Point, polygon: Polygon): boolean {
-    let inside = false;
-    const n = polygon.length;
-
-    for (let i = 0, j = n - 1; i < n; j = i++) {
-        const xi = polygon[i].x, yi = polygon[i].y;
-        const xj = polygon[j].x, yj = polygon[j].y;
-
-        const intersect = yi > point.y !== yj > point.y &&
-            point.x < ((xj - xi) * (point.y - yi)) / (yj - yi) + xi;
-
-        if (intersect) inside = !inside;
-    }
-
-    return inside;
-}
-
-/**
- * Finds the closest point on a line segment to a given point.
- */
-function closestPointOnSegment(a: Point, b: Point, p: Point): Point {
-    const ab = { x: b.x - a.x, y: b.y - a.y };
-    const ap = { x: p.x - a.x, y: p.y - a.y };
-
-    const ab2 = ab.x ** 2 + ab.y ** 2;
-    const ap_ab = ap.x * ab.x + ap.y * ab.y;
-    const t = Math.max(0, Math.min(1, ap_ab / ab2));
-
-    return { x: a.x + t * ab.x, y: a.y + t * ab.y };
-}
 
 /**
  * Checks for collision between a circle and a polygon.
  */
 function circleCollidesWithPolygon(circle: Circle, polygon: Polygon): boolean {
+    function squaredDistance(p1: Point, p2: Point): number {
+        return (p1.x - p2.x) ** 2 + (p1.y - p2.y) ** 2;
+    }
+
+    function isPointInsidePolygon(point: Point, polygon: Polygon): boolean {
+        let inside = false;
+        const n = polygon.length;
+
+        for (let i = 0, j = n - 1; i < n; j = i++) {
+            const xi = polygon[i].x, yi = polygon[i].y;
+            const xj = polygon[j].x, yj = polygon[j].y;
+
+            const intersect = yi > point.y !== yj > point.y &&
+                point.x < ((xj - xi) * (point.y - yi)) / (yj - yi) + xi;
+
+            if (intersect) inside = !inside;
+        }
+
+        return inside;
+    }
+
+    function closestPointOnSegment(a: Point, b: Point, p: Point): Point {
+        const ab = { x: b.x - a.x, y: b.y - a.y };
+        const ap = { x: p.x - a.x, y: p.y - a.y };
+
+        const ab2 = ab.x ** 2 + ab.y ** 2;
+        const ap_ab = ap.x * ab.x + ap.y * ab.y;
+        const t = Math.max(0, Math.min(1, ap_ab / ab2));
+
+        return { x: a.x + t * ab.x, y: a.y + t * ab.y };
+    }
+
     // Step 1: Check if the circle's center is inside the polygon
     if (isPointInsidePolygon(circle.center, polygon)) return true;
 
@@ -296,9 +266,3 @@ function circleCollidesWithPolygon(circle: Circle, polygon: Polygon): boolean {
 
     return false; // No collision
 }
-
-// // Example usage:
-// const circle: Circle = { center: { x: 3, y: 3 }, radius: 1.5 };
-// const polygon: Polygon = [{ x: 0, y: 0 }, { x: 5, y: 0 }, { x: 5, y: 5 }, { x: 0, y: 5 }];
-
-// console.log(circleCollidesWithPolygon(circle, polygon)); // Output: true
