@@ -12,4 +12,5 @@ function drawHUD(ctx: CanvasRenderingContext2D, player: Player) {
     // }
 
     // bottom display
+    document.getElementById("level-progress-bar")!.style.width = "50%"; // update based on player level
 }

@@ -19,6 +19,7 @@ export default class Player {
     draw(ctx: CanvasRenderingContext2D, topLeft: { x: number, y: number }) {
         this.vehicle.draw(ctx, topLeft);
         this.character.draw(ctx, topLeft);
+        // draw health bar
     }
 
     fire(mousePoint: { x: number, y: number }) {

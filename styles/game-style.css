@@ -59,7 +59,7 @@ div.upgrade-button > p {
     font-size: large;
     text-align: center;
     margin: auto;
-    bottom: 60px;
+    bottom: 45px;
     left: 50%;
     transform: translateX(-50%);
 }
@@ -80,6 +80,15 @@ div.upgrade-button > p {
 }
 
 #level-progress-bar {
-
+    z-index: -1;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    /* width: 35%; */
     background-color: tomato;
+}
+
+#level-container > p {
+    margin: 0;
 }
