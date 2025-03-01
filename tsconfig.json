@@ -3,11 +3,11 @@
         "target": "ES2016",
         "module": "CommonJS",
         "strict": true,
-        "outDir": "./dist/",
-        "rootDir": "./src/",
+        "outDir": "./dist",
+        "rootDir": "./src"
     },
     "include": [
-        "**/*.ts"
+        "src/**/*.ts"
     ],
     "exclude": [
         "node_modules"
