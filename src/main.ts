@@ -31,10 +31,11 @@ window.onload = function start() {
     // Walls
     const wallColor = "rgb(30 30 30)";
     const walls: Rect[] = [];
-    walls.push(new Rect(wallColor, { x: 0, y: 20 }, 100000, 40));         // top wall
-    walls.push(new Rect(wallColor, { x: 20, y: 0 }, 40, 100000));         // left wall
-    walls.push(new Rect(wallColor, { x: 20, y: 30000 }, 100000, 40));     // bottom wall
-    walls.push(new Rect(wallColor, { x: 30000, y: 0 }, 40, 100000));      // right wall
+    walls.push(new Rect(wallColor, { x: 2500, y: -5000 }, 25000, 10000));   // top wall
+    walls.push(new Rect(wallColor, { x: -5000, y: 1500 }, 10000, 23000));   // left wall
+    walls.push(new Rect(wallColor, { x: 2500, y: 8000 }, 25000, 10000));    // bottom wall
+    walls.push(new Rect(wallColor, { x: 10000, y: 1500 }, 10000, 23000));   // right wall
+    walls.push(new Rect(wallColor, { x: 2500, y: 1500 }, 2000, 1500));      // middle block
 
     // Players
     plr.draw(ctx, screenPosition);
@@ -75,7 +76,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, walls: Rect[]) {
         console.log(`moving at ${plr.currentSpeed} maxSpeed = ${plr.vehicle.maxSpeedStat}`);
         plr.move(plr.currentSpeed * multiplier);
         if (plr.currentSpeed < plr.vehicle.maxSpeedStat) {
-            plr.currentSpeed = Math.min(plr.vehicle.maxSpeedStat, plr.currentSpeed+plr.vehicle.accelerationStat);
+            plr.currentSpeed = Math.min(plr.vehicle.maxSpeedStat, plr.currentSpeed + plr.vehicle.accelerationStat);
             console.log("here");
         }
     } else {
