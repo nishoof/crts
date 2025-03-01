@@ -52,6 +52,10 @@ export default class Player {
         }
     }
 
+    getPosition() {
+        return this.character.shape.center;
+    }
+
     _move(delta: number) {
         let direction: number = this.vehicle.shape.rotation;
         let deltaX = delta * Math.cos(direction);

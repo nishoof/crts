@@ -26,13 +26,15 @@ window.onload = function start() {
     c.width = window.innerWidth;
     c.height = window.innerHeight;
 
-    console.log(c.width + " " + c.height);
-
-
     const ctx: CanvasRenderingContext2D = c.getContext("2d") as CanvasRenderingContext2D;
 
-    // TODO: Walls
-    const walls: Rect[] = [new Rect("rgb(30 30 30)", { x: 0, y: 20 }, 10000, 40)];
+    // Walls
+    const wallColor = "rgb(30 30 30)";
+    const walls: Rect[] = [];
+    walls.push(new Rect(wallColor, { x: 0, y: 20 }, 100000, 40));         // top wall
+    walls.push(new Rect(wallColor, { x: 20, y: 0 }, 40, 100000));         // left wall
+    walls.push(new Rect(wallColor, { x: 20, y: 30000 }, 100000, 40));     // bottom wall
+    walls.push(new Rect(wallColor, { x: 30000, y: 0 }, 40, 100000));      // right wall
 
     // Players
     plr.draw(ctx, screenPosition);
@@ -50,29 +52,35 @@ window.onload = function start() {
 function act(ctx: CanvasRenderingContext2D, plr: Player, walls: Rect[]) {
     [currentFrame, multiplier] = calculateFPSMultiplier(currentFrame);
 
+    const plrPosition = plr.getPosition();
+    screenPosition = { x: plrPosition.x - 500, y: plrPosition.y - 500 }
+
+    // Clear screen so we can draw new stuff
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
+    // Draw walls
     walls.forEach((wall) => {
-        wall.draw(ctx, screenPosition);
+        wall.draw(ctx, screenPosition, false);
     })
 
+    // Player turning
     if (turningLeft)
         plr.rotate(-0.03 * multiplier);
     if (turningRight)
         plr.rotate(0.03 * multiplier);
     handlePlayerWallCollisions(plr, walls);
 
+    // Player moving
     if (movingInCurrDirection)
         plr.move(2 * multiplier);
     handlePlayerWallCollisions(plr, walls);
-
-    plr.draw(ctx, screenPosition);
 
     // Rotate the Character to point to the mouse
     const angle = Math.atan2(mousePosition.y - (plr.character.shape.center.y - screenPosition.y), mousePosition.x - (plr.character.shape.center.x - screenPosition.x));
     plr.character.shape.rotation = angle;
 
-    // console.log(plr.character.shape.center.x);
+    // Draw player
+    plr.draw(ctx, screenPosition);
 }
 
 function handlePlayerWallCollisions(plr: Player, walls: Rect[]) {
@@ -84,14 +92,11 @@ function handlePlayerWallCollisions(plr: Player, walls: Rect[]) {
 }
 
 // Update mouse position
-document.addEventListener("mousemove", (event) => {
+document.addEventListener("mousemove", (event: MouseEvent) => {
     mousePosition = { x: event.clientX, y: event.clientY };
 });
 
-document.addEventListener("keydown", keyDownHandler);
-document.addEventListener("keyup", keyUpHandler);
-
-function keyDownHandler(event: KeyboardEvent) {
+document.addEventListener("keydown", (event: KeyboardEvent) => {
     switch (event.code) {
         case "KeyW":
         case "ArrowUp":
@@ -106,9 +111,9 @@ function keyDownHandler(event: KeyboardEvent) {
             turningRight = true;
             break;
     }
-}
+});
 
-function keyUpHandler(event: KeyboardEvent) {
+document.addEventListener("keyup", (event: KeyboardEvent) => {
     switch (event.code) {
         case "KeyW":
         case "ArrowUp":
@@ -123,4 +128,4 @@ function keyUpHandler(event: KeyboardEvent) {
             turningRight = false;
             break;
     }
-}
+});
