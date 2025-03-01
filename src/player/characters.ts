@@ -17,10 +17,12 @@ class Character {
         this.possibleEvolutions = [];
     }
 
-    // TODO:
-    // fireGun() {
-    //     throw new Error("fireGun() should be implmented in subclasses")
-    // }
+    fire(mousePoint: { x: number, y: number }) {
+        let bullet = new Circle("black", this.shape.center, this.bulletRadius);
+        bullet.rotation = Math.atan(mousePoint.x / mousePoint.y);
+        bullet.speed = this.bulletSpeed;
+        return bullet;
+    }
 
     draw(ctx: CanvasRenderingContext2D, topLeft: { x: number; y: number; }) {
         this.shape.draw(ctx, topLeft);

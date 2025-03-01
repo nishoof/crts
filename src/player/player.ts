@@ -19,4 +19,7 @@ class Player {
         this.vehicle.draw(ctx, topLeft);
         this.character.draw(ctx, topLeft);
     }
+    fire(mousePoint: { x: number, y: number }) {
+        return this.character.fire(mousePoint);
+    }
 }
