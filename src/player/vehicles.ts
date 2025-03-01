@@ -6,20 +6,18 @@ export class Vehicle {
     accelerationStat: number;
     maxSpeedStat: number;
     rotationSpeedStat: number;
-    possibleEvolutions: string[];
-    currentHealth: number;
     maxHealth: number;
+    possibleEvolutions: string[];
     levelUp: number;
 
-    constructor(shape: Shape) {
+    constructor(name: string, shape: Shape, accelerationStat: number, maxSpeedStat: number, rotationSpeedStat: number, maxHealth: number) {
         this.name = "";
         this.shape = shape;
-        this.accelerationStat = 0;
-        this.maxSpeedStat = 0;
-        this.rotationSpeedStat = 0;
+        this.accelerationStat = accelerationStat;
+        this.maxSpeedStat = maxSpeedStat;
+        this.rotationSpeedStat = rotationSpeedStat;
+        this.maxHealth = maxHealth;
         this.possibleEvolutions = [];
-        this.currentHealth = 100;
-        this.maxHealth = 100;
         this.levelUp = Infinity;
     }
 
@@ -45,7 +43,7 @@ export class Vehicle {
 
 export class Bike extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Rect("grey", position, 80, 10));
+        super("Bike", new Rect("grey", position, 80, 10), 0.01, 4, 0.03, 100);
         this.possibleEvolutions = ["Car", "Moped", "Hoverboard"];
         this.levelUp = 10;
     }
@@ -53,7 +51,7 @@ export class Bike extends Vehicle {
 
 export class Car extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Rect("blue", position, 80, 40));
+        super("Car", new Rect("blue", position, 80, 40), 0.3, 3, 0.02, 150);
         this.possibleEvolutions = ["Truck", "Racecar"];
         this.levelUp = 30;
     }
@@ -61,19 +59,19 @@ export class Car extends Vehicle {
 
 export class Truck extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Rect("grey", position, 50, 50));
+        super("Truck", new Rect("grey", position, 50, 50), 0.1, 2.5, 0.01, 250);
     }
 }
 
-export class RaceCar extends Vehicle {
+export class Racecar extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Triangle("green", position, 50, 50));
+        super("Racecar", new Triangle("green", position, 50, 50), 0.5, 4, 0.02, 120);
     }
 }
 
 export class Moped extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Triangle("blue", position, 50, 44));
+        super("Moped", new Triangle("blue", position, 50, 44), 0.35, 2.75, 0.35, 100);
         this.possibleEvolutions = ["Motorcycle"];
         this.levelUp = 30;
     }
@@ -81,13 +79,13 @@ export class Moped extends Vehicle {
 
 export class Motorcycle extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Rect("red", position, 60, 10));
+        super("Motorcycle", new Rect("red", position, 60, 10), 0.35, 3.5, 0.35, 115);
     }
 }
 
 export class Hoverboard extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Circle("white", position, 50, 50));
+        super("Hoverboard", new Circle("white", position, 50, 50), 0.3, 3.5, 0.5, 90);
         this.possibleEvolutions = ["Cybertruck", "UFO"];
         this.levelUp = 30;
     }
@@ -95,12 +93,12 @@ export class Hoverboard extends Vehicle {
 
 export class Cybertruck extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Rect("gray", position, 100, 50));
+        super("Cybertruck", new Rect("gray", position, 100, 50), 0.3, 4, 0.1, 200);
     }
 }
 
 export class UFO extends Vehicle {
     constructor(position: { x: number, y: number }) {
-        super(new Circle("green", position, 75, 75));
+        super("UFO", new Circle("green", position, 75, 75), 0.4, 4, 0.5, 140);
     }
 }

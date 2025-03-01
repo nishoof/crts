@@ -9,6 +9,9 @@ export default class Player {
     level: number;
 
     lastTransformation: { movement: boolean, delta: number };
+    currentSpeed: number;
+
+    currentHealth: number;
 
     constructor(position = { x: 0, y: 0 }) {
         this.vehicle = new Bike(position);
@@ -18,6 +21,9 @@ export default class Player {
         this.level = 0;
 
         this.lastTransformation = { movement: false, delta: 0 };
+        this.currentSpeed = 0;
+
+        this.currentHealth = this.vehicle.maxHealth;
     }
 
     draw(ctx: CanvasRenderingContext2D, topLeft: { x: number, y: number }) {

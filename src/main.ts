@@ -65,14 +65,22 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, walls: Rect[]) {
 
     // Player turning
     if (turningLeft)
-        plr.rotate(-0.03 * multiplier);
+        plr.rotate(-plr.vehicle.rotationSpeedStat * multiplier);
     if (turningRight)
-        plr.rotate(0.03 * multiplier);
+        plr.rotate(plr.vehicle.rotationSpeedStat * multiplier);
     handlePlayerWallCollisions(plr, walls);
 
     // Player moving
-    if (movingInCurrDirection)
-        plr.move(2 * multiplier);
+    if (movingInCurrDirection) {
+        console.log(`moving at ${plr.currentSpeed} maxSpeed = ${plr.vehicle.maxSpeedStat}`);
+        plr.move(plr.currentSpeed * multiplier);
+        if (plr.currentSpeed < plr.vehicle.maxSpeedStat) {
+            plr.currentSpeed = Math.min(plr.vehicle.maxSpeedStat, plr.currentSpeed+plr.vehicle.accelerationStat);
+            console.log("here");
+        }
+    } else {
+        plr.currentSpeed = 0;
+    }
     handlePlayerWallCollisions(plr, walls);
 
     // Rotate the Character to point to the mouse
