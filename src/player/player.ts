@@ -50,7 +50,6 @@ export default class Player {
         const lastTransformationWasAMovement = this.lastTransformation.movement;
         const delta = this.lastTransformation.delta;
 
-
         if (lastTransformationWasAMovement) {
             this._move(-1 * delta);
         } else {

@@ -1,5 +1,5 @@
 import Player from "./player/player.js"
-import { Rect } from "./shapes.js";
+import { Circle, Rect, Shape, Triangle } from "./shapes.js";
 
 const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
 
@@ -30,19 +30,27 @@ window.onload = function start() {
 
     // Walls
     const wallColor = "rgb(30 30 30)";
-    const walls: Rect[] = [];
-    walls.push(new Rect(wallColor, { x: 2500, y: -5000 }, 25000, 10000));   // top wall
-    walls.push(new Rect(wallColor, { x: -5000, y: 1500 }, 10000, 23000));   // left wall
-    walls.push(new Rect(wallColor, { x: 2500, y: 8000 }, 25000, 10000));    // bottom wall
-    walls.push(new Rect(wallColor, { x: 10000, y: 1500 }, 10000, 23000));   // right wall
-    walls.push(new Rect(wallColor, { x: 2500, y: 1500 }, 2000, 1500));      // middle block
+    const mapObjects: Shape[] = [];
+    mapObjects.push(new Rect(wallColor, { x: 2500, y: -5000 }, 25000, 10000));   // top wall
+    mapObjects.push(new Rect(wallColor, { x: -5000, y: 1500 }, 10000, 23000));   // left wall
+    mapObjects.push(new Rect(wallColor, { x: 2500, y: 8000 }, 25000, 10000));    // bottom wall
+    mapObjects.push(new Rect(wallColor, { x: 10000, y: 1500 }, 10000, 23000));   // right wall
+    mapObjects.push(new Rect(wallColor, { x: 2500, y: 1500 }, 2000, 1500));      // middle block
+    mapObjects.push(new Rect(wallColor, { x: 900, y: 500 }, 70, 70));
+    mapObjects.push(new Circle(wallColor, { x: 1250, y: 650 }, 100));
+    mapObjects.push(new Triangle(wallColor, { x: 1900, y: 250 }, 100, 100));
+    mapObjects.push(new Rect(wallColor, { x: 2800, y: 600 }, 100, 800));
+    mapObjects.push(new Circle(wallColor, { x: 4200, y: 1500 }, 300));
+    mapObjects.push(new Triangle(wallColor, { x: 2500, y: 2500 }, 150, 150));
+    mapObjects.push(new Triangle(wallColor, { x: 490, y: 1950 }, 1000, 700));
+    mapObjects.push(new Rect(wallColor, { x: 1250, y: 1500 }, 1000, 200));
 
     // Players
     plr.draw(ctx, screenPosition);
 
     // TODO: fix frame rate shit
     function gameLoop() {
-        act(ctx, plr, walls);
+        act(ctx, plr, mapObjects);
         requestAnimationFrame(gameLoop);
     }
 
@@ -50,7 +58,7 @@ window.onload = function start() {
 }
 
 // Called every frame. Updates player position and draws
-function act(ctx: CanvasRenderingContext2D, plr: Player, walls: Rect[]) {
+function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[]) {
     [currentFrame, multiplier] = calculateFPSMultiplier(currentFrame);
 
     const plrPosition = plr.getPosition();
@@ -59,9 +67,9 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, walls: Rect[]) {
     // Clear screen so we can draw new stuff
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-    // Draw walls
-    walls.forEach((wall) => {
-        wall.draw(ctx, screenPosition, false);
+    // Draw mapObjects
+    mapObjects.forEach((obj) => {
+        obj.draw(ctx, screenPosition, false);
     })
 
     // Player turning
@@ -69,20 +77,18 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, walls: Rect[]) {
         plr.rotate(-plr.vehicle.rotationSpeedStat * multiplier);
     if (turningRight)
         plr.rotate(plr.vehicle.rotationSpeedStat * multiplier);
-    handlePlayerWallCollisions(plr, walls);
+    handlePlayerWallCollisions(plr, mapObjects);
 
     // Player moving
     if (movingInCurrDirection) {
-        console.log(`moving at ${plr.currentSpeed} maxSpeed = ${plr.vehicle.maxSpeedStat}`);
         plr.move(plr.currentSpeed * multiplier);
         if (plr.currentSpeed < plr.vehicle.maxSpeedStat) {
             plr.currentSpeed = Math.min(plr.vehicle.maxSpeedStat, plr.currentSpeed + plr.vehicle.accelerationStat);
-            console.log("here");
         }
     } else {
         plr.currentSpeed = 0;
     }
-    handlePlayerWallCollisions(plr, walls);
+    handlePlayerWallCollisions(plr, mapObjects);
 
     // Rotate the Character to point to the mouse
     const angle = Math.atan2(mousePosition.y - (plr.character.shape.center.y - screenPosition.y), mousePosition.x - (plr.character.shape.center.x - screenPosition.x));
@@ -92,7 +98,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, walls: Rect[]) {
     plr.draw(ctx, screenPosition);
 }
 
-function handlePlayerWallCollisions(plr: Player, walls: Rect[]) {
+function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {
     walls.forEach((wall) => {
         while (plr.vehicle.shape.detectCollision(wall)) {
             plr.undoLastMovement();
