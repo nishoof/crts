@@ -20,6 +20,7 @@ let nextCheckpoint = 0;
 let lapsCompleted = 0;
 let lastLapTime: number;
 let bestLap = Infinity;
+let lapStartTime = 0;
 
 const FPS = 60;
 const startTime = performance.now();
@@ -111,6 +112,13 @@ function start() {
 function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bullets: Bullet[], checkpoints: Shape[], orbs: Orb[]) {
     [currentFrame, multiplier] = calculateFPSMultiplier(currentFrame);
 
+    // Update current lap time display if race has started
+    if (!starting && lastLapTime) {
+        const currentTime = performance.now();
+        const currentLapTime = Math.round((currentTime - lastLapTime) / 10) / 100;
+        document.getElementById("current-lap-time")!.innerHTML = currentLapTime.toFixed(2);
+    }
+
     const plrPosition = plr.getPosition();
     screenPosition = { x: plrPosition.x - window.innerWidth / 2, y: plrPosition.y - window.innerHeight / 2 };
 
@@ -149,7 +157,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
                         document.getElementById("best-lap-time")!.innerHTML = `${Math.round(bestLap/10)/100}`;
                     }
 
-                    lastLapTime = currentTime;
+                    lastLapTime = currentTime; // Reset lap timer for new lap
                     const lapPopupElem = document.getElementById("lap-popup");
                     lapPopupElem!.style.display = "block";
                     setTimeout(() => {lapPopupElem!.style.display = "none"}, 5000);
