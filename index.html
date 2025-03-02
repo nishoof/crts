@@ -20,6 +20,13 @@
 
 <body>
   <div id="canvas-support">Sorry, your browser does not support HTML canvas.</div>
+
+  <!-- Name input -->
+  <div id="name-input">
+    <label for="name">Enter name:</label>
+    <input type="text" name="name" id="name" required size="20">
+    <button id="name-input-button">Play!</button>
+  </div>
   <canvas id="main-canvas"></canvas>
 
   <!-- Vehicle Upgrades -->
@@ -128,10 +135,13 @@
     </div>
   </div>
 
-  <div id="ign">Placeholder Name</div>
-  <div id="level-container">
-    <div id="level-progress-bar"></div>
-    <p id="level-progress-text">700/1000</p>
+  <!-- Lower HUD -->
+  <div id="bottom-display">
+    <div id="ign">Placeholder Name</div>
+    <div id="level-container">
+      <div id="level-progress-bar"></div>
+      <p id="level-progress-text">700/1000</p>
+    </div>
   </div>
 
   <!-- Scripts -->

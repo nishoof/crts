@@ -28,8 +28,11 @@ function calculateFPSMultiplier(previousFrame: number): [number, number] {
     return [now, (now - previousFrame) * FPS / 1000];
 }
 
-window.onload = function start() {
+function start() {
     console.log("started");
+
+    c.style.display = "initial";
+    document.getElementById("bottom-display")!.style.display = "initial";
 
     c.width = window.innerWidth;
     c.height = window.innerHeight;
@@ -258,6 +261,17 @@ function handleBulletOrbCollisions(bullets: Bullet[], orbs: Orb[]) {
         }
     }
 }
+
+document.getElementById("name-input-button")!.addEventListener("click", () => {
+    let nameInputElem = document.getElementById("name") as HTMLInputElement;
+    plr.name = nameInputElem.value;
+    document.getElementById("ign")!.innerHTML = plr.name;
+
+    document.getElementById("name-input")!.style.display = "none";
+
+    start();
+});
+
 
 // Update mouse position
 document.addEventListener("mousemove", (event: MouseEvent) => {

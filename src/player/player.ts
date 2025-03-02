@@ -14,6 +14,8 @@ export default class Player {
 
     currentHealth: number;
 
+    name: string;
+
     constructor(position = { x: 0, y: 0 }) {
         this.vehicle = new Bike(position);
         this.character = new Rifleman(position);
@@ -26,6 +28,8 @@ export default class Player {
         this.currentSpeed = 0;
 
         this.currentHealth = this.vehicle.maxHealth;
+
+        this.name = "";
     }
 
     draw(ctx: CanvasRenderingContext2D, topLeft: { x: number, y: number }) {

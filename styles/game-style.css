@@ -5,11 +5,41 @@ html, body {
     font-family: "Lato", sans-serif;
 }
 
+canvas#main-canvas {
+    display: none;
+}
+
 div#canvas-support {
     padding: 10px;
     font-size: 40pt;
     position: absolute;
     display: none;
+}
+
+div#name-input {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+div#name-input > label {
+    display: block;
+    font-size: 40pt;
+}
+
+input#name {
+    font-size: xx-large;
+    border-radius: 50px;
+    padding: 20px;
+    overflow: hidden;
+    display: block;
+}
+
+div#name-input > button {
+    margin: 20px;
+    font-size: 40pt;
 }
 
 /* Upgrades */
@@ -20,6 +50,7 @@ div.upgrades {
     margin: 10px;
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.6);
+    display: none;
 }
 
 div.upgrades > h3 {
@@ -29,7 +60,6 @@ div.upgrades > h3 {
 
 div.upgrade-row {
     display: flex;
-    /* display: none; */
 }
 
 div.upgrade-button {
@@ -103,6 +133,10 @@ div.upgrade-button > p {
 }
 
 /* Lower HUD */
+#bottom-display {
+    display: none;
+}
+
 #ign {
     position: fixed;
     font-size: large;
@@ -134,7 +168,6 @@ div.upgrade-button > p {
     top: 0;
     left: 0;
     height: 100%;
-    /* width: 95%; */
     background-color: tomato;
 }
 
