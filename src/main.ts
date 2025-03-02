@@ -5,7 +5,7 @@ import { Bomber, Bullet, Cannoneer, Gatling, Gunner, Hitman, Sniper, Sprayer, Tr
 import { drawHUD } from "./hud.js";
 import { Orb } from "./spawnables.js";
 import { saveLapTime } from "./firebase.js";
-import { showLeaderboard, hideLeaderboard } from "./leaderboard.js";
+import { loadLeaderboard, refreshLeaderboard } from "./leaderboard.js";
 
 const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
 
@@ -153,8 +153,11 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
                         bestLapElem!.style.display = "block";
                         document.getElementById("best-lap-time")!.innerHTML = `${Math.round(bestLap / 10) / 100}`;
 
-                        // Save to Firebase leaderboard - just name and time
+                        // Save to Firebase leaderboard
                         saveLapTime(plr.name || "Anonymous", bestLap);
+
+                        // Refresh the leaderboard after saving a new time
+                        refreshLeaderboard();
                     }
 
                     lastLapTime = currentTime; // Reset lap timer for new lap
@@ -306,6 +309,12 @@ document.getElementById("name-input-button")!.addEventListener("click", () => {
     document.getElementById("name-input")!.style.display = "none";
 
     start();
+
+    // Initial leaderboard load
+    loadLeaderboard();
+
+    // Auto-refresh leaderboard every 5 seconds
+    setInterval(refreshLeaderboard, 5000);
 });
 
 
@@ -412,13 +421,4 @@ document.getElementById("TripleShot-button")!.addEventListener("click", () => {
 });
 document.getElementById("Bomber-button")!.addEventListener("click", () => {
     plr.character = new Bomber(plr.getPosition());
-});
-
-// Leaderboard controls
-document.getElementById("show-leaderboard")?.addEventListener("click", () => {
-    showLeaderboard();
-});
-
-document.getElementById("close-leaderboard")?.addEventListener("click", () => {
-    hideLeaderboard();
 });

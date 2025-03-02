@@ -15,10 +15,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+// Generate or retrieve player ID from local storage
+function getPlayerId(): string {
+    const storageKey = 'crts_player_id';
+    let playerId = localStorage.getItem(storageKey);
+
+    if (!playerId) {
+        // Generate a new UUID
+        playerId = crypto.randomUUID ? crypto.randomUUID() :
+            Date.now().toString(36) + Math.random().toString(36).substring(2);
+        localStorage.setItem(storageKey, playerId);
+    }
+
+    return playerId;
+}
+
 // Structure for a leaderboard entry
 export interface LeaderboardEntry {
     playerName: string;
     lapTime: number;
+    playerId?: string;
 }
 
 /**
@@ -26,11 +42,15 @@ export interface LeaderboardEntry {
  * If the player already has an entry, update it if the new time is faster
  */
 export async function saveLapTime(playerName: string, lapTime: number): Promise<void> {
+    console.log(`Saving lap time by ${playerName} (${getPlayerId()}): ${lapTime} ms`);
+
     try {
+        const playerId = getPlayerId();
+
         // Check if player already has an entry
         const playerQuery = query(
             collection(db, "leaderboard"),
-            where("playerName", "==", playerName)
+            where("playerId", "==", playerId)
         );
 
         const querySnapshot = await getDocs(playerQuery);
@@ -52,6 +72,7 @@ export async function saveLapTime(playerName: string, lapTime: number): Promise<
             // Only update if the new time is faster
             if (lapTime < fastestExistingTime && docToUpdate) {
                 await updateDoc(docToUpdate, {
+                    playerName, // Update name in case it changed
                     lapTime,
                     timestamp: new Date()
                 });
@@ -63,6 +84,7 @@ export async function saveLapTime(playerName: string, lapTime: number): Promise<
             // New player - create new entry
             await addDoc(collection(db, "leaderboard"), {
                 playerName,
+                playerId,
                 lapTime,
                 timestamp: new Date()
             });
