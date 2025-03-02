@@ -141,3 +141,25 @@ div.upgrade-button > p {
 #level-progress-text {
     margin: 0;
 }
+#speedometer-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+  }
+  
+  #speedometer-border {
+    width: 30px;
+    height: 200px;
+    border: 2px solid black; 
+    position: relative;
+    overflow: hidden; 
+  }
+  
+  #speedometer-fill {
+    width: 100%;
+    height: 0%;     
+    background-color: yellow; 
+    position: absolute;
+    bottom: 0;
+    transition: height 0.3s ease-in-out;
+  }
