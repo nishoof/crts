@@ -1,5 +1,6 @@
 import Player from "./player/player.js"
 import { Circle, Rect, Shape, Triangle } from "./shapes.js";
+import { Bike, Car, Truck, Racecar, Moped, Motorcycle, Hoverboard, Cybertruck, UFO, Vehicle } from "./player/vehicles.js";
 
 const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
 
@@ -143,4 +144,30 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
             turningRight = false;
             break;
     }
+});
+
+// Upgrade buttons
+document.getElementById("Car-button")!.addEventListener("click", () => {
+    plr.vehicle = new Car(plr.getPosition());
+});
+document.getElementById("Truck-button")!.addEventListener("click", () => {
+    plr.vehicle = new Truck(plr.getPosition());
+});
+document.getElementById("Racecar-button")!.addEventListener("click", () => {
+    plr.vehicle = new Racecar(plr.getPosition());
+});
+document.getElementById("Moped-button")!.addEventListener("click", () => {
+    plr.vehicle = new Moped(plr.getPosition());
+});
+document.getElementById("Motorcycle-button")!.addEventListener("click", () => {
+    plr.vehicle = new Motorcycle(plr.getPosition());
+});
+document.getElementById("Hoverboard-button")!.addEventListener("click", () => {
+    plr.vehicle = new Hoverboard(plr.getPosition());
+});
+document.getElementById("Cybertruck-button")!.addEventListener("click", () => {
+    plr.vehicle = new Cybertruck(plr.getPosition());
+});
+document.getElementById("UFO-button")!.addEventListener("click", () => {
+    plr.vehicle = new UFO(plr.getPosition());
 });
