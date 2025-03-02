@@ -137,7 +137,6 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 
     // Bullets
     if (firing) {
-        plr.gainScore(200);
         const newBullets = plr.fire();
         if (newBullets != null) {
             newBullets.forEach((bullet) => bullets.push(bullet));
