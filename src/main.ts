@@ -171,6 +171,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     }
     handlePlayerWallCollisions(plr, mapObjects);
     handleBulletOrbCollisions(bullets, orbs);
+    handleBulletWallCollisions(bullets, mapObjects);
 
     // Rotate the Character to point to the mouse
     const angle = Math.atan2(mousePosition.y - (plr.character.shape.center.y - screenPosition.y), mousePosition.x - (plr.character.shape.center.x - screenPosition.x));
@@ -190,7 +191,24 @@ function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {
         }
     });
 }
-
+function handleBulletWallCollisions(bullets: Bullet[], walls: Shape[]){
+    let bulletsRemoved = 0;
+    for (let i = 0; i < bullets.length - bulletsRemoved; i++) {
+        for (let j = 0; j < walls.length; j++) {
+            
+            const bullet = bullets[i];
+            const wall = walls[j];
+            if (!bullet) {
+                console.log("not sigma");
+            }
+            
+            if (bullet.shape.detectCollision(wall)) {      
+                bullets.splice(i, 1);
+                break;
+            }
+        }
+    }
+}
 function handleBulletOrbCollisions(bullets: Bullet[], orbs: Orb[]) {
     let bulletsRemoved = 0;
     let orbsRemoved = 0;
