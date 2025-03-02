@@ -38,7 +38,7 @@ export default class Player {
         this.score += amount;
         this.progressToNextLevel += amount;
 
-        if (this.progressToNextLevel >= (this.level-1)*100) {
+        if (this.progressToNextLevel >= (this.level+1)*100) {
             this.level++;
             this.progressToNextLevel -= (this.level*100);
         }

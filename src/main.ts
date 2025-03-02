@@ -2,6 +2,7 @@ import Player from "./player/player.js"
 import { Circle, Rect, Shape, Triangle } from "./shapes.js";
 import { Bike, Car, Truck, Racecar, Moped, Motorcycle, Hoverboard, Cybertruck, UFO, Vehicle } from "./player/vehicles.js";
 import { Bullet } from "./player/characters.js";
+import { drawHUD } from "./hud.js";
 
 const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
 
@@ -65,6 +66,7 @@ window.onload = function start() {
 
 // Called every frame. Updates player position and draws
 function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bullets: Bullet[]) {
+    
     [currentFrame, multiplier] = calculateFPSMultiplier(currentFrame);
 
     const plrPosition = plr.getPosition();
@@ -80,6 +82,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 
     // Bullets
     if (firing) {
+        plr.gainScore(20); // TEMPORARY SCORE GAIN
         const plrPosition = plr.getPosition();
         const rotation = plr.character.shape.rotation;
         const bullet = new Bullet(new Circle("yellow", { x: plrPosition.x, y: plrPosition.y }, 3, rotation), 5);
@@ -114,6 +117,9 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 
     // Draw player
     plr.draw(ctx, screenPosition);
+
+    // Draw HUD
+    drawHUD(ctx, plr);
 }
 
 function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {

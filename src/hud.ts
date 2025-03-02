@@ -1,6 +1,6 @@
 import Player from "./player/player.js";
 
-function drawHUD(ctx: CanvasRenderingContext2D, player: Player) {
+export function drawHUD(ctx: CanvasRenderingContext2D, player: Player) {
     // upgrades
     const upgradeableVehicles = ["Bike", "Car", "Moped", "Hoverboard"];
     if (player.level >= player.vehicle.levelUp) {
