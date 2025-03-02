@@ -5,7 +5,7 @@ export class Character {
     turret: pivotRect;
     bulletSpeed: number;
     bulletRadius: number;
-    bulletDamage: number;
+    bulletHealth: number;
     bulletLifetime: number;         // how many milliseconds is a bullet alive
     fireRate: number;               // bullets per second
     possibleEvolutions: string[];
@@ -15,16 +15,16 @@ export class Character {
         this.turret = turret; 
         this.bulletSpeed = 100;
         this.bulletRadius = 2;
-        this.bulletDamage = 10;
+        this.bulletHealth = 10;
         this.bulletLifetime = 5000;
         this.fireRate = 3;
         this.possibleEvolutions = [];
     }
 
-    fire(): Circle {
-        let bullet = new Circle("black", this.shape.center, this.bulletRadius);
-        bullet.rotation = this.shape.rotation;
-        bullet.speed = this.bulletSpeed; 
+    fire(): Bullet {
+        let bullet = new Bullet(new Circle("black", this.shape.center, this.bulletRadius), this.bulletHealth);
+        bullet.shape.rotation = this.shape.rotation;
+        bullet.shape.speed = this.bulletSpeed; 
         return bullet;
     }
 
@@ -47,7 +47,7 @@ export class Gunner extends Character {
     constructor(position: { x: number, y: number }) {
         super(new Circle("brown", position, 11), new pivotRect("red", position, 20, 5));
         this.bulletSpeed = 150;
-        this.bulletDamage = 15;
+        this.bulletHealth = 15;
         this.fireRate = 3.5;
     }
 }
@@ -57,7 +57,7 @@ export class Sniper extends Character {
         super(new Circle("black", position, 13), new pivotRect("red", position, 20, 5));
         this.bulletSpeed = 500;
         this.bulletRadius = 4;
-        this.bulletDamage = 50;
+        this.bulletHealth = 50;
         this.fireRate = 0.5;
     }
 }
@@ -67,7 +67,19 @@ export class Cannoneer extends Character {
         super(new Circle("brown", position, 12), new pivotRect("red", position, 20, 5));
         this.bulletSpeed = 100;
         this.bulletRadius = 2;
-        this.bulletDamage = 10;
+        this.bulletHealth = 10;
         this.fireRate = 3;
+    }
+}
+
+export class Bullet{
+    shape: Circle;
+    bulletHealth: number;
+    constructor(shape: Circle, bulletHealth: number) {
+        this.shape = shape;
+        this.bulletHealth = bulletHealth;
+    }
+    updateHealth(damage: number) {
+        this.bulletHealth -= damage;
     }
 }
