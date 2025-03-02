@@ -230,7 +230,7 @@ function handleBulletOrbCollisions(bullets: Bullet[], orbs: Orb[]) {
                     i--;
                 }
                 if (orb.updateHealth(bulletHealth) <= 0) {
-                    plr.progressToNextLevel += orb.exp;
+                    plr.gainScore(orb.exp);
                     orbs.splice(j, 1);
                     orbsRemoved++;
                     j--;
