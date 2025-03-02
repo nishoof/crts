@@ -8,11 +8,13 @@ const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanva
 
 let mousePosition = { x: 0, y: 0 };
 let screenPosition = { x: 0, y: 0 };        // position of the top left corner of the screen relative to the top left corner of the real map
-let plr: Player = new Player({ x: 200, y: 200 });
+let plr: Player = new Player({ x: 1600, y: 150 });
 let movingInCurrDirection = false;
 let turningLeft = false;
 let turningRight = false;
 let firing = false;
+let lastCheckpoint = 0;
+let lapsCompleted = 0;
 
 const FPS = 60;
 const startTime = performance.now();
@@ -49,6 +51,13 @@ window.onload = function start() {
     mapObjects.push(new Triangle(wallColor, { x: 490, y: 1950 }, 1000, 700));
     mapObjects.push(new Rect(wallColor, { x: 1250, y: 1500 }, 1000, 200));
 
+    // Checkpoints
+    const checkpoints: Shape[] = [];
+    checkpoints.push(new Rect("rgb(30 30 30)", { x: 1505, y: 350 }, 5, 1000));
+    checkpoints.push(new Rect("rgb(30 30 30)", { x: 3495, y: 350 }, 5, 1000));
+    checkpoints.push(new Rect("rgb(30 30 30)", { x: 3495, y: 2600 }, 5, 1000));
+    checkpoints.push(new Rect("rgb(30 30 30)", { x: 1505, y: 2600 }, 5, 1000));
+
     // Bullets
     const bullets: Bullet[] = [];
 
@@ -57,7 +66,7 @@ window.onload = function start() {
 
     // TODO: fix frame rate shit
     function gameLoop() {
-        act(ctx, plr, mapObjects, bullets);
+        act(ctx, plr, mapObjects, bullets, checkpoints);
         requestAnimationFrame(gameLoop);
     }
 
@@ -65,9 +74,10 @@ window.onload = function start() {
 }
 
 // Called every frame. Updates player position and draws
-function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bullets: Bullet[]) {
-    
+function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bullets: Bullet[], checkpoints: Shape[]) {
     [currentFrame, multiplier] = calculateFPSMultiplier(currentFrame);
+
+    multiplier *= 10;       // TODO: remove, this is for testing only
 
     const plrPosition = plr.getPosition();
     screenPosition = { x: plrPosition.x - window.innerWidth / 2, y: plrPosition.y - window.innerHeight / 2 };
@@ -78,7 +88,24 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     // Draw mapObjects
     mapObjects.forEach((obj) => {
         obj.draw(ctx, screenPosition, false);
-    })
+    });
+
+    // Checkpoint
+    // TODO: after hackathon, fix edge case where a player going the wrong way 4 times gets a lap completed. though honestly, at that point I guess they earned the lap
+    for (let i = 0; i < 4; i++) {
+        const checkpoint: Shape = checkpoints[i];
+        if (plr.vehicle.shape.detectCollision(checkpoint)) {
+            const currCheckpoint = i;
+            if (currCheckpoint === lastCheckpoint + 1) {
+                lastCheckpoint = currCheckpoint;
+            } else if (currCheckpoint === 0 && lastCheckpoint === 3) {
+                lastCheckpoint = currCheckpoint;
+                lapsCompleted++;
+                console.log(`Completed lap # ${lapsCompleted}`);
+            }
+        }
+    }
+    checkpoints[0].draw(ctx, screenPosition);       // finish line
 
     // Bullets
     if (firing) {
