@@ -199,7 +199,7 @@ function handlePlayerOrbCollisions(plr: Player, orbs: Orb[]) {
         const distance = Math.sqrt(xDis * xDis + yDis * yDis); 
         
 
-        const pushForce = plr.currentSpeed; 
+        const pushForce = 0.5; 
         const pushX = (xDis / distance) * pushForce;
         const pushY = (yDis / distance) * pushForce;        
         orb.shape.center.x += pushX;
