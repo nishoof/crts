@@ -3,6 +3,7 @@ import { Circle, Rect, Shape, Triangle } from "./shapes.js";
 import { Bike, Car, Truck, Racecar, Moped, Motorcycle, Hoverboard, Cybertruck, UFO, Vehicle } from "./player/vehicles.js";
 import { Bullet } from "./player/characters.js";
 import { drawHUD } from "./hud.js";
+import { Orb } from "./spawnables.js";
 
 const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
 
@@ -61,12 +62,43 @@ window.onload = function start() {
     // Bullets
     const bullets: Bullet[] = [];
 
+    // Orbs
+    const orbs: Orb[] = [];
+
+    while (orbs.length < 100) {
+        const center = { x: Math.random() * 5000, y: Math.random() * 3000 };
+        const rot = Math.random() * 2 * Math.PI;
+        const type = Math.floor(Math.random() * 3); // 0, 1, or 2
+
+        let orb: Orb;
+        switch (type) {
+            case 0:
+            orb = new Orb(10, 10, 4, new Circle("Yellow", center, 4, rot));
+            break;
+            case 1:
+            orb = new Orb(10, 10, 4, new Triangle("Yellow", center, 4, 4, rot));
+            break;
+            case 2:
+            orb = new Orb(10, 10, 4, new Rect("Yellow", center, 4, 4, rot));
+            break;
+            default:
+            throw new Error("Unexpected type");
+        }
+        if (orbs.every(o => !orb.shape.detectCollision(o.shape)) && mapObjects.every(mObj => !orb.shape.detectCollision(mObj))) {
+            orbs.push(orb);
+        }
+    }
+
+    orbs.forEach((orb) => {
+        console.log(`orb exists at ${orb.shape.center.x, orb.shape.center.y}`);
+    })
+
     // Players
     plr.draw(ctx, screenPosition);
 
     // TODO: fix frame rate shit
     function gameLoop() {
-        act(ctx, plr, mapObjects, bullets, checkpoints);
+        act(ctx, plr, mapObjects, bullets, checkpoints, orbs);
         requestAnimationFrame(gameLoop);
     }
 
@@ -74,7 +106,7 @@ window.onload = function start() {
 }
 
 // Called every frame. Updates player position and draws
-function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bullets: Bullet[], checkpoints: Shape[]) {
+function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bullets: Bullet[], checkpoints: Shape[], orbs: Orb[]) {
     [currentFrame, multiplier] = calculateFPSMultiplier(currentFrame);
 
     const plrPosition = plr.getPosition();
@@ -117,6 +149,11 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     bullets.forEach((bullet) => {
         bullet.shape.move(2);
         bullet.shape.draw(ctx, screenPosition);
+    });
+
+    // Orbs
+    orbs.forEach((orb) => {
+        orb.shape.draw(ctx, screenPosition);
     });
 
     // Player turning

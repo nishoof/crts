@@ -1,6 +1,6 @@
 import { Shape } from "./shapes";
 
-class Orb{
+export class Orb{
     health: number;
     exp: number;
     rotationSpeed: number;
