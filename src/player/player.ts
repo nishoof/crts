@@ -32,8 +32,8 @@ export default class Player {
         // draw health bar
     }
 
-    fire(mousePoint: { x: number, y: number }) {
-        return this.character.fire(mousePoint);
+    fire() {
+        return this.character.fire();
     }
 
     move(delta: number) {
