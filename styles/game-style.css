@@ -5,10 +5,6 @@ html, body {
     font-family: "Lato", sans-serif;
 }
 
-canvas#main-canvas {
-    display: none;
-}
-
 div#canvas-support {
     padding: 10px;
     font-size: 40pt;
@@ -42,6 +38,17 @@ div#name-input > button {
     font-size: 40pt;
 }
 
+#game {
+    display: none;
+}
+
+#lap-popup {
+    background-color: rgba(255, 255, 255, 0.8);
+    width: fit-content;
+    margin: auto;
+    font-size: x-large;
+}
+
 /* Upgrades */
 div.upgrades {
     position: absolute;
@@ -50,7 +57,7 @@ div.upgrades {
     margin: 10px;
     padding: 10px;
     background-color: rgba(255, 255, 255, 0.6);
-    display: none;
+    /* display: none; */
 }
 
 div.upgrades > h3 {
@@ -133,10 +140,6 @@ div.upgrade-button > p {
 }
 
 /* Lower HUD */
-#bottom-display {
-    display: none;
-}
-
 #ign {
     position: fixed;
     font-size: large;

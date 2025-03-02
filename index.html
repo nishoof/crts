@@ -27,121 +27,129 @@
     <input type="text" name="name" id="name" required size="20">
     <button id="name-input-button">Play!</button>
   </div>
-  <canvas id="main-canvas"></canvas>
 
-  <!-- Vehicle Upgrades -->
-  <div id="vehicle-upgrades" class="upgrades">
+  <div id="game">
+    <canvas id="main-canvas"></canvas>
 
-    <h3>Vehicle Upgrades</h3>
-
-    <div id="Bike-upgrades" class="upgrade-row">
-      <div id="Car-button" class="upgrade-button">
-        <img src="./icons/Car.svg" alt="Car">
-        <p>Car</p>
-      </div>
-      <div id="Moped-button" class="upgrade-button">
-        <img src="./icons/Moped.svg" alt="Moped">
-        <p>Moped</p>
-      </div>
-      <div id="Hoverboard-button" class="upgrade-button">
-        <img src="./icons/Hoverboard.svg" alt="Hoverboard">
-        <p>Hoverboard</p>
-      </div>
+    <!-- Lap popup -->
+    <div id="lap-popup">
+      <p>Lap time: <span id="lap-time"></span></p>
     </div>
 
-    <div id="Car-upgrades" class="upgrade-row">
-      <div id="Truck-button" class="upgrade-button">
-        <img src="./icons/Truck.svg" alt="Truck">
-        <p>Truck</p>
-      </div>
-      <div id="Racecar-button" class="upgrade-button">
-        <img src="./icons/Racecar.svg" alt="Racecar">
-        <p>Racecar</p>
-      </div>
-    </div>
+    <!-- Vehicle Upgrades -->
+    <div id="vehicle-upgrades" class="upgrades">
 
-    <div id="Moped-upgrades" class="upgrade-row">
-      <div id="Motorcycle-button" class="upgrade-button">
-        <img src="./icons/Motorcycle.svg" alt="Motorcycle">
-        <p>Motorcycle</p>
-      </div>
-    </div>
+      <h3>Vehicle Upgrades</h3>
 
-    <div id="Hoverboard-upgrades" class="upgrade-row">
-      <div id="Cybertruck-button" class="upgrade-button">
-        <img src="./icons/Cybertruck.svg" alt="Cybertruck">
-        <p>Cybertruck</p>
+      <div id="Bike-upgrades" class="upgrade-row">
+        <div id="Car-button" class="upgrade-button">
+          <img src="./icons/Car.svg" alt="Car">
+          <p>Car</p>
+        </div>
+        <div id="Moped-button" class="upgrade-button">
+          <img src="./icons/Moped.svg" alt="Moped">
+          <p>Moped</p>
+        </div>
+        <div id="Hoverboard-button" class="upgrade-button">
+          <img src="./icons/Hoverboard.svg" alt="Hoverboard">
+          <p>Hoverboard</p>
+        </div>
       </div>
-      <div id="UFO-button" class="upgrade-button">
-        <img src="./icons/UFO.svg" alt="UFO">
-        <p>UFO</p>
-      </div>
-    </div>
-  </div>
 
-  <!-- Character Upgrades -->
-  <div id="character-upgrades" class="upgrades">
+      <div id="Car-upgrades" class="upgrade-row">
+        <div id="Truck-button" class="upgrade-button">
+          <img src="./icons/Truck.svg" alt="Truck">
+          <p>Truck</p>
+        </div>
+        <div id="Racecar-button" class="upgrade-button">
+          <img src="./icons/Racecar.svg" alt="Racecar">
+          <p>Racecar</p>
+        </div>
+      </div>
 
-    <h3>Character Upgrades</h3>
+      <div id="Moped-upgrades" class="upgrade-row">
+        <div id="Motorcycle-button" class="upgrade-button">
+          <img src="./icons/Motorcycle.svg" alt="Motorcycle">
+          <p>Motorcycle</p>
+        </div>
+      </div>
 
-    <div id="Rifleman-upgrades" class="upgrade-row">
-      <div id="Gunner-button" class="upgrade-button">
-        <img src="./icons/Gunner.svg" alt="Gunner">
-        <p>Gunner</p>
-      </div>
-      <div id="Sniper-button" class="upgrade-button">
-        <img src="./icons/Sniper.svg" alt="Sniper">
-        <p>Sniper</p>
-      </div>
-      <div id="Cannoneer-button" class="upgrade-button">
-        <img src="./icons/Cannoneer.svg" alt="Cannoneer">
-        <p>Cannoneer</p>
-      </div>
-    </div>
-
-    <div id="Gunner-upgrades" class="upgrade-row">
-      <div id="Gatling-button" class="upgrade-button">
-        <img src="./icons/Gatling.svg" alt="Gatling">
-        <p>Gatling</p>
-      </div>
-      <div id="Sprayer-button" class="upgrade-button">
-        <img src="./icons/Sprayer.svg" alt="Sprayer">
-        <p>Sprayer</p>
-      </div>
-    </div>
-
-    <div id="Sniper-upgrades" class="upgrade-row">
-      <div id="Hitman-button" class="upgrade-button">
-        <img src="./icons/Hitman.svg" alt="Hitman">
-        <p>Hitman</p>
-      </div>
-    </div>
-
-    <div id="Cannoneer-upgrades" class="upgrade-row">
-      <div id="TripleShot-button" class="upgrade-button">
-        <img src="./icons/TripleShot.svg" alt="Triple Shot">
-        <p>Triple Shot</p>
-      </div>
-      <div id="Bomber-button" class="upgrade-button">
-        <img src="./icons/Bomber.svg" alt="Bomber">
-        <p>Bomber</p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Lower HUD -->
-  <div id="bottom-display">
-    <div id="speedometer-container">
-      <div id="speedometer-border">
-        <div id="speedometer-fill">
+      <div id="Hoverboard-upgrades" class="upgrade-row">
+        <div id="Cybertruck-button" class="upgrade-button">
+          <img src="./icons/Cybertruck.svg" alt="Cybertruck">
+          <p>Cybertruck</p>
+        </div>
+        <div id="UFO-button" class="upgrade-button">
+          <img src="./icons/UFO.svg" alt="UFO">
+          <p>UFO</p>
         </div>
       </div>
     </div>
 
-    <div id="ign">Placeholder Name</div>
-    <div id="level-container">
-      <div id="level-progress-bar"></div>
-      <p id="level-progress-text">700/1000</p>
+    <!-- Character Upgrades -->
+    <div id="character-upgrades" class="upgrades">
+
+      <h3>Character Upgrades</h3>
+
+      <div id="Rifleman-upgrades" class="upgrade-row">
+        <div id="Gunner-button" class="upgrade-button">
+          <img src="./icons/Gunner.svg" alt="Gunner">
+          <p>Gunner</p>
+        </div>
+        <div id="Sniper-button" class="upgrade-button">
+          <img src="./icons/Sniper.svg" alt="Sniper">
+          <p>Sniper</p>
+        </div>
+        <div id="Cannoneer-button" class="upgrade-button">
+          <img src="./icons/Cannoneer.svg" alt="Cannoneer">
+          <p>Cannoneer</p>
+        </div>
+      </div>
+
+      <div id="Gunner-upgrades" class="upgrade-row">
+        <div id="Gatling-button" class="upgrade-button">
+          <img src="./icons/Gatling.svg" alt="Gatling">
+          <p>Gatling</p>
+        </div>
+        <div id="Sprayer-button" class="upgrade-button">
+          <img src="./icons/Sprayer.svg" alt="Sprayer">
+          <p>Sprayer</p>
+        </div>
+      </div>
+
+      <div id="Sniper-upgrades" class="upgrade-row">
+        <div id="Hitman-button" class="upgrade-button">
+          <img src="./icons/Hitman.svg" alt="Hitman">
+          <p>Hitman</p>
+        </div>
+      </div>
+
+      <div id="Cannoneer-upgrades" class="upgrade-row">
+        <div id="TripleShot-button" class="upgrade-button">
+          <img src="./icons/TripleShot.svg" alt="Triple Shot">
+          <p>Triple Shot</p>
+        </div>
+        <div id="Bomber-button" class="upgrade-button">
+          <img src="./icons/Bomber.svg" alt="Bomber">
+          <p>Bomber</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lower HUD -->
+    <div id="bottom-display">
+      <div id="speedometer-container">
+        <div id="speedometer-border">
+          <div id="speedometer-fill">
+          </div>
+        </div>
+      </div>
+
+      <div id="ign">Placeholder Name</div>
+      <div id="level-container">
+        <div id="level-progress-bar"></div>
+        <p id="level-progress-text">700/1000</p>
+      </div>
     </div>
   </div>
 
