@@ -7,6 +7,7 @@ export default class Player {
 
     score: number;
     level: number;
+    progressToNextLevel: number;
 
     lastTransformation: { movement: boolean, delta: number };
     currentSpeed: number;
@@ -19,6 +20,7 @@ export default class Player {
 
         this.score = 0;
         this.level = 0;
+        this.progressToNextLevel = 0;
 
         this.lastTransformation = { movement: false, delta: 0 };
         this.currentSpeed = 0;
@@ -30,6 +32,16 @@ export default class Player {
         this.vehicle.draw(ctx, topLeft);
         this.character.draw(ctx, topLeft);
         // draw health bar
+    }
+
+    gainScore(amount: number) {
+        this.score += amount;
+        this.progressToNextLevel += amount;
+
+        if (this.progressToNextLevel >= (this.level-1)*100) {
+            this.level++;
+            this.progressToNextLevel -= (this.level*100);
+        }
     }
 
     fire() {
