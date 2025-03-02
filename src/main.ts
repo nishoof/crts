@@ -67,19 +67,19 @@ window.onload = function start() {
 
     while (orbs.length < 100) {
         const center = { x: Math.random() * 5000, y: Math.random() * 3000 };
-        const rot = Math.random() * 2 * Math.PI;
+        const rot = Math.random() * Math.PI/100;
         const type = Math.floor(Math.random() * 3); // 0, 1, or 2
 
         let orb: Orb;
         switch (type) {
             case 0:
-            orb = new Orb(10, 10, 4, new Circle("Yellow", center, 13, rot));
+            orb = new Orb(10, 10, rot, new Circle("Yellow", center, 13));
             break;
             case 1:
-            orb = new Orb(10, 10, 4, new Triangle("Yellow", center, 29.98, 26, rot));
+            orb = new Orb(30, 30, rot, new Triangle("Yellow", center, 29.98, 26));
             break;
             case 2:
-            orb = new Orb(10, 10, 4, new Rect("Yellow", center, 26, 26, rot));
+            orb = new Orb(50, 50, rot, new Rect("Yellow", center, 26, 26));
             break;
             default:
             throw new Error("Unexpected type");
@@ -150,7 +150,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 
     // Orbs
     orbs.forEach((orb) => {
-        orb.shape.draw(ctx, screenPosition);
+        orb.draw(ctx, screenPosition);
     });
 
     // Player turning
