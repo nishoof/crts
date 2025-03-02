@@ -11,6 +11,7 @@ let mousePosition = { x: 0, y: 0 };
 let screenPosition = { x: 0, y: 0 };        // position of the top left corner of the screen relative to the top left corner of the real map
 let plr: Player = new Player({ x: 1600, y: 150 });
 let movingInCurrDirection = false;
+let movingBack = false;
 let turningLeft = false;
 let turningRight = false;
 let firing = false;
@@ -140,8 +141,10 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 
     // Bullets
     if (firing) {
-        const bullet = plr.fire();
-        if (bullet != null) bullets.push(bullet);
+        const newBullets = plr.fire();
+        if (newBullets != null) {
+            newBullets.forEach((bullet) => bullets.push(bullet));
+        }
     }
     bullets.forEach((bullet) => {
         bullet.shape.move(2);
@@ -163,6 +166,11 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     // Player moving
     if (movingInCurrDirection) {
         plr.move(plr.currentSpeed * multiplier);
+        if (plr.currentSpeed < plr.vehicle.maxSpeedStat) {
+            plr.currentSpeed = Math.min(plr.vehicle.maxSpeedStat, plr.currentSpeed + plr.vehicle.accelerationStat);
+        }
+    } else if (movingBack) {
+        plr.move(-plr.currentSpeed * multiplier * 0.8);
         if (plr.currentSpeed < plr.vehicle.maxSpeedStat) {
             plr.currentSpeed = Math.min(plr.vehicle.maxSpeedStat, plr.currentSpeed + plr.vehicle.accelerationStat);
         }
@@ -252,6 +260,10 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
         case "ArrowUp":
             movingInCurrDirection = true;
             break;
+        case "KeyS":
+        case "ArrowDown":
+            movingBack = true;
+            break;
         case "KeyA":
         case "ArrowLeft":
             turningLeft = true;
@@ -271,6 +283,10 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
         case "KeyW":
         case "ArrowUp":
             movingInCurrDirection = false;
+            break;
+        case "KeyS":
+        case "ArrowDown":
+            movingBack = false;
             break;
         case "KeyA":
         case "ArrowLeft":
