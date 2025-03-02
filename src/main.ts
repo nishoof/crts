@@ -89,9 +89,9 @@ window.onload = function start() {
         }
     }
 
-    orbs.forEach((orb) => {
-        console.log(`orb exists at ${orb.shape.center.x, orb.shape.center.y}`);
-    })
+    // orbs.forEach((orb) => {
+    //     console.log(`orb exists at ${orb.shape.center.x, orb.shape.center.y}`);
+    // })
 
     // Players
     plr.draw(ctx, screenPosition);
@@ -140,11 +140,8 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 
     // Bullets
     if (firing) {
-        // plr.gainScore(20); // TEMPORARY SCORE GAIN
-        const plrPosition = plr.getPosition();
-        const rotation = plr.character.shape.rotation;
-        const bullet = new Bullet(new Circle("yellow", { x: plrPosition.x, y: plrPosition.y }, 3, rotation), 5);
-        bullets.push(bullet);
+        const bullet = plr.fire();
+        if (bullet != null) bullets.push(bullet);
     }
     bullets.forEach((bullet) => {
         bullet.shape.move(2);
@@ -199,36 +196,27 @@ function handleBulletOrbCollisions(bullets: Bullet[], orbs: Orb[]) {
     let orbsRemoved = 0;
     for (let i = 0; i < bullets.length - bulletsRemoved; i++) {
         for (let j = 0; j < orbs.length - orbsRemoved; j++) {
-            console.log(i + "  " + j);
+            // console.log(i + "  " + j);
             
             const bullet = bullets[i];
             const orb = orbs[j];
-            if (!bullet) {
-                console.log("not sigma");
-            }
             
             if (bullet.shape.detectCollision(orb.shape)) {      
-                console.log(bullet.bulletHealth);
-                console.log(orb.health);
+                // console.log(bullet.bulletHealth);
+                // console.log(orb.health);
                 let orbHealth = orb.health;
                 let bulletHealth = bullet.bulletHealth;
                 if (bullet.updateHealth(orbHealth) <= 0) {
-                    console.log("a");
-                    
                     bullets.splice(i, 1);
                     bulletsRemoved++;
                     i--;
                 }
                 if (orb.updateHealth(bulletHealth) <= 0) {
-                    console.log("b");
                     plr.progressToNextLevel += orb.exp;
                     orbs.splice(j, 1);
                     orbsRemoved++;
                     j--;
                 }
-                console.log("lalala");
-                console.log(bullet.bulletHealth);
-                console.log(orb.health);
                 break;
             }
         }
