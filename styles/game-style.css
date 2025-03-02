@@ -42,11 +42,21 @@ div#name-input > button {
     display: none;
 }
 
-#lap-popup {
+#lap-popup, #best-lap {
+    position: absolute;
     background-color: rgba(255, 255, 255, 0.8);
-    width: fit-content;
-    margin: auto;
+    margin: 10pt;
+    padding: 10pt;
     font-size: x-large;
+}
+
+#lap-popup {
+    display: none;
+}
+
+#best-lap {
+    display: none;
+    right: 0;
 }
 
 /* Upgrades */

@@ -9,14 +9,17 @@ const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanva
 
 let mousePosition = { x: 0, y: 0 };
 let screenPosition = { x: 0, y: 0 };        // position of the top left corner of the screen relative to the top left corner of the real map
-let plr: Player = new Player({ x: 1600, y: 150 });
+let plr: Player = new Player({ x: 1000, y: 150 });
 let movingInCurrDirection = false;
 let movingBack = false;
 let turningLeft = false;
 let turningRight = false;
 let firing = false;
-let lastCheckpoint = 0;
+let starting = true;
+let nextCheckpoint = 0;
 let lapsCompleted = 0;
+let lastLapTime: number;
+let bestLap = Infinity;
 
 const FPS = 60;
 const startTime = performance.now();
@@ -31,8 +34,7 @@ function calculateFPSMultiplier(previousFrame: number): [number, number] {
 function start() {
     console.log("started");
 
-    c.style.display = "initial";
-    document.getElementById("bottom-display")!.style.display = "initial";
+    document.getElementById("game")!.style.display = "initial";
 
     c.width = window.innerWidth;
     c.height = window.innerHeight;
@@ -125,14 +127,35 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     for (let i = 0; i < 4; i++) {
         const checkpoint: Shape = checkpoints[i];
         if (plr.vehicle.shape.detectCollision(checkpoint)) {
-            const currCheckpoint = i;
-            if (currCheckpoint === lastCheckpoint + 1) {
-                lastCheckpoint = currCheckpoint;
-            } else if (currCheckpoint === 0 && lastCheckpoint === 3) {
-                lastCheckpoint = currCheckpoint;
-                lapsCompleted++;
-                console.log(`Completed lap # ${lapsCompleted}`);
-                plr.gainScore(250);
+            if (i === nextCheckpoint) {
+                if (i === 0) { // completed lap
+                    if (starting) { // start behind the line
+                        starting = false;
+                        nextCheckpoint++;
+                        lastLapTime = performance.now();
+                        break;
+                    }
+
+                    lapsCompleted++;
+                    const currentTime = performance.now();
+                    plr.gainScore(250);
+                    document.getElementById("lap-time")!.innerHTML = `${Math.round((currentTime-lastLapTime)/10)/100}`;
+
+                    if (currentTime - lastLapTime < bestLap) {
+                        bestLap = currentTime - lastLapTime;
+
+                        const bestLapElem = document.getElementById("best-lap");
+                        bestLapElem!.style.display = "block";
+                        document.getElementById("best-lap-time")!.innerHTML = `${Math.round(bestLap/10)/100}`;
+                    }
+
+                    lastLapTime = currentTime;
+                    const lapPopupElem = document.getElementById("lap-popup");
+                    lapPopupElem!.style.display = "block";
+                    setTimeout(() => {lapPopupElem!.style.display = "none"}, 5000);
+                }
+
+                nextCheckpoint = (nextCheckpoint+1) % 4;
             }
         }
     }
