@@ -143,7 +143,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
         }
     }
     bullets.forEach((bullet) => {
-        bullet.shape.move(2);
+        bullet.move();
         bullet.shape.draw(ctx, screenPosition);
     });
 
@@ -176,7 +176,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     handlePlayerWallCollisions(plr, mapObjects);
     handleBulletOrbCollisions(bullets, orbs);
     handleBulletWallCollisions(bullets, mapObjects);
-
+    handlePlayerOrbCollisions(plr, orbs);
     // Rotate the Character to point to the mouse
     const angle = Math.atan2(mousePosition.y - (plr.character.shape.center.y - screenPosition.y), mousePosition.x - (plr.character.shape.center.x - screenPosition.x));
     plr.character.shape.rotation = angle;
@@ -188,6 +188,24 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     drawHUD(plr);
 }
 
+function handlePlayerOrbCollisions(plr: Player, orbs: Orb[]) {
+    orbs.forEach((orb) => {
+      if (plr.vehicle.shape.detectCollision(orb.shape)) {
+        const xDis = orb.shape.center.x - plr.vehicle.shape.center.x;
+        const yDis = orb.shape.center.y - plr.vehicle.shape.center.y;
+        const distance = Math.sqrt(xDis * xDis + yDis * yDis); 
+        
+
+        const pushForce = plr.currentSpeed; 
+        const pushX = (xDis / distance) * pushForce;
+        const pushY = (yDis / distance) * pushForce;        
+        orb.shape.center.x += pushX;
+        orb.shape.center.y += pushY;        
+        plr.currentSpeed *= 0.95;
+      }
+    });
+  }
+  
 function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {
     walls.forEach((wall) => {
         while (plr.vehicle.shape.detectCollision(wall)) {

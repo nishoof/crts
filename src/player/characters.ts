@@ -177,4 +177,8 @@ export class Bullet {
         this.bulletHealth -= damage;
         return this.bulletHealth;
     }
+
+    move() {
+        this.shape.move(this.shape.speed/10);
+    }
 }
