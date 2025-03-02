@@ -79,7 +79,8 @@ export class Bullet {
         this.shape = shape;
         this.bulletHealth = bulletHealth;
     }
-    updateHealth(damage: number) {
+    updateHealth(damage: number): number{
         this.bulletHealth -= damage;
+        return this.bulletHealth;
     }
 }

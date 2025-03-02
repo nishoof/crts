@@ -15,7 +15,8 @@ export class Orb{
         this.shape.rotation += this.rotationSpeed;
         this.shape.draw(ctx, topLeft);
     }
-    updateHealth(damage: number) {
+    updateHealth(damage: number): number {
         this.health -= damage;
+        return this.health;
     }
 }

@@ -73,13 +73,13 @@ window.onload = function start() {
         let orb: Orb;
         switch (type) {
             case 0:
-            orb = new Orb(10, 10, 4, new Circle("Yellow", center, 4, rot));
+            orb = new Orb(10, 10, 4, new Circle("Yellow", center, 13, rot));
             break;
             case 1:
-            orb = new Orb(10, 10, 4, new Triangle("Yellow", center, 4, 4, rot));
+            orb = new Orb(10, 10, 4, new Triangle("Yellow", center, 29.98, 26, rot));
             break;
             case 2:
-            orb = new Orb(10, 10, 4, new Rect("Yellow", center, 4, 4, rot));
+            orb = new Orb(10, 10, 4, new Rect("Yellow", center, 26, 26, rot));
             break;
             default:
             throw new Error("Unexpected type");
@@ -173,6 +173,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
         plr.currentSpeed = 0;
     }
     handlePlayerWallCollisions(plr, mapObjects);
+    handleBulletOrbCollisions(bullets, orbs);
 
     // Rotate the Character to point to the mouse
     const angle = Math.atan2(mousePosition.y - (plr.character.shape.center.y - screenPosition.y), mousePosition.x - (plr.character.shape.center.x - screenPosition.x));
@@ -191,6 +192,47 @@ function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {
             plr.undoLastMovement();
         }
     });
+}
+
+function handleBulletOrbCollisions(bullets: Bullet[], orbs: Orb[]) {
+    let bulletsRemoved = 0;
+    let orbsRemoved = 0;
+    for (let i = 0; i < bullets.length - bulletsRemoved; i++) {
+        for (let j = 0; j < orbs.length - orbsRemoved; j++) {
+            console.log(i + "  " + j);
+            
+            const bullet = bullets[i];
+            const orb = orbs[j];
+            if (!bullet) {
+                console.log("not sigma");
+            }
+            
+            if (bullet.shape.detectCollision(orb.shape)) {      
+                console.log(bullet.bulletHealth);
+                console.log(orb.health);
+                let orbHealth = orb.health;
+                let bulletHealth = bullet.bulletHealth;
+                if (bullet.updateHealth(orbHealth) <= 0) {
+                    console.log("a");
+                    
+                    bullets.splice(i, 1);
+                    bulletsRemoved++;
+                    i--;
+                }
+                if (orb.updateHealth(bulletHealth) <= 0) {
+                    console.log("b");
+                    plr.progressToNextLevel += orb.exp;
+                    orbs.splice(j, 1);
+                    orbsRemoved++;
+                    j--;
+                }
+                console.log("lalala");
+                console.log(bullet.bulletHealth);
+                console.log(orb.health);
+                break;
+            }
+        }
+    }
 }
 
 // Update mouse position
