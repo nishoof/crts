@@ -14,7 +14,6 @@ div#canvas-support {
 
 /* Upgrades */
 div.upgrades {
-    /* display: none; */
     position: absolute;
     top: 0;
     left: 0;
@@ -77,6 +76,30 @@ div.upgrade-button > p {
 }
 #Racecar-button {
     background-color: blanchedalmond;
+}
+#Gunner-button {
+    background-color: aqua;
+}
+#Sniper-button {
+    background-color: whitesmoke;
+}
+#Cannoneer-button {
+    background-color: gray;
+}
+#Gatling-button {
+    background-color: yellow;
+}
+#Sprayer-button {
+    background-color: goldenrod;
+}
+#Hitman-button {
+    background-color: orange;
+}
+#TripleShot-button {
+    background-color: blueviolet;
+}
+#Bomber-button {
+    background-color: cadetblue;
 }
 
 /* Lower HUD */

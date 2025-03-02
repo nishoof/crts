@@ -49,12 +49,12 @@ export class Character {
     }
 
     draw(ctx: CanvasRenderingContext2D, topLeft: Point) {
-        this.shape.draw(ctx, topLeft);
         this.turrets.forEach((turret) => {
             turret.center = this.shape.center;
             turret.rotation = this.shape.rotation;
             turret.draw(ctx, topLeft);
         });
+        this.shape.draw(ctx, topLeft);
     }
 }
 

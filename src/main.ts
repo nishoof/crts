@@ -1,7 +1,7 @@
 import Player from "./player/player.js"
 import { Circle, Rect, Shape, Triangle } from "./shapes.js";
 import { Bike, Car, Truck, Racecar, Moped, Motorcycle, Hoverboard, Cybertruck, UFO, Vehicle } from "./player/vehicles.js";
-import { Bullet } from "./player/characters.js";
+import { Bomber, Bullet, Cannoneer, Gatling, Gunner, Hitman, Sniper, Sprayer, TripleShot } from "./player/characters.js";
 import { drawHUD } from "./hud.js";
 import { Orb } from "./spawnables.js";
 
@@ -90,10 +90,6 @@ window.onload = function start() {
         }
     }
 
-    // orbs.forEach((orb) => {
-    //     console.log(`orb exists at ${orb.shape.center.x, orb.shape.center.y}`);
-    // })
-
     // Players
     plr.draw(ctx, screenPosition);
 
@@ -141,6 +137,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 
     // Bullets
     if (firing) {
+        plr.gainScore(200);
         const newBullets = plr.fire();
         if (newBullets != null) {
             newBullets.forEach((bullet) => bullets.push(bullet));
@@ -189,7 +186,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     plr.draw(ctx, screenPosition);
 
     // Draw HUD
-    drawHUD(ctx, plr);
+    drawHUD(plr);
 }
 
 function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {
@@ -222,14 +219,10 @@ function handleBulletOrbCollisions(bullets: Bullet[], orbs: Orb[]) {
     let orbsRemoved = 0;
     for (let i = 0; i < bullets.length - bulletsRemoved; i++) {
         for (let j = 0; j < orbs.length - orbsRemoved; j++) {
-            // console.log(i + "  " + j);
-            
             const bullet = bullets[i];
             const orb = orbs[j];
             
             if (bullet.shape.detectCollision(orb.shape)) {      
-                // console.log(bullet.bulletHealth);
-                // console.log(orb.health);
                 let orbHealth = orb.health;
                 let bulletHealth = bullet.bulletHealth;
                 if (bullet.updateHealth(orbHealth) <= 0) {
@@ -303,6 +296,7 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
 });
 
 // Upgrade buttons
+// Vehicle
 document.getElementById("Car-button")!.addEventListener("click", () => {
     plr.vehicle = new Car(plr.getPosition());
 });
@@ -326,4 +320,29 @@ document.getElementById("Cybertruck-button")!.addEventListener("click", () => {
 });
 document.getElementById("UFO-button")!.addEventListener("click", () => {
     plr.vehicle = new UFO(plr.getPosition());
+});
+// Character
+document.getElementById("Gunner-button")!.addEventListener("click", () => {
+    plr.character = new Gunner(plr.getPosition());
+});
+document.getElementById("Sniper-button")!.addEventListener("click", () => {
+    plr.character = new Sniper(plr.getPosition());
+});
+document.getElementById("Cannoneer-button")!.addEventListener("click", () => {
+    plr.character = new Cannoneer(plr.getPosition());
+});
+document.getElementById("Gatling-button")!.addEventListener("click", () => {
+    plr.character = new Gatling(plr.getPosition());
+});
+document.getElementById("Sprayer-button")!.addEventListener("click", () => {
+    plr.character = new Sprayer(plr.getPosition());
+});
+document.getElementById("Hitman-button")!.addEventListener("click", () => {
+    plr.character = new Hitman(plr.getPosition());
+});
+document.getElementById("TripleShot-button")!.addEventListener("click", () => {
+    plr.character = new TripleShot(plr.getPosition());
+});
+document.getElementById("Bomber-button")!.addEventListener("click", () => {
+    plr.character = new Bomber(plr.getPosition());
 });

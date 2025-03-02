@@ -1,9 +1,11 @@
 import Player from "./player/player.js";
 
-export function drawHUD(ctx: CanvasRenderingContext2D, player: Player) {
+export function drawHUD(player: Player) {
+    let showingVehicleMenu = false;
     // upgrades
     const upgradeableVehicles = ["Bike", "Car", "Moped", "Hoverboard"];
     if (player.level >= player.vehicle.levelUp) {
+        showingVehicleMenu = true;
         document.getElementById("vehicle-upgrades")!.style.display = "block";
         upgradeableVehicles.forEach((vehicleName) => {
             if (vehicleName == player.vehicle.name) document.getElementById(`${vehicleName}-upgrades`)!.style.display = "flex";
@@ -15,10 +17,20 @@ export function drawHUD(ctx: CanvasRenderingContext2D, player: Player) {
             document.getElementById(`${vehicleName}-upgrades`)!.style.display = "none";
         });
     }
-    // if (player.level > player.character.levelUp) {
-    //     document.getElementById("character-upgrades")!.style.display = "block";
-    //     document.getElementById(`{player.character.name}-upgrades`)!.style.display = "flex";
-    // }
+
+    const upgradeableCharacters = ["Rifleman", "Gunner", "Sniper", "Cannoneer"];
+    if (!showingVehicleMenu && player.level >= player.character.levelUp) {
+        document.getElementById("character-upgrades")!.style.display = "block";
+        upgradeableCharacters.forEach((characterName) => {
+            if (characterName == player.character.name) document.getElementById(`${characterName}-upgrades`)!.style.display = "flex";
+            else document.getElementById(`${characterName}-upgrades`)!.style.display = "none";
+        });
+    } else {
+        document.getElementById("character-upgrades")!.style.display = "none";
+        upgradeableCharacters.forEach((characterName) => {
+            document.getElementById(`${characterName}-upgrades`)!.style.display = "none";
+        });
+    }
 
     // bottom display
     document.getElementById("level-progress-text")!.innerHTML = `Level ${player.level}   ${player.progressToNextLevel}/${(player.level + 1) * 50}`;
