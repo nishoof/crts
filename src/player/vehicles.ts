@@ -11,7 +11,7 @@ export class Vehicle {
     levelUp: number;
 
     constructor(name: string, shape: Shape, accelerationStat: number, maxSpeedStat: number, rotationSpeedStat: number, maxHealth: number) {
-        this.name = "";
+        this.name = name;
         this.shape = shape;
         this.accelerationStat = accelerationStat;
         this.maxSpeedStat = maxSpeedStat;
