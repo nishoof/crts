@@ -77,8 +77,6 @@ window.onload = function start() {
 function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bullets: Bullet[], checkpoints: Shape[]) {
     [currentFrame, multiplier] = calculateFPSMultiplier(currentFrame);
 
-    multiplier *= 10;       // TODO: remove, this is for testing only
-
     const plrPosition = plr.getPosition();
     screenPosition = { x: plrPosition.x - window.innerWidth / 2, y: plrPosition.y - window.innerHeight / 2 };
 
@@ -102,6 +100,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
                 lastCheckpoint = currCheckpoint;
                 lapsCompleted++;
                 console.log(`Completed lap # ${lapsCompleted}`);
+                plr.gainScore(250);
             }
         }
     }
@@ -109,7 +108,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 
     // Bullets
     if (firing) {
-        plr.gainScore(20); // TEMPORARY SCORE GAIN
+        // plr.gainScore(20); // TEMPORARY SCORE GAIN
         const plrPosition = plr.getPosition();
         const rotation = plr.character.shape.rotation;
         const bullet = new Bullet(new Circle("yellow", { x: plrPosition.x, y: plrPosition.y }, 3, rotation), 5);

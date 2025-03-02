@@ -38,10 +38,15 @@ export default class Player {
         this.score += amount;
         this.progressToNextLevel += amount;
 
-        if (this.progressToNextLevel >= (this.level+1)*100) {
+        // console.log(`next level score: ${this.calculateNextLevelScore()}`);
+        while (this.progressToNextLevel >= this.calculateNextLevelScore()) {
+            this.progressToNextLevel -= this.calculateNextLevelScore();
             this.level++;
-            this.progressToNextLevel -= (this.level*100);
         }
+    }
+
+    calculateNextLevelScore(): number {
+        return (this.level + 1) * 50;
     }
 
     fire() {

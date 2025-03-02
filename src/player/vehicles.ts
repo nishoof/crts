@@ -45,7 +45,7 @@ export class Bike extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super("Bike", new Rect("grey", position, 80, 10), 0.01, 4, 0.03, 100);
         this.possibleEvolutions = ["Car", "Moped", "Hoverboard"];
-        this.levelUp = 10;
+        this.levelUp = 5;
     }
 }
 
@@ -53,7 +53,7 @@ export class Car extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super("Car", new Rect("blue", position, 80, 40), 0.03, 6, 0.02, 150);
         this.possibleEvolutions = ["Truck", "Racecar"];
-        this.levelUp = 30;
+        this.levelUp = 15;
     }
 }
 
@@ -73,7 +73,7 @@ export class Moped extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super("Moped", new Triangle("blue", position, 50, 44), 0.035, 5, 0.35, 100);
         this.possibleEvolutions = ["Motorcycle"];
-        this.levelUp = 30;
+        this.levelUp = 15;
     }
 }
 
@@ -87,7 +87,7 @@ export class Hoverboard extends Vehicle {
     constructor(position: { x: number, y: number }) {
         super("Hoverboard", new Circle("white", position, 50, 50), 0.04, 4, 0.5, 90);
         this.possibleEvolutions = ["Cybertruck", "UFO"];
-        this.levelUp = 30;
+        this.levelUp = 15;
     }
 }
 

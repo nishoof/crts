@@ -21,6 +21,6 @@ export function drawHUD(ctx: CanvasRenderingContext2D, player: Player) {
     // }
 
     // bottom display
-    document.getElementById("level-progress-text")!.innerHTML = `Level ${player.level}   ${player.progressToNextLevel}/${(player.level+1)*100}`;
-    document.getElementById("level-progress-bar")!.style.width = `${player.progressToNextLevel/(player.level+1)}%`;
+    document.getElementById("level-progress-text")!.innerHTML = `Level ${player.level}   ${player.progressToNextLevel}/${(player.level + 1) * 50}`;
+    document.getElementById("level-progress-bar")!.style.width = `${player.progressToNextLevel / player.calculateNextLevelScore() * 100}%`;
 }
