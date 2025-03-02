@@ -4,6 +4,8 @@ import { Bike, Car, Truck, Racecar, Moped, Motorcycle, Hoverboard, Cybertruck, U
 import { Bomber, Bullet, Cannoneer, Gatling, Gunner, Hitman, Sniper, Sprayer, TripleShot } from "./player/characters.js";
 import { drawHUD } from "./hud.js";
 import { Orb } from "./spawnables.js";
+import { saveLapTime } from "./firebase.js";
+import { showLeaderboard, hideLeaderboard } from "./leaderboard.js";
 
 const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
 
@@ -74,22 +76,22 @@ function start() {
 
     while (orbs.length < 100) {
         const center = { x: Math.random() * 5000, y: Math.random() * 3000 };
-        const rot = Math.random() * Math.PI/100;
+        const rot = Math.random() * Math.PI / 100;
         const type = Math.floor(Math.random() * 3); // 0, 1, or 2
 
         let orb: Orb;
         switch (type) {
             case 0:
-            orb = new Orb(10, 10, rot, new Circle("Yellow", center, 13));
-            break;
+                orb = new Orb(10, 10, rot, new Circle("Yellow", center, 13));
+                break;
             case 1:
-            orb = new Orb(30, 30, rot, new Triangle("Yellow", center, 29.98, 26));
-            break;
+                orb = new Orb(30, 30, rot, new Triangle("Yellow", center, 29.98, 26));
+                break;
             case 2:
-            orb = new Orb(50, 50, rot, new Rect("Yellow", center, 26, 26));
-            break;
+                orb = new Orb(50, 50, rot, new Rect("Yellow", center, 26, 26));
+                break;
             default:
-            throw new Error("Unexpected type");
+                throw new Error("Unexpected type");
         }
         if (orbs.every(o => !orb.shape.detectCollision(o.shape)) && mapObjects.every(mObj => !orb.shape.detectCollision(mObj))) {
             orbs.push(orb);
@@ -125,11 +127,6 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     // Clear screen so we can draw new stuff
     ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-    // Draw mapObjects
-    mapObjects.forEach((obj) => {
-        obj.draw(ctx, screenPosition, false);
-    });
-
     // Checkpoint
     // TODO: after hackathon, fix edge case where a player going the wrong way 4 times gets a lap completed. though honestly, at that point I guess they earned the lap
     for (let i = 0; i < 4; i++) {
@@ -147,27 +144,35 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
                     lapsCompleted++;
                     const currentTime = performance.now();
                     plr.gainScore(250);
-                    document.getElementById("lap-time")!.innerHTML = `${Math.round((currentTime-lastLapTime)/10)/100}`;
+                    document.getElementById("lap-time")!.innerHTML = `${Math.round((currentTime - lastLapTime) / 10) / 100}`;
 
                     if (currentTime - lastLapTime < bestLap) {
                         bestLap = currentTime - lastLapTime;
 
                         const bestLapElem = document.getElementById("best-lap");
                         bestLapElem!.style.display = "block";
-                        document.getElementById("best-lap-time")!.innerHTML = `${Math.round(bestLap/10)/100}`;
+                        document.getElementById("best-lap-time")!.innerHTML = `${Math.round(bestLap / 10) / 100}`;
+
+                        // Save to Firebase leaderboard - just name and time
+                        saveLapTime(plr.name || "Anonymous", bestLap);
                     }
 
                     lastLapTime = currentTime; // Reset lap timer for new lap
                     const lapPopupElem = document.getElementById("lap-popup");
                     lapPopupElem!.style.display = "block";
-                    setTimeout(() => {lapPopupElem!.style.display = "none"}, 5000);
+                    setTimeout(() => { lapPopupElem!.style.display = "none" }, 5000);
                 }
 
-                nextCheckpoint = (nextCheckpoint+1) % 4;
+                nextCheckpoint = (nextCheckpoint + 1) % 4;
             }
         }
     }
     checkpoints[0].draw(ctx, screenPosition);       // finish line
+
+    // Draw mapObjects
+    mapObjects.forEach((obj) => {
+        obj.draw(ctx, screenPosition, false);
+    });
 
     // Bullets
     if (firing) {
@@ -224,22 +229,22 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 
 function handlePlayerOrbCollisions(plr: Player, orbs: Orb[]) {
     orbs.forEach((orb) => {
-      if (plr.vehicle.shape.detectCollision(orb.shape)) {
-        const xDis = orb.shape.center.x - plr.vehicle.shape.center.x;
-        const yDis = orb.shape.center.y - plr.vehicle.shape.center.y;
-        const distance = Math.sqrt(xDis * xDis + yDis * yDis); 
-        
+        if (plr.vehicle.shape.detectCollision(orb.shape)) {
+            const xDis = orb.shape.center.x - plr.vehicle.shape.center.x;
+            const yDis = orb.shape.center.y - plr.vehicle.shape.center.y;
+            const distance = Math.sqrt(xDis * xDis + yDis * yDis);
 
-        const pushForce = 3; 
-        const pushX = (xDis / distance) * pushForce;
-        const pushY = (yDis / distance) * pushForce;        
-        orb.shape.center.x += pushX;
-        orb.shape.center.y += pushY;        
-        plr.currentSpeed *= 0.95;
-      }
+
+            const pushForce = 3;
+            const pushX = (xDis / distance) * pushForce;
+            const pushY = (yDis / distance) * pushForce;
+            orb.shape.center.x += pushX;
+            orb.shape.center.y += pushY;
+            plr.currentSpeed *= 0.95;
+        }
     });
-  }
-  
+}
+
 function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {
     walls.forEach((wall) => {
         while (plr.vehicle.shape.detectCollision(wall)) {
@@ -247,18 +252,18 @@ function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {
         }
     });
 }
-function handleBulletWallCollisions(bullets: Bullet[], walls: Shape[]){
+function handleBulletWallCollisions(bullets: Bullet[], walls: Shape[]) {
     let bulletsRemoved = 0;
     for (let i = 0; i < bullets.length - bulletsRemoved; i++) {
         for (let j = 0; j < walls.length; j++) {
-            
+
             const bullet = bullets[i];
             const wall = walls[j];
             if (!bullet) {
                 console.log("not sigma");
             }
-            
-            if (bullet.shape.detectCollision(wall)) {      
+
+            if (bullet.shape.detectCollision(wall)) {
                 bullets.splice(i, 1);
                 break;
             }
@@ -272,8 +277,8 @@ function handleBulletOrbCollisions(bullets: Bullet[], orbs: Orb[]) {
         for (let j = 0; j < orbs.length - orbsRemoved; j++) {
             const bullet = bullets[i];
             const orb = orbs[j];
-            
-            if (bullet.shape.detectCollision(orb.shape)) {      
+
+            if (bullet.shape.detectCollision(orb.shape)) {
                 let orbHealth = orb.health;
                 let bulletHealth = bullet.bulletHealth;
                 if (bullet.updateHealth(orbHealth) <= 0) {
@@ -407,4 +412,13 @@ document.getElementById("TripleShot-button")!.addEventListener("click", () => {
 });
 document.getElementById("Bomber-button")!.addEventListener("click", () => {
     plr.character = new Bomber(plr.getPosition());
+});
+
+// Leaderboard controls
+document.getElementById("show-leaderboard")?.addEventListener("click", () => {
+    showLeaderboard();
+});
+
+document.getElementById("close-leaderboard")?.addEventListener("click", () => {
+    hideLeaderboard();
 });

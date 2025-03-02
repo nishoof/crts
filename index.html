@@ -63,7 +63,7 @@
         </div>
         <div id="Racecar-button" class="upgrade-button">
           <img src="./icons/Racecar.svg" alt="Racecar">
-          <p>Racecar</p>
+          <p>Vercel</p>
         </div>
       </div>
 
@@ -137,13 +137,13 @@
     </div>
 
     <!-- Lap Time -->
-    
+
     <!-- Lower HUD -->
     <div id="bottom-display">
       <div id="current-lap" class="hud-element">
         Current Lap: <span id="current-lap-time">0.00</span>s
       </div>
-      
+
       <div id="speedometer-container">
         <div id="speedometer-border">
           <div id="speedometer-fill">
@@ -158,6 +158,20 @@
       </div>
     </div>
   </div>
+
+  <!-- Leaderboard -->
+  <div id="leaderboard-container" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Fastest Lap Times</h2>
+        <span class="close-button" id="close-leaderboard">&times;</span>
+      </div>
+      <div id="leaderboard-content"></div>
+    </div>
+  </div>
+
+  <!-- Leaderboard button -->
+  <button id="show-leaderboard" class="leaderboard-button">Leaderboard</button>
 
   <!-- Scripts -->
   <script src="./dist/bundle.js"></script>
