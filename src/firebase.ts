@@ -1,5 +1,5 @@
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "firebase/firestore";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, where, updateDoc } from "firebase/firestore";
 
 const firebaseConfig = {
     apiKey: "AIzaSyBQLR-QwJKAROvkYR9IGbeJ8xMOhCuVtsY",
@@ -23,15 +23,51 @@ export interface LeaderboardEntry {
 
 /**
  * Save a player's lap time to the leaderboard
+ * If the player already has an entry, update it if the new time is faster
  */
 export async function saveLapTime(playerName: string, lapTime: number): Promise<void> {
     try {
-        await addDoc(collection(db, "leaderboard"), {
-            playerName,
-            lapTime,
-            timestamp: new Date()
-        });
-        console.log("Lap time saved to leaderboard");
+        // Check if player already has an entry
+        const playerQuery = query(
+            collection(db, "leaderboard"),
+            where("playerName", "==", playerName)
+        );
+
+        const querySnapshot = await getDocs(playerQuery);
+
+        if (!querySnapshot.empty) {
+            // Player already has an entry
+            let docToUpdate = null;
+            let fastestExistingTime = Infinity;
+
+            // Find the player's fastest existing time and document
+            querySnapshot.forEach((doc) => {
+                const data = doc.data();
+                if (data.lapTime < fastestExistingTime) {
+                    fastestExistingTime = data.lapTime;
+                    docToUpdate = doc.ref;
+                }
+            });
+
+            // Only update if the new time is faster
+            if (lapTime < fastestExistingTime && docToUpdate) {
+                await updateDoc(docToUpdate, {
+                    lapTime,
+                    timestamp: new Date()
+                });
+                console.log("Updated player's best lap time");
+            } else {
+                console.log("Existing lap time is faster, not updating");
+            }
+        } else {
+            // New player - create new entry
+            await addDoc(collection(db, "leaderboard"), {
+                playerName,
+                lapTime,
+                timestamp: new Date()
+            });
+            console.log("New lap time saved to leaderboard");
+        }
     } catch (error) {
         console.error("Error saving lap time:", error);
     }
