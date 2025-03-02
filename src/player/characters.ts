@@ -12,7 +12,7 @@ export class Character {
 
     constructor(shape: Shape, turret: pivotRect) {
         this.shape = shape;
-        this.turret = turret; 
+        this.turret = turret;
         this.bulletSpeed = 100;
         this.bulletRadius = 2;
         this.bulletHealth = 10;
@@ -24,7 +24,7 @@ export class Character {
     fire(): Bullet {
         let bullet = new Bullet(new Circle("black", this.shape.center, this.bulletRadius), this.bulletHealth);
         bullet.shape.rotation = this.shape.rotation;
-        bullet.shape.speed = this.bulletSpeed; 
+        bullet.shape.speed = this.bulletSpeed;
         return bullet;
     }
 
@@ -72,7 +72,7 @@ export class Cannoneer extends Character {
     }
 }
 
-export class Bullet{
+export class Bullet {
     shape: Circle;
     bulletHealth: number;
     constructor(shape: Circle, bulletHealth: number) {

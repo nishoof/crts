@@ -1,6 +1,7 @@
 import Player from "./player/player.js"
 import { Circle, Rect, Shape, Triangle } from "./shapes.js";
 import { Bike, Car, Truck, Racecar, Moped, Motorcycle, Hoverboard, Cybertruck, UFO, Vehicle } from "./player/vehicles.js";
+import { Bullet } from "./player/characters.js";
 
 const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
 
@@ -10,6 +11,7 @@ let plr: Player = new Player({ x: 200, y: 200 });
 let movingInCurrDirection = false;
 let turningLeft = false;
 let turningRight = false;
+let firing = false;
 
 const FPS = 60;
 const startTime = performance.now();
@@ -46,12 +48,15 @@ window.onload = function start() {
     mapObjects.push(new Triangle(wallColor, { x: 490, y: 1950 }, 1000, 700));
     mapObjects.push(new Rect(wallColor, { x: 1250, y: 1500 }, 1000, 200));
 
+    // Bullets
+    const bullets: Bullet[] = [];
+
     // Players
     plr.draw(ctx, screenPosition);
 
     // TODO: fix frame rate shit
     function gameLoop() {
-        act(ctx, plr, mapObjects);
+        act(ctx, plr, mapObjects, bullets);
         requestAnimationFrame(gameLoop);
     }
 
@@ -59,7 +64,7 @@ window.onload = function start() {
 }
 
 // Called every frame. Updates player position and draws
-function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[]) {
+function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bullets: Bullet[]) {
     [currentFrame, multiplier] = calculateFPSMultiplier(currentFrame);
 
     const plrPosition = plr.getPosition();
@@ -72,6 +77,18 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[]) {
     mapObjects.forEach((obj) => {
         obj.draw(ctx, screenPosition, false);
     })
+
+    // Bullets
+    if (firing) {
+        const plrPosition = plr.getPosition();
+        const rotation = plr.character.shape.rotation;
+        const bullet = new Bullet(new Circle("yellow", { x: plrPosition.x, y: plrPosition.y }, 3, rotation), 5);
+        bullets.push(bullet);
+    }
+    bullets.forEach((bullet) => {
+        bullet.shape.move(2);
+        bullet.shape.draw(ctx, screenPosition);
+    });
 
     // Player turning
     if (turningLeft)
@@ -126,6 +143,9 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
         case "ArrowRight":
             turningRight = true;
             break;
+        case "Space":
+            firing = true;
+            break;
     }
 });
 
@@ -142,6 +162,9 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
         case "KeyD":
         case "ArrowRight":
             turningRight = false;
+            break;
+        case "Space":
+            firing = false;
             break;
     }
 });

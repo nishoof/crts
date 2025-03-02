@@ -110,8 +110,8 @@ export class Circle extends Shape {
         throw new Error("Unknown Shape type for collision detection");
     }
     move(speed: number) {
-        let deltaX: number = Math.sin(this.rotation) * speed;
-        let deltaY: number = Math.cos(this.rotation) * speed;
+        let deltaX: number = Math.cos(this.rotation) * speed;
+        let deltaY: number = Math.sin(this.rotation) * speed;
         this.center.x += deltaX;
         this.center.y += deltaY;
     }
@@ -161,21 +161,21 @@ export class Triangle extends Shape {
 }
 
 
-export class pivotRect extends Rect{
+export class pivotRect extends Rect {
     pivot: Point;
     constructor(color: string, pivot: Point, width: number, height: number, rotation = 0) {
-        super(color, {x: pivot.x+width/2, y: pivot.y}, width, height, rotation);
+        super(color, { x: pivot.x + width / 2, y: pivot.y }, width, height, rotation);
         this.pivot = pivot;
-       
+
     }
     calculatePoints(): Point[] {
-        let p1 = rotate(this.pivot, { x: this.pivot.x, y: this.pivot.y - this.height/2}, this.rotation);
-        let p2 = rotate(this.pivot, { x: this.pivot.x + this.width, y: this.pivot.y - this.height / 2}, this.rotation);
-        let p3 = rotate(this.pivot, { x: this.pivot.x + this.width, y: this.pivot.y + this.height / 2}, this.rotation);
-        let p4 = rotate(this.pivot, { x: this.pivot.x, y: this.pivot.y + this.height /2 }, this.rotation);
-        
-        
-        return [p1, p2, p3, p4];    
+        let p1 = rotate(this.pivot, { x: this.pivot.x, y: this.pivot.y - this.height / 2 }, this.rotation);
+        let p2 = rotate(this.pivot, { x: this.pivot.x + this.width, y: this.pivot.y - this.height / 2 }, this.rotation);
+        let p3 = rotate(this.pivot, { x: this.pivot.x + this.width, y: this.pivot.y + this.height / 2 }, this.rotation);
+        let p4 = rotate(this.pivot, { x: this.pivot.x, y: this.pivot.y + this.height / 2 }, this.rotation);
+
+
+        return [p1, p2, p3, p4];
     }
 }
 
