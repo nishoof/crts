@@ -1,6 +1,6 @@
 import Player from "./player/player.js"
 import { Circle, Rect, Shape, Triangle } from "./shapes.js";
-import { Bike, Car, Truck, Racecar, Moped, Motorcycle, Hoverboard, Cybertruck, UFO, Vehicle } from "./player/vehicles.js";
+import { Car, Cybertruck, Hoverboard, Moped, Motorcycle, Racecar, Truck, UFO } from "./player/vehicles.js";
 import { Bomber, Bullet, Cannoneer, Gatling, Gunner, Hitman, Sniper, Sprayer, TripleShot } from "./player/characters.js";
 import { drawHUD } from "./hud.js";
 import { Orb } from "./spawnables.js";
@@ -131,44 +131,49 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     // TODO: after hackathon, fix edge case where a player going the wrong way 4 times gets a lap completed. though honestly, at that point I guess they earned the lap
     for (let i = 0; i < 4; i++) {
         const checkpoint: Shape = checkpoints[i];
-        if (plr.vehicle.shape.detectCollision(checkpoint)) {
-            if (i === nextCheckpoint) {
-                if (i === 0) { // completed lap
-                    if (starting) { // start behind the line
-                        starting = false;
-                        nextCheckpoint++;
-                        lastLapTime = performance.now();
-                        break;
-                    }
 
-                    lapsCompleted++;
-                    const currentTime = performance.now();
-                    plr.gainScore(250);
-                    document.getElementById("lap-time")!.innerHTML = `${Math.round((currentTime - lastLapTime) / 10) / 100}`;
-
-                    if (currentTime - lastLapTime < bestLap) {
-                        bestLap = currentTime - lastLapTime;
-
-                        const bestLapElem = document.getElementById("best-lap");
-                        bestLapElem!.style.display = "block";
-                        document.getElementById("best-lap-time")!.innerHTML = `${Math.round(bestLap / 10) / 100}`;
-
-                        // Save to Firebase leaderboard
-                        saveLapTime(plr.name || "Anonymous", bestLap);
-
-                        // Refresh the leaderboard after saving a new time
-                        refreshLeaderboard();
-                    }
-
-                    lastLapTime = currentTime; // Reset lap timer for new lap
-                    const lapPopupElem = document.getElementById("lap-popup");
-                    lapPopupElem!.style.display = "block";
-                    setTimeout(() => { lapPopupElem!.style.display = "none" }, 5000);
-                }
-
-                nextCheckpoint = (nextCheckpoint + 1) % 4;
-            }
+        if (!plr.vehicle.shape.detectCollision(checkpoint)) {
+            continue;
         }
+        if (i !== nextCheckpoint) {
+            continue;
+        }
+
+        if (i === 0) { // completed lap
+            if (starting) { // start behind the line
+                starting = false;
+                nextCheckpoint++;
+                lastLapTime = performance.now();
+                break;
+            }
+
+            lapsCompleted++;
+            plr.gainScore(250);
+
+            const currentTime = performance.now();
+            document.getElementById("lap-time")!.innerHTML = `${Math.round((currentTime - lastLapTime) / 10) / 100}`;
+
+            if (currentTime - lastLapTime < bestLap) {
+                bestLap = currentTime - lastLapTime;
+
+                const bestLapElem = document.getElementById("best-lap");
+                bestLapElem!.style.display = "block";
+                document.getElementById("best-lap-time")!.innerHTML = `${Math.round(bestLap / 10) / 100}`;
+
+                // Save to Firebase leaderboard
+                saveLapTime(plr.name || "Anonymous", bestLap);
+
+                // Refresh the leaderboard after saving a new time
+                refreshLeaderboard();
+            }
+
+            lastLapTime = currentTime; // Reset lap timer for new lap
+            const lapPopupElem = document.getElementById("lap-popup");
+            lapPopupElem!.style.display = "block";
+            setTimeout(() => { lapPopupElem!.style.display = "none" }, 5000);
+        }
+
+        nextCheckpoint = (nextCheckpoint + 1) % 4;
     }
     checkpoints[0].draw(ctx, screenPosition);       // finish line
 
@@ -303,7 +308,7 @@ function handleBulletOrbCollisions(bullets: Bullet[], orbs: Orb[]) {
 
 document.getElementById("name-input-button")!.addEventListener("click", () => {
     let nameInputElem = document.getElementById("name") as HTMLInputElement;
-    plr.name = nameInputElem.value;
+    plr.name = nameInputElem.value || "Anonymous";
     document.getElementById("ign")!.innerHTML = plr.name;
 
     document.getElementById("name-input")!.style.display = "none";
@@ -321,6 +326,14 @@ document.getElementById("name-input-button")!.addEventListener("click", () => {
 // Update mouse position
 document.addEventListener("mousemove", (event: MouseEvent) => {
     mousePosition = { x: event.clientX, y: event.clientY };
+});
+
+document.addEventListener("mousedown", (event: MouseEvent) => {
+    firing = true;
+});
+
+document.addEventListener("mousedown", (event: MouseEvent) => {
+    firing = false;
 });
 
 document.addEventListener("keydown", (event: KeyboardEvent) => {

@@ -42,7 +42,7 @@ export class Rect extends Shape {
     height: number;
 
     constructor(color: string, center: Point, width: number, height: number, rotation = 0) {
-        super(color, center, 0);
+        super(color, center, rotation);
         this.width = width;
         this.height = height;
     }
