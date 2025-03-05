@@ -1,6 +1,6 @@
 import Player from "./player/player.js"
 import { Circle, Rect, Shape, Triangle } from "./shapes.js";
-import { Car, Cybertruck, Hoverboard, Moped, Motorcycle, Racecar, Truck, UFO } from "./player/vehicles.js";
+import { Vehicle } from "./player/vehicles.js";
 import { Bomber, Bullet, Cannoneer, Gatling, Gunner, Hitman, Sniper, Sprayer, TripleShot } from "./player/characters.js";
 import { drawHUD } from "./hud.js";
 import { Orb } from "./spawnables.js";
@@ -293,6 +293,7 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
             turningRight = true;
             break;
         case "Space":
+            plr.gainScore(100);
             firing = true;
             break;
     }
@@ -325,28 +326,28 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
 // Upgrade buttons
 // Vehicle
 document.getElementById("Car-button")!.addEventListener("click", () => {
-    plr.vehicle = new Car(plr.getPosition());
+    plr.vehicle = new Vehicle("Car", plr.getPosition());
 });
 document.getElementById("Truck-button")!.addEventListener("click", () => {
-    plr.vehicle = new Truck(plr.getPosition());
+    plr.vehicle = new Vehicle("Truck", plr.getPosition());
 });
 document.getElementById("Racecar-button")!.addEventListener("click", () => {
-    plr.vehicle = new Racecar(plr.getPosition());
+    plr.vehicle = new Vehicle("Racecar", plr.getPosition());
 });
 document.getElementById("Moped-button")!.addEventListener("click", () => {
-    plr.vehicle = new Moped(plr.getPosition());
+    plr.vehicle = new Vehicle("Moped", plr.getPosition());
 });
 document.getElementById("Motorcycle-button")!.addEventListener("click", () => {
-    plr.vehicle = new Motorcycle(plr.getPosition());
+    plr.vehicle = new Vehicle("Motorcycle", plr.getPosition());
 });
 document.getElementById("Hoverboard-button")!.addEventListener("click", () => {
-    plr.vehicle = new Hoverboard(plr.getPosition());
+    plr.vehicle = new Vehicle("Hoverboard", plr.getPosition());
 });
 document.getElementById("Cybertruck-button")!.addEventListener("click", () => {
-    plr.vehicle = new Cybertruck(plr.getPosition());
+    plr.vehicle = new Vehicle("Cybertruck", plr.getPosition());
 });
 document.getElementById("UFO-button")!.addEventListener("click", () => {
-    plr.vehicle = new UFO(plr.getPosition());
+    plr.vehicle = new Vehicle("UFO", plr.getPosition());
 });
 // Character
 document.getElementById("Gunner-button")!.addEventListener("click", () => {

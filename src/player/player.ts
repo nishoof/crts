@@ -1,6 +1,6 @@
 import { Point } from "../shapes.js";
 import { Character, Rifleman } from "./characters.js";
-import { Vehicle, Bike } from "./vehicles.js"
+import { Vehicle } from "./vehicles.js"
 
 export default class Player {
     vehicle: Vehicle;
@@ -20,7 +20,7 @@ export default class Player {
     constructor(position: Point) {
         position = position || { x:0, y:0 };
 
-        this.vehicle = new Bike(position);
+        this.vehicle = new Vehicle("Bike", position);
         this.character = new Rifleman(position);
 
         this.score = 0;

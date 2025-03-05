@@ -1,6 +1,6 @@
-import { Shape, Rect, Point } from "./shapes.js";
+import { Shape, Rect } from "./shapes.js";
 
-export class Orb {
+export class Orb{
     health: number;
     maxHealth: number;
     exp: number;
@@ -18,18 +18,20 @@ export class Orb {
         this.healthBarBorder = new Rect("Black", {x: this.shape.center.x, y: this.shape.center.y + 40}, 34, 5);
 
     }
-    draw(ctx: CanvasRenderingContext2D, topLeft: Point) {
+    draw(ctx: CanvasRenderingContext2D, topLeft: {x: number, y: number}) {
         this.shape.rotation += this.rotationSpeed;
         this.shape.draw(ctx, topLeft);
         if (this.maxHealth != this.health) {
+            this.healthBar.center = { x: this.shape.center.x, y: this.shape.center.y + 40 };
+            this.healthBarBorder.center = { x: this.shape.center.x, y: this.shape.center.y + 40 };
+            this.healthBar.width = (this.health / this.maxHealth) * 30;
+            this.healthBar.center.x = this.shape.center.x - 15 + this.healthBar.width/2;
             this.healthBarBorder.draw(ctx, topLeft);
             this.healthBar.draw(ctx, topLeft);
         }
     }
     updateHealth(damage: number): number {
         this.health -= damage;
-        this.healthBar.width -= (damage / this.maxHealth) * 30;
-        this.healthBar.center.x -= (damage / this.maxHealth) * 15;
         return this.health;
     }
 }

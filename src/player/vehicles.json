@@ -1,17 +1,129 @@
-[
-    {
-        "name": "Bike",
-        "shapes": [{
-            "type": "Rect",
-            "color": "gray",
-            "width": 80,
-            "height": 10
-        }],
-        "acceleration": 0.01,
-        "maxSpeed": 4,
-        "rotationSpeed": 0.03,
-        "maxHealth" : 100,
-        "evolutions": ["Car", "Moped", "Hoverboard"],
-        "levelUp": 5
+{
+    "Bike": {
+      "shape": {
+        "type": "Rect",
+        "color": "grey",
+        "width": 80,
+        "height": 10
+      },
+      "accelerationStat": 0.01,
+      "maxSpeedStat": 4,
+      "rotationSpeedStat": 0.03,
+      "maxHealth": 100,
+      "possibleEvolutions": ["Car", "Moped", "Hoverboard"],
+      "levelUp": 5
+    },
+    "Car": {
+      "shape": {
+        "type": "Rect",
+        "color": "blue",
+        "width": 80,
+        "height": 40
+      },
+      "accelerationStat": 0.03,
+      "maxSpeedStat": 6,
+      "rotationSpeedStat": 0.02,
+      "maxHealth": 150,
+      "possibleEvolutions": ["Truck", "Racecar"],
+      "levelUp": 15
+    },
+    "Truck": {
+      "shape": {
+        "type": "Rect",
+        "color": "grey",
+        "width": 50,
+        "height": 50
+      },
+      "accelerationStat": 0.02,
+      "maxSpeedStat": 5.5,
+      "rotationSpeedStat": 0.01,
+      "maxHealth": 250,
+      "possibleEvolutions": [],
+      "levelUp": -1
+    },
+    "Racecar": {
+      "shape": {
+        "type": "Triangle",
+        "color": "green",
+        "width": 50,
+        "height": 50
+      },
+      "accelerationStat": 0.05,
+      "maxSpeedStat": 8,
+      "rotationSpeedStat": 0.02,
+      "maxHealth": 120,
+      "possibleEvolutions": [],
+      "levelUp": -1
+    },
+    "Moped": {
+      "shape": {
+        "type": "Triangle",
+        "color": "blue",
+        "width": 50,
+        "height": 44
+      },
+      "accelerationStat": 0.035,
+      "maxSpeedStat": 5,
+      "rotationSpeedStat": 0.35,
+      "maxHealth": 100,
+      "possibleEvolutions": ["Motorcycle"],
+      "levelUp": 15
+    },
+    "Motorcycle": {
+      "shape": {
+        "type": "Rect",
+        "color": "red",
+        "width": 60,
+        "height": 10
+      },
+      "accelerationStat": 0.04,
+      "maxSpeedStat": 6,
+      "rotationSpeedStat": 0.35,
+      "maxHealth": 115,
+      "possibleEvolutions": [],
+      "levelUp": -1
+    },
+    "Hoverboard": {
+      "shape": {
+        "type": "Circle",
+        "color": "white",
+        "width": 50,
+        "height": 50
+      },
+      "accelerationStat": 0.04,
+      "maxSpeedStat": 4,
+      "rotationSpeedStat": 0.5,
+      "maxHealth": 90,
+      "possibleEvolutions": ["Cybertruck", "UFO"],
+      "levelUp": 15
+    },
+    "Cybertruck": {
+      "shape": {
+        "type": "Rect",
+        "color": "gray",
+        "width": 100,
+        "height": 50
+      },
+      "accelerationStat": 0.05,
+      "maxSpeedStat": 6,
+      "rotationSpeedStat": 0.1,
+      "maxHealth": 200,
+      "possibleEvolutions": [],
+      "levelUp": -1
+    },
+    "UFO": {
+      "shape": {
+        "type": "Circle",
+        "color": "green",
+        "width": 75,
+        "height": 75
+      },
+      "accelerationStat": 0.05,
+      "maxSpeedStat": 5,
+      "rotationSpeedStat": 0.5,
+      "maxHealth": 140,
+      "possibleEvolutions": [],
+      "levelUp": -1
     }
-]
+  }
+  
