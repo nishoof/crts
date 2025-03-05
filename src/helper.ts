@@ -1,6 +1,6 @@
 import { Bullet } from "./player/characters.js";
 import Player from "./player/player.js";
-import { Shape } from "./shapes.js";
+import { Point, Shape } from "./shapes.js";
 import { Orb } from "./spawnables.js";
 
 /**
@@ -10,7 +10,7 @@ import { Orb } from "./spawnables.js";
  * @param rotation 
  * @returns 
  */
-export function rotate(origin: { x: number, y: number }, point: { x: number, y: number }, rotation: number): { x: number, y: number } {
+export function rotate(origin: Point, point: Point, rotation: number): Point {
     let relX = point.x - origin.x, relY = point.y - origin.y;
 
     return {
