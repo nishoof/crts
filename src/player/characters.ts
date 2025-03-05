@@ -1,6 +1,4 @@
-import { Circle, pivotRect, Rect, Triangle, Shape } from "../shapes.js";
-
-type Point = { x: number, y: number };
+import { Circle, pivotRect, Rect, Triangle, Shape, Point } from "../shapes.js";
 
 export class Character {
     name: string;

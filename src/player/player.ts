@@ -1,3 +1,4 @@
+import { Point } from "../shapes.js";
 import { Character, Rifleman } from "./characters.js";
 import { Vehicle, Bike } from "./vehicles.js"
 
@@ -16,7 +17,9 @@ export default class Player {
 
     name: string;
 
-    constructor(position = { x: 0, y: 0 }) {
+    constructor(position: Point) {
+        position = position || { x:0, y:0 };
+
         this.vehicle = new Bike(position);
         this.character = new Rifleman(position);
 
@@ -32,7 +35,7 @@ export default class Player {
         this.name = "";
     }
 
-    draw(ctx: CanvasRenderingContext2D, topLeft: { x: number, y: number }) {
+    draw(ctx: CanvasRenderingContext2D, topLeft: Point) {
         this.vehicle.draw(ctx, topLeft);
         this.character.draw(ctx, topLeft);
         // draw health bar

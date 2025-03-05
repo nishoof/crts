@@ -179,7 +179,7 @@ export class pivotRect extends Rect {
     }
 }
 
-type Point = { x: number; y: number };
+export type Point = { x: number; y: number };
 type Polygon = Point[];
 
 function polygonsCollide(polygon1: Polygon, polygon2: Polygon): boolean {

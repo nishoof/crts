@@ -15,9 +15,9 @@
 ## To-do
 
 - Fixes/basic improvements
-  - Health bar properly under orbs
-  - Respawning orbs
-  <!-- - Click to shoot -->
+  - ~~Health bar properly under orbs~~
+  - ~~Respawning orbs~~
+  - ~~Click to shoot~~
   - Balance vehicle/character stats
     - Some vehicles are faster than bullets
 - Deceleration

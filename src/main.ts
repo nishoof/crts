@@ -6,6 +6,7 @@ import { drawHUD } from "./hud.js";
 import { Orb } from "./spawnables.js";
 import { saveLapTime } from "./firebase.js";
 import { loadLeaderboard, refreshLeaderboard } from "./leaderboard.js";
+import { calculateFPSMultiplier, handlePlayerWallCollisions, handleBulletWallCollisions, handlePlayerOrbCollisions, handleBulletOrbCollisions } from "./helper.js";
 
 const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanvasElement;
 
@@ -32,11 +33,6 @@ const FPS = 60;
 const startTime = performance.now();
 let currentFrame = startTime;
 let multiplier: number;
-
-function calculateFPSMultiplier(previousFrame: number): [number, number] {
-    const now = performance.now();
-    return [now, (now - previousFrame) * FPS / 1000];
-}
 
 function start() {
     console.log("started");
@@ -96,7 +92,7 @@ function start() {
 
 // Called every frame. Updates player position and draws
 function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bullets: Bullet[], checkpoints: Shape[], orbs: Orb[]) {
-    [currentFrame, multiplier] = calculateFPSMultiplier(currentFrame);
+    [currentFrame, multiplier] = calculateFPSMultiplier(FPS, currentFrame);
 
     // Update current lap time display if race has started
     if (!starting && lastLapTime) {
@@ -209,7 +205,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
         plr.currentSpeed = 0;
     }
     handlePlayerWallCollisions(plr, mapObjects);
-    handleBulletOrbCollisions(bullets, orbs);
+    handleBulletOrbCollisions(plr, bullets, orbs);
     handleBulletWallCollisions(bullets, mapObjects);
     handlePlayerOrbCollisions(plr, orbs);
     // Rotate the Character to point to the mouse
@@ -245,77 +241,6 @@ function spawnOrb(orbs: Orb[], mapObjects: Shape[]) {
     }
     if (orbs.every(o => !orb.shape.detectCollision(o.shape)) && mapObjects.every(mObj => !orb.shape.detectCollision(mObj))) {
         orbs.push(orb);
-    }
-}
-
-function handlePlayerOrbCollisions(plr: Player, orbs: Orb[]) {
-    orbs.forEach((orb) => {
-        if (plr.vehicle.shape.detectCollision(orb.shape)) {
-            const xDis = orb.shape.center.x - plr.vehicle.shape.center.x;
-            const yDis = orb.shape.center.y - plr.vehicle.shape.center.y;
-            const distance = Math.sqrt(xDis * xDis + yDis * yDis);
-
-
-            const pushForce = 3;
-            const pushX = (xDis / distance) * pushForce;
-            const pushY = (yDis / distance) * pushForce;
-            orb.shape.center.x += pushX;
-            orb.shape.center.y += pushY;
-            plr.currentSpeed *= 0.95;
-        }
-    });
-}
-
-function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {
-    walls.forEach((wall) => {
-        while (plr.vehicle.shape.detectCollision(wall)) {
-            plr.undoLastMovement();
-        }
-    });
-}
-function handleBulletWallCollisions(bullets: Bullet[], walls: Shape[]) {
-    let bulletsRemoved = 0;
-    for (let i = 0; i < bullets.length - bulletsRemoved; i++) {
-        for (let j = 0; j < walls.length; j++) {
-
-            const bullet = bullets[i];
-            const wall = walls[j];
-            if (!bullet) {
-                console.log("not sigma");
-            }
-
-            if (bullet.shape.detectCollision(wall)) {
-                bullets.splice(i, 1);
-                break;
-            }
-        }
-    }
-}
-function handleBulletOrbCollisions(bullets: Bullet[], orbs: Orb[]) {
-    let bulletsRemoved = 0;
-    let orbsRemoved = 0;
-    for (let i = 0; i < bullets.length - bulletsRemoved; i++) {
-        for (let j = 0; j < orbs.length - orbsRemoved; j++) {
-            const bullet = bullets[i];
-            const orb = orbs[j];
-
-            if (bullet.shape.detectCollision(orb.shape)) {
-                let orbHealth = orb.health;
-                let bulletHealth = bullet.bulletHealth;
-                if (bullet.updateHealth(orbHealth) <= 0) {
-                    bullets.splice(i, 1);
-                    bulletsRemoved++;
-                    i--;
-                }
-                if (orb.updateHealth(bulletHealth) <= 0) {
-                    plr.gainScore(orb.exp);
-                    orbs.splice(j, 1);
-                    orbsRemoved++;
-                    j--;
-                }
-                break;
-            }
-        }
     }
 }
 
