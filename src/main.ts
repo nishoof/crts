@@ -24,6 +24,10 @@ let lastLapTime: number;
 let bestLap = Infinity;
 let lapStartTime = 0;
 
+const numOrbs = 100;
+const orbSpawn = 20000;
+let lastOrbSpawn = performance.now();
+
 const FPS = 60;
 const startTime = performance.now();
 let currentFrame = startTime;
@@ -74,28 +78,8 @@ function start() {
     // Orbs
     const orbs: Orb[] = [];
 
-    while (orbs.length < 100) {
-        const center = { x: Math.random() * 5000, y: Math.random() * 3000 };
-        const rot = Math.random() * Math.PI / 100;
-        const type = Math.floor(Math.random() * 3); // 0, 1, or 2
-
-        let orb: Orb;
-        switch (type) {
-            case 0:
-                orb = new Orb(10, 10, rot, new Circle("Yellow", center, 13));
-                break;
-            case 1:
-                orb = new Orb(30, 30, rot, new Triangle("Yellow", center, 29.98, 26));
-                break;
-            case 2:
-                orb = new Orb(50, 50, rot, new Rect("Yellow", center, 26, 26));
-                break;
-            default:
-                throw new Error("Unexpected type");
-        }
-        if (orbs.every(o => !orb.shape.detectCollision(o.shape)) && mapObjects.every(mObj => !orb.shape.detectCollision(mObj))) {
-            orbs.push(orb);
-        }
+    while (orbs.length < numOrbs) {
+        spawnOrb(orbs, mapObjects);
     }
 
     // Players
@@ -195,6 +179,10 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     });
 
     // Orbs
+    if (orbs.length < numOrbs && performance.now() - lastOrbSpawn > orbSpawn) {
+        spawnOrb(orbs, mapObjects);
+        lastOrbSpawn = performance.now();
+    }
     orbs.forEach((orb) => {
         orb.draw(ctx, screenPosition);
     });
@@ -233,6 +221,31 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 
     // Draw HUD
     drawHUD(plr);
+}
+
+function spawnOrb(orbs: Orb[], mapObjects: Shape[]) {
+    console.log("spawning orb");
+    const center = { x: Math.random() * 5000, y: Math.random() * 3000 };
+    const rot = Math.random() * Math.PI / 100;
+    const type = Math.floor(Math.random() * 3); // 0, 1, or 2
+
+    let orb: Orb;
+    switch (type) {
+        case 0:
+            orb = new Orb(10, 10, rot, new Circle("Yellow", center, 13));
+            break;
+        case 1:
+            orb = new Orb(30, 30, rot, new Triangle("Yellow", center, 29.98, 26));
+            break;
+        case 2:
+            orb = new Orb(50, 50, rot, new Rect("Yellow", center, 26, 26));
+            break;
+        default:
+            throw new Error("Unexpected type");
+    }
+    if (orbs.every(o => !orb.shape.detectCollision(o.shape)) && mapObjects.every(mObj => !orb.shape.detectCollision(mObj))) {
+        orbs.push(orb);
+    }
 }
 
 function handlePlayerOrbCollisions(plr: Player, orbs: Orb[]) {
