@@ -332,7 +332,7 @@ document.addEventListener("mousedown", (event: MouseEvent) => {
     firing = true;
 });
 
-document.addEventListener("mousedown", (event: MouseEvent) => {
+document.addEventListener("mouseup", (event: MouseEvent) => {
     firing = false;
 });
 
