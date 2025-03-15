@@ -292,7 +292,6 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
             turningRight = true;
             break;
         case "Space":
-            plr.gainScore(100);
             firing = true;
             break;
     }
