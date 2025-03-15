@@ -35,7 +35,7 @@ let currentFrame = startTime;
 let multiplier: number;
 
 function start() {
-    console.log("started");
+    // console.log("started");
 
     document.getElementById("game")!.style.display = "initial";
 
