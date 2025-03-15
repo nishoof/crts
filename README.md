@@ -32,7 +32,7 @@
 ## To-do - backend
 
 - Code cleanup
-- Vehicles, Characters, etc. should store their shape as a list of shapes instead of just one shape - allows for more appearance customization
-  - Collision detection between players or players' vehicle instead of between players' shapes
-- JSON to store stats
-- Move some methods to helper file instead of just leaving them in main or wtv
+- ~~Vehicles~~, Characters, etc. should store their shape as a list of shapes instead of just one shape - allows for more appearance customization
+  - ~~Collision detection between players or players' vehicle instead of between players' shapes~~
+- JSON to store ~~Vehicles~~, Characters stats
+- ~~Move some methods to helper file instead of just leaving them in main or wtv~~

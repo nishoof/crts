@@ -40,9 +40,8 @@ export class Character {
 
         this.lastShot = now;
 
-        let bullet = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletHealth);
+        let bullet = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletSpeed, this.bulletHealth);
         bullet.shape.rotation = this.shape.rotation;
-        bullet.shape.speed = this.bulletSpeed;
         return [bullet];
     }
 
@@ -123,9 +122,8 @@ export class Sprayer extends Character {
 
         this.lastShot = now;
 
-        let bullet = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletHealth);
+        let bullet = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletSpeed, this.bulletHealth);
         bullet.shape.rotation = this.shape.rotation + (Math.random() * Math.PI/4) - Math.PI/8;
-        bullet.shape.speed = this.bulletSpeed;
         return [bullet];
     }
 }
@@ -152,17 +150,14 @@ export class TripleShot extends Character {
 
         this.lastShot = now;
 
-        let bulletL = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletHealth);
+        let bulletL = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletSpeed, this.bulletHealth);
         bulletL.shape.rotation = this.shape.rotation - Math.PI/4;
-        bulletL.shape.speed = this.bulletSpeed;
 
-        let bulletM = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletHealth);
+        let bulletM = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletSpeed, this.bulletHealth);
         bulletM.shape.rotation = this.shape.rotation;
-        bulletM.shape.speed = this.bulletSpeed;
         
-        let bulletR = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletHealth);
+        let bulletR = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletSpeed, this.bulletHealth);
         bulletR.shape.rotation = this.shape.rotation + Math.PI/4;
-        bulletR.shape.speed = this.bulletSpeed;
         return [bulletL, bulletM, bulletR];
     }
 }
@@ -175,11 +170,13 @@ export class Bomber extends Character {
 
 export class Bullet {
     shape: Circle;
+    speed: number;
     bulletHealth: number;
     spawnTime: number;
 
-    constructor(shape: Circle, bulletHealth: number) {
+    constructor(shape: Circle, speed: number, bulletHealth: number) {
         this.shape = shape;
+        this.speed = speed;
         this.bulletHealth = bulletHealth;
         this.spawnTime = performance.now();
     }
@@ -190,6 +187,6 @@ export class Bullet {
     }
 
     move() {
-        this.shape.move(this.shape.speed/10);
+        this.shape.move(this.speed/10);
     }
 }

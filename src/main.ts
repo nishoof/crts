@@ -13,7 +13,7 @@ const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanva
 let mousePosition = { x: 0, y: 0 };
 let screenPosition = { x: 0, y: 0 };        // position of the top left corner of the screen relative to the top left corner of the real map
 let plr: Player = new Player({ x: 1000, y: 150 });
-let movingInCurrDirection = false;
+let movingForward = false;
 let movingBack = false;
 let turningLeft = false;
 let turningRight = false;
@@ -23,7 +23,6 @@ let nextCheckpoint = 0;
 let lapsCompleted = 0;
 let lastLapTime: number;
 let bestLap = Infinity;
-let lapStartTime = 0;
 
 const numOrbs = 100;
 const orbSpawn = 20000;
@@ -35,8 +34,6 @@ let currentFrame = startTime;
 let multiplier: number;
 
 function start() {
-    // console.log("started");
-
     document.getElementById("game")!.style.display = "initial";
 
     c.width = window.innerWidth;
@@ -191,7 +188,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     handlePlayerWallCollisions(plr, mapObjects);
 
     // Player moving
-    if (movingInCurrDirection) {
+    if (movingForward) {
         plr.move(plr.currentSpeed * multiplier);
         if (plr.currentSpeed < plr.vehicle.maxSpeedStat) {
             plr.currentSpeed = Math.min(plr.vehicle.maxSpeedStat, plr.currentSpeed + plr.vehicle.accelerationStat);
@@ -277,7 +274,7 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
     switch (event.code) {
         case "KeyW":
         case "ArrowUp":
-            movingInCurrDirection = true;
+            movingForward = true;
             break;
         case "KeyS":
         case "ArrowDown":
@@ -301,7 +298,7 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
     switch (event.code) {
         case "KeyW":
         case "ArrowUp":
-            movingInCurrDirection = false;
+            movingForward = false;
             break;
         case "KeyS":
         case "ArrowDown":

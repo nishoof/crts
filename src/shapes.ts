@@ -1,12 +1,13 @@
 import { rotate } from "./helper.js"
 
+export type Point = { x: number; y: number };
+
 // Physical thing on the map (pretend it's an abstract class)
 export class Shape {
     color: string;
     pivotCenter: Point; // point at which shape is rotated around
     relCenter: Point; // center of shape relative to pivotCenter
     rotation: number;
-    speed: number;
     /* center and pivotCenter must be independently stored
     as different shapes have different pivots (one might be a corner, one might be center)
     */
@@ -15,7 +16,6 @@ export class Shape {
         this.color = color;
         this.pivotCenter = pivotCenter;
         this.rotation = rotation;
-        this.speed = 0;
         this.relCenter = relCenter;
     }
 
@@ -54,9 +54,7 @@ export class Rect extends Shape {
         this.height = height;
     }
 
-    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke?: boolean): void {
-        stroke ??= true;
-
+    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke=true): void {
         let [p1, p2, p3, p4] = this.calculatePoints();
 
         let drawing = new Path2D();
@@ -78,7 +76,7 @@ export class Rect extends Shape {
         if (other instanceof Circle) return circleCollidesWithPolygon(other, points);
         if (other instanceof Triangle) return polygonsCollide(points, other.calculatePoints());
 
-        return false;
+        throw new Error("Unknown Shape type for collision detection");
     }
 
     calculatePoints(): Point[] {
@@ -99,8 +97,7 @@ export class Circle extends Shape {
         this.radius = radius;
     }
 
-    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke?: boolean) {
-        stroke ??= true;
+    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke=true) {
 
         const rotatedCenter = this.calculateRotatedCenter()
 
@@ -135,8 +132,7 @@ export class Triangle extends Shape {
         this.height = height;
     }
 
-    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke?: boolean) {
-        stroke ??= true;
+    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke=true) {
         let [p1, p2, p3] = this.calculatePoints();
 
         let drawing = new Path2D();
@@ -176,7 +172,6 @@ export class pivotRect extends Rect {
     }
 }
 
-export type Point = { x: number; y: number };
 type Polygon = Point[];
 
 function polygonsCollide(polygon1: Polygon, polygon2: Polygon): boolean {

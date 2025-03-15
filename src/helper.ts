@@ -5,10 +5,6 @@ import { Orb } from "./spawnables.js";
 
 /**
  * Rotates point around origin by rotation radians.
- * @param origin 
- * @param point 
- * @param rotation 
- * @returns 
  */
 export function rotate(origin: Point, point: Point, rotation: number): Point {
     let relX = point.x - origin.x, relY = point.y - origin.y;
