@@ -1,11 +1,16 @@
 {
     "Bike": {
-      "shape": {
+      "shapes": [{
         "type": "Rect",
         "color": "grey",
         "width": 80,
-        "height": 10
-      },
+        "height": 10,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }
+    ],
       "accelerationStat": 0.01,
       "maxSpeedStat": 4,
       "rotationSpeedStat": 0.03,
@@ -14,12 +19,16 @@
       "levelUp": 5
     },
     "Car": {
-      "shape": {
+      "shapes": [{
         "type": "Rect",
         "color": "blue",
         "width": 80,
-        "height": 40
-      },
+        "height": 40,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }],
       "accelerationStat": 0.03,
       "maxSpeedStat": 6,
       "rotationSpeedStat": 0.02,
@@ -28,12 +37,16 @@
       "levelUp": 15
     },
     "Truck": {
-      "shape": {
+      "shapes": [{
         "type": "Rect",
         "color": "grey",
         "width": 50,
-        "height": 50
-      },
+        "height": 50,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }],
       "accelerationStat": 0.02,
       "maxSpeedStat": 5.5,
       "rotationSpeedStat": 0.01,
@@ -42,12 +55,16 @@
       "levelUp": -1
     },
     "Racecar": {
-      "shape": {
+      "shapes": [{
         "type": "Triangle",
         "color": "green",
         "width": 50,
-        "height": 50
-      },
+        "height": 50,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }],
       "accelerationStat": 0.05,
       "maxSpeedStat": 8,
       "rotationSpeedStat": 0.02,
@@ -56,12 +73,16 @@
       "levelUp": -1
     },
     "Moped": {
-      "shape": {
+      "shapes": [{
         "type": "Triangle",
         "color": "blue",
         "width": 50,
-        "height": 44
-      },
+        "height": 44,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }],
       "accelerationStat": 0.035,
       "maxSpeedStat": 5,
       "rotationSpeedStat": 0.35,
@@ -70,12 +91,16 @@
       "levelUp": 15
     },
     "Motorcycle": {
-      "shape": {
+      "shapes": [{
         "type": "Rect",
         "color": "red",
         "width": 60,
-        "height": 10
-      },
+        "height": 10,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }],
       "accelerationStat": 0.04,
       "maxSpeedStat": 6,
       "rotationSpeedStat": 0.35,
@@ -84,12 +109,16 @@
       "levelUp": -1
     },
     "Hoverboard": {
-      "shape": {
+      "shapes": [{
         "type": "Circle",
         "color": "white",
         "width": 50,
-        "height": 50
-      },
+        "height": 50,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }],
       "accelerationStat": 0.04,
       "maxSpeedStat": 4,
       "rotationSpeedStat": 0.5,
@@ -98,12 +127,16 @@
       "levelUp": 15
     },
     "Cybertruck": {
-      "shape": {
+      "shapes": [{
         "type": "Rect",
         "color": "gray",
         "width": 100,
-        "height": 50
-      },
+        "height": 50,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }],
       "accelerationStat": 0.05,
       "maxSpeedStat": 6,
       "rotationSpeedStat": 0.1,
@@ -112,12 +145,16 @@
       "levelUp": -1
     },
     "UFO": {
-      "shape": {
+      "shapes": [{
         "type": "Circle",
         "color": "green",
         "width": 75,
-        "height": 75
-      },
+        "height": 75,
+        "offset": {
+          "x": 0,
+          "y": 0
+        }
+      }],
       "accelerationStat": 0.05,
       "maxSpeedStat": 5,
       "rotationSpeedStat": 0.5,

@@ -1,4 +1,4 @@
-import vehicleData from "./vehicles.json" assert { type: "json" };
+import vehicleData from "./vehicles.json" with { type: "json" };
 import { Point, Circle, Rect, Shape, Triangle } from "../shapes.js";
 
 interface ShapeData{
@@ -6,10 +6,11 @@ interface ShapeData{
     color: string;
     width: number; 
     height: number;
+    offset: Point;
 }
 
 interface VehicleStats{
-    shape: ShapeData;
+    shapes: ShapeData[];
     accelerationStat: number;
     maxSpeedStat: number;
     rotationSpeedStat: number;
@@ -26,7 +27,8 @@ const vehicleConfigs: VehiclesJSON = vehicleData;
 
 export class Vehicle {
     name: string;
-    shape: Shape;
+    // center: Point;
+    shapes: Shape[];
     accelerationStat: number;
     maxSpeedStat: number;
     rotationSpeedStat: number;
@@ -34,22 +36,29 @@ export class Vehicle {
     possibleEvolutions: string[];
     levelUp: number;
 
-    constructor(name: string, center: Point) {
+    constructor(name: string, center: Point, rotation=0) {
         const vehicleStats = vehicleConfigs[name];
-        console.log(name);
-        switch (vehicleStats.shape.type) {
-            case "Rect":
-                this.shape = new Rect(vehicleStats.shape.color, center, vehicleStats.shape.width, vehicleStats.shape.height);
-                break;
-            case "Triangle":
-                this.shape = new Triangle(vehicleStats.shape.color, center, vehicleStats.shape.width, vehicleStats.shape.height);
-                break;
-            case "Circle":
-                this.shape = new Circle(vehicleStats.shape.color, center, vehicleStats.shape.width);
-                break;
-            default:
-                throw new Error("Vehicle " + name + " does not have shape");
+
+        // shapes
+        this.shapes = [];
+        for (const shape of vehicleStats.shapes) {
+            const offset = { x: shape.offset.x, y: shape.offset.y };
+            switch (shape.type) {
+                case "Rect":
+                    this.shapes.push(new Rect(shape.color, center, shape.width, shape.height, rotation, offset));
+                    break;
+                case "Triangle":
+                    this.shapes.push(new Triangle(shape.color, center, shape.width, shape.height, rotation, offset));
+                    break;
+                case "Circle":
+                    this.shapes.push(new Circle(shape.color, center, shape.width, rotation, offset));
+                    break;
+                default:
+                    throw new Error("Vehicle " + name + " does not have shape");
+            }
         }
+
+        // other
         this.name = name;
         this.accelerationStat = vehicleStats.accelerationStat;
         this.maxSpeedStat = vehicleStats.maxSpeedStat;
@@ -70,11 +79,21 @@ export class Vehicle {
     // }
 
     draw(ctx: CanvasRenderingContext2D, topLeft: { x: number; y: number; }) {
-        this.shape.draw(ctx, topLeft);
+        for (const shape of this.shapes) {
+            shape.draw(ctx, topLeft);
+        }
+    }
+
+    move(delta: number) {
+        for (const shape of this.shapes) {
+            shape.move(delta);
+        }
     }
 
     rotate(amount: number) {
-        this.shape.rotate(amount);
+        for (const shape of this.shapes) {
+            shape.rotate(amount);
+        }
     }
 
 }

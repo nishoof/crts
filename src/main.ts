@@ -101,7 +101,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
         document.getElementById("current-lap-time")!.innerHTML = currentLapTime.toFixed(2);
     }
 
-    const plrPosition = plr.getPosition();
+    const plrPosition = plr.center;
     screenPosition = { x: plrPosition.x - window.innerWidth / 2, y: plrPosition.y - window.innerHeight / 2 };
 
     // Clear screen so we can draw new stuff
@@ -112,7 +112,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     for (let i = 0; i < 4; i++) {
         const checkpoint: Shape = checkpoints[i];
 
-        if (!plr.vehicle.shape.detectCollision(checkpoint)) {
+        if (!plr.detectCollision(checkpoint)) {
             continue;
         }
         if (i !== nextCheckpoint) {
@@ -209,7 +209,7 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     handleBulletWallCollisions(bullets, mapObjects);
     handlePlayerOrbCollisions(plr, orbs);
     // Rotate the Character to point to the mouse
-    const angle = Math.atan2(mousePosition.y - (plr.character.shape.center.y - screenPosition.y), mousePosition.x - (plr.character.shape.center.x - screenPosition.x));
+    const angle = Math.atan2(mousePosition.y - (plr.center.y - screenPosition.y), mousePosition.x - (plr.center.x - screenPosition.x));
     plr.character.shape.rotation = angle;
 
     // Draw player
@@ -220,7 +220,6 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 }
 
 function spawnOrb(orbs: Orb[], mapObjects: Shape[]) {
-    console.log("spawning orb");
     const center = { x: Math.random() * 5000, y: Math.random() * 3000 };
     const rot = Math.random() * Math.PI / 100;
     const type = Math.floor(Math.random() * 3); // 0, 1, or 2
@@ -326,51 +325,51 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
 // Upgrade buttons
 // Vehicle
 document.getElementById("Car-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Car", plr.getPosition());
+    plr.vehicle = new Vehicle("Car", plr.center, plr.getRotation());
 });
 document.getElementById("Truck-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Truck", plr.getPosition());
+    plr.vehicle = new Vehicle("Truck", plr.center, plr.getRotation());
 });
 document.getElementById("Racecar-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Racecar", plr.getPosition());
+    plr.vehicle = new Vehicle("Racecar", plr.center, plr.getRotation());
 });
 document.getElementById("Moped-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Moped", plr.getPosition());
+    plr.vehicle = new Vehicle("Moped", plr.center, plr.getRotation());
 });
 document.getElementById("Motorcycle-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Motorcycle", plr.getPosition());
+    plr.vehicle = new Vehicle("Motorcycle", plr.center, plr.getRotation());
 });
 document.getElementById("Hoverboard-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Hoverboard", plr.getPosition());
+    plr.vehicle = new Vehicle("Hoverboard", plr.center, plr.getRotation());
 });
 document.getElementById("Cybertruck-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Cybertruck", plr.getPosition());
+    plr.vehicle = new Vehicle("Cybertruck", plr.center, plr.getRotation());
 });
 document.getElementById("UFO-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("UFO", plr.getPosition());
+    plr.vehicle = new Vehicle("UFO", plr.center, plr.getRotation());
 });
 // Character
 document.getElementById("Gunner-button")!.addEventListener("click", () => {
-    plr.character = new Gunner(plr.getPosition());
+    plr.character = new Gunner(plr.center);
 });
 document.getElementById("Sniper-button")!.addEventListener("click", () => {
-    plr.character = new Sniper(plr.getPosition());
+    plr.character = new Sniper(plr.center);
 });
 document.getElementById("Cannoneer-button")!.addEventListener("click", () => {
-    plr.character = new Cannoneer(plr.getPosition());
+    plr.character = new Cannoneer(plr.center);
 });
 document.getElementById("Gatling-button")!.addEventListener("click", () => {
-    plr.character = new Gatling(plr.getPosition());
+    plr.character = new Gatling(plr.center);
 });
 document.getElementById("Sprayer-button")!.addEventListener("click", () => {
-    plr.character = new Sprayer(plr.getPosition());
+    plr.character = new Sprayer(plr.center);
 });
 document.getElementById("Hitman-button")!.addEventListener("click", () => {
-    plr.character = new Hitman(plr.getPosition());
+    plr.character = new Hitman(plr.center);
 });
 document.getElementById("TripleShot-button")!.addEventListener("click", () => {
-    plr.character = new TripleShot(plr.getPosition());
+    plr.character = new TripleShot(plr.center);
 });
 document.getElementById("Bomber-button")!.addEventListener("click", () => {
-    plr.character = new Bomber(plr.getPosition());
+    plr.character = new Bomber(plr.center);
 });

@@ -32,17 +32,17 @@ export function calculateFPSMultiplier(FPS: number, previousFrame: number): [num
 
 export function handlePlayerOrbCollisions(plr: Player, orbs: Orb[]) {
     orbs.forEach((orb) => {
-        if (plr.vehicle.shape.detectCollision(orb.shape)) {
-            const xDis = orb.shape.center.x - plr.vehicle.shape.center.x;
-            const yDis = orb.shape.center.y - plr.vehicle.shape.center.y;
+        if (plr.detectCollision(orb.shape)) {
+            const xDis = orb.shape.pivotCenter.x - plr.center.x;
+            const yDis = orb.shape.pivotCenter.y - plr.center.y;
             const distance = Math.sqrt(xDis * xDis + yDis * yDis);
 
 
             const pushForce = 3;
             const pushX = (xDis / distance) * pushForce;
             const pushY = (yDis / distance) * pushForce;
-            orb.shape.center.x += pushX;
-            orb.shape.center.y += pushY;
+            orb.shape.pivotCenter.x += pushX;
+            orb.shape.pivotCenter.y += pushY;
             plr.currentSpeed *= 0.95;
         }
     });
@@ -50,7 +50,7 @@ export function handlePlayerOrbCollisions(plr: Player, orbs: Orb[]) {
 
 export function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {
     walls.forEach((wall) => {
-        while (plr.vehicle.shape.detectCollision(wall)) {
+        while (plr.detectCollision(wall)) {
             plr.undoLastMovement();
         }
     });
@@ -63,9 +63,6 @@ export function handleBulletWallCollisions(bullets: Bullet[], walls: Shape[]) {
 
             const bullet = bullets[i];
             const wall = walls[j];
-            if (!bullet) {
-                console.log("not sigma");
-            }
 
             if (bullet.shape.detectCollision(wall)) {
                 bullets.splice(i, 1);

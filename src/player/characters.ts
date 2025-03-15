@@ -2,7 +2,7 @@ import { Circle, pivotRect, Rect, Triangle, Shape, Point } from "../shapes.js";
 
 export class Character {
     name: string;
-    shape: Shape;
+    shape: Shape; // main body
     turrets: pivotRect[];
     bulletSpeed: number;
     bulletHealth: number; // pierce and damage
@@ -31,7 +31,7 @@ export class Character {
         this.lastShot = 0;
     }
 
-    fire(): Bullet[] | null {
+    fire(center: Point): Bullet[] | null {
         let now = performance.now();
         // firing too soon
         if (now-this.lastShot < 1000/this.fireRate) {
@@ -40,7 +40,7 @@ export class Character {
 
         this.lastShot = now;
 
-        let bullet = new Bullet(new Circle("black", {x: this.shape.center.x, y: this.shape.center.y}, this.bulletRadius), this.bulletHealth);
+        let bullet = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletHealth);
         bullet.shape.rotation = this.shape.rotation;
         bullet.shape.speed = this.bulletSpeed;
         return [bullet];
@@ -48,11 +48,26 @@ export class Character {
 
     draw(ctx: CanvasRenderingContext2D, topLeft: Point) {
         this.turrets.forEach((turret) => {
-            turret.center = this.shape.center;
+            // turret.pivotCenter = this.shape.center;
             turret.rotation = this.shape.rotation;
             turret.draw(ctx, topLeft);
         });
         this.shape.draw(ctx, topLeft);
+    }
+
+    /**
+     * 
+     * @param delta amount to move
+     * @param rotation rotation to move at - this is necessary as Character's rotation is where it's aiming, not where it's moving
+     */
+    move(delta: number, rotation: number) {
+        // move body
+        this.shape.moveAtRotation(delta, rotation);
+
+        // move turrets
+        for (const turret of this.turrets) {
+            turret.moveAtRotation(delta, rotation);
+        }
     }
 }
 
@@ -99,7 +114,7 @@ export class Sprayer extends Character {
         super("Sprayer", new Circle("green", position, 12), [new pivotRect("blue", position, 20, 5)], 100, 10, 6);
     }
 
-    fire(): Bullet[] | null {
+    fire(center: Point): Bullet[] | null {
         let now = performance.now();
         // firing too soon
         if (now-this.lastShot < 1000/this.fireRate) {
@@ -108,7 +123,7 @@ export class Sprayer extends Character {
 
         this.lastShot = now;
 
-        let bullet = new Bullet(new Circle("black", {x: this.shape.center.x, y: this.shape.center.y}, this.bulletRadius), this.bulletHealth);
+        let bullet = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletHealth);
         bullet.shape.rotation = this.shape.rotation + (Math.random() * Math.PI/4) - Math.PI/8;
         bullet.shape.speed = this.bulletSpeed;
         return [bullet];
@@ -128,7 +143,7 @@ export class TripleShot extends Character {
         80, 35, 2.5, 6);
     }
 
-    fire(): Bullet[] | null {
+    fire(center: Point): Bullet[] | null {
         let now = performance.now();
         // firing too soon
         if (now-this.lastShot < 1000/this.fireRate) {
@@ -136,18 +151,16 @@ export class TripleShot extends Character {
         }
 
         this.lastShot = now;
-        
-        let bullets = [];
 
-        let bulletL = new Bullet(new Circle("black", {x: this.shape.center.x, y: this.shape.center.y}, this.bulletRadius), this.bulletHealth);
+        let bulletL = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletHealth);
         bulletL.shape.rotation = this.shape.rotation - Math.PI/4;
         bulletL.shape.speed = this.bulletSpeed;
 
-        let bulletM = new Bullet(new Circle("black", {x: this.shape.center.x, y: this.shape.center.y}, this.bulletRadius), this.bulletHealth);
+        let bulletM = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletHealth);
         bulletM.shape.rotation = this.shape.rotation;
         bulletM.shape.speed = this.bulletSpeed;
         
-        let bulletR = new Bullet(new Circle("black", {x: this.shape.center.x, y: this.shape.center.y}, this.bulletRadius), this.bulletHealth);
+        let bulletR = new Bullet(new Circle("black", {x: center.x, y: center.y}, this.bulletRadius), this.bulletHealth);
         bulletR.shape.rotation = this.shape.rotation + Math.PI/4;
         bulletR.shape.speed = this.bulletSpeed;
         return [bulletL, bulletM, bulletR];

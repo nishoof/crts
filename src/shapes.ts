@@ -3,29 +3,36 @@ import { rotate } from "./helper.js"
 // Physical thing on the map (pretend it's an abstract class)
 export class Shape {
     color: string;
-    center: Point;
+    pivotCenter: Point; // point at which shape is rotated around
+    relCenter: Point; // center of shape relative to pivotCenter
     rotation: number;
     speed: number;
+    /* center and pivotCenter must be independently stored
+    as different shapes have different pivots (one might be a corner, one might be center)
+    */
 
-    constructor(color: string, center: Point, rotation: number) {
+    constructor(color: string, pivotCenter: Point, rotation: number, relCenter: Point) {
         this.color = color;
-        this.center = center;
+        this.pivotCenter = pivotCenter;
         this.rotation = rotation;
         this.speed = 0;
+        this.relCenter = relCenter;
     }
 
     draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke?: boolean) {
         throw new Error("draw() must be implemented in subclass");
     }
 
-    move(speed: number) {
-        this.center.x += Math.cos(this.rotation) * speed;
-        this.center.y += Math.sin(this.rotation) * speed;
+    move(delta: number) {
+        this.moveAtRotation(delta, this.rotation);
     }
-
-    moveWithRotation(speed: number, rotation: number) {
-        this.center.x += Math.cos(rotation) * speed;
-        this.center.y += Math.sin(rotation) * speed;
+    
+    moveAtRotation(delta: number, rotation: number) {
+        // console.log(`${delta}`);
+        // this.center.x += Math.cos(rotation) * delta;
+        // this.center.y += Math.sin(rotation) * delta;
+        this.pivotCenter.x += Math.cos(rotation) * delta;
+        this.pivotCenter.y += Math.sin(rotation) * delta;
     }
 
     rotate(amount: number) {
@@ -41,14 +48,14 @@ export class Rect extends Shape {
     width: number;
     height: number;
 
-    constructor(color: string, center: Point, width: number, height: number, rotation = 0) {
-        super(color, center, rotation);
+    constructor(color: string, pivotCenter: Point, width: number, height: number, rotation=0, relCenter={x: 0, y: 0}) {
+        super(color, pivotCenter, rotation, relCenter);
         this.width = width;
         this.height = height;
     }
 
     draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke?: boolean): void {
-        stroke = stroke ?? true;
+        stroke ??= true;
 
         let [p1, p2, p3, p4] = this.calculatePoints();
 
@@ -75,10 +82,11 @@ export class Rect extends Shape {
     }
 
     calculatePoints(): Point[] {
-        let p1 = rotate(this.center, { x: this.center.x - this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
-        let p2 = rotate(this.center, { x: this.center.x + this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
-        let p3 = rotate(this.center, { x: this.center.x + this.width / 2, y: this.center.y + this.height / 2 }, this.rotation);
-        let p4 = rotate(this.center, { x: this.center.x - this.width / 2, y: this.center.y + this.height / 2 }, this.rotation);
+        const center = { x: this.pivotCenter.x + this.relCenter.x, y: this.pivotCenter.y + this.relCenter.y }
+        let p1 = rotate(this.pivotCenter, { x: center.x - this.width / 2, y: center.y - this.height / 2 }, this.rotation);
+        let p2 = rotate(this.pivotCenter, { x: center.x + this.width / 2, y: center.y - this.height / 2 }, this.rotation);
+        let p3 = rotate(this.pivotCenter, { x: center.x + this.width / 2, y: center.y + this.height / 2 }, this.rotation);
+        let p4 = rotate(this.pivotCenter, { x: center.x - this.width / 2, y: center.y + this.height / 2 }, this.rotation);
         return [p1, p2, p3, p4];
     }
 }
@@ -86,16 +94,18 @@ export class Rect extends Shape {
 export class Circle extends Shape {
     radius: number;
 
-    constructor(color: string, center: Point, radius: number, rotation = 0) {
-        super(color, center, rotation);
+    constructor(color: string, pivotCenter: Point, radius: number, rotation=0, relCenter={x: 0, y: 0}) {
+        super(color, pivotCenter, rotation, relCenter);
         this.radius = radius;
     }
 
     draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke?: boolean) {
-        stroke = stroke ?? true;
+        stroke ??= true;
+
+        const rotatedCenter = this.calculateRotatedCenter()
 
         ctx.beginPath();
-        ctx.arc(this.center.x - topleft.x, this.center.y - topleft.y, this.radius, 0, 2 * Math.PI);
+        ctx.arc(rotatedCenter.x - topleft.x, rotatedCenter.y - topleft.y, this.radius, 0, 2 * Math.PI);
 
         if (stroke) ctx.stroke();
         ctx.fillStyle = this.color;
@@ -109,11 +119,9 @@ export class Circle extends Shape {
 
         throw new Error("Unknown Shape type for collision detection");
     }
-    move(speed: number) {
-        let deltaX: number = Math.cos(this.rotation) * speed;
-        let deltaY: number = Math.sin(this.rotation) * speed;
-        this.center.x += deltaX;
-        this.center.y += deltaY;
+
+    calculateRotatedCenter() {
+        return rotate(this.pivotCenter, {x: this.pivotCenter.x + this.relCenter.x, y: this.pivotCenter.y + this.relCenter.y}, this.rotation);
     }
 }
 
@@ -121,14 +129,14 @@ export class Triangle extends Shape {
     width: number;
     height: number;
 
-    constructor(color: string, center: Point, width: number, height: number, rotation = 0) {
-        super(color, center, rotation);
+    constructor(color: string, pivotCenter: Point, width: number, height: number, rotation=0, relCenter={x: 0, y: 0}) {
+        super(color, pivotCenter, rotation, relCenter);
         this.width = width;
         this.height = height;
     }
 
     draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke?: boolean) {
-        stroke = stroke ?? true;
+        stroke ??= true;
         let [p1, p2, p3] = this.calculatePoints();
 
         let drawing = new Path2D();
@@ -153,29 +161,18 @@ export class Triangle extends Shape {
     }
 
     calculatePoints(): Point[] {
-        let p1 = rotate(this.center, { x: this.center.x + this.width / 2, y: this.center.y }, this.rotation);
-        let p2 = rotate(this.center, { x: this.center.x - this.width / 2, y: this.center.y + this.height / 2 }, this.rotation);
-        let p3 = rotate(this.center, { x: this.center.x - this.width / 2, y: this.center.y - this.height / 2 }, this.rotation);
+        const center = { x: this.pivotCenter.x + this.relCenter.x, y: this.pivotCenter.y + this.relCenter.y }
+        let p1 = rotate(this.pivotCenter, { x: center.x + this.width / 2, y: center.y }, this.rotation);
+        let p2 = rotate(this.pivotCenter, { x: center.x - this.width / 2, y: center.y + this.height / 2 }, this.rotation);
+        let p3 = rotate(this.pivotCenter, { x: center.x - this.width / 2, y: center.y - this.height / 2 }, this.rotation);
         return [p1, p2, p3];
     }
 }
 
 
 export class pivotRect extends Rect {
-    pivot: Point;
     constructor(color: string, pivot: Point, width: number, height: number, rotation = 0) {
-        super(color, { x: pivot.x + width / 2, y: pivot.y }, width, height, rotation);
-        this.pivot = pivot;
-
-    }
-    calculatePoints(): Point[] {
-        let p1 = rotate(this.pivot, { x: this.pivot.x, y: this.pivot.y - this.height / 2 }, this.rotation);
-        let p2 = rotate(this.pivot, { x: this.pivot.x + this.width, y: this.pivot.y - this.height / 2 }, this.rotation);
-        let p3 = rotate(this.pivot, { x: this.pivot.x + this.width, y: this.pivot.y + this.height / 2 }, this.rotation);
-        let p4 = rotate(this.pivot, { x: this.pivot.x, y: this.pivot.y + this.height / 2 }, this.rotation);
-
-
-        return [p1, p2, p3, p4];
+        super(color, pivot, width, height, rotation, { x: width / 2, y: 0 });
     }
 }
 
@@ -267,13 +264,15 @@ function circleCollidesWithPolygon(circle: Circle, polygon: Polygon): boolean {
     }
 
     // Step 1: Check if the circle's center is inside the polygon
-    if (isPointInsidePolygon(circle.center, polygon)) return true;
+    const center = {x: circle.pivotCenter.x + circle.relCenter.x, y: circle.pivotCenter.y + circle.relCenter.y}
+
+    if (isPointInsidePolygon(center, polygon)) return true;
 
     // Step 2: Check if any polygon edge is within the circle's radius
     for (let i = 0; i < polygon.length; i++) {
         const nextIndex = (i + 1) % polygon.length;
-        const closestPoint = closestPointOnSegment(polygon[i], polygon[nextIndex], circle.center);
-        const distSquared = squaredDistance(circle.center, closestPoint);
+        const closestPoint = closestPointOnSegment(polygon[i], polygon[nextIndex], center);
+        const distSquared = squaredDistance(center, closestPoint);
 
         if (distSquared <= circle.radius ** 2) {
             return true; // Collision detected
@@ -284,7 +283,9 @@ function circleCollidesWithPolygon(circle: Circle, polygon: Polygon): boolean {
 }
 
 function detectCollisionCircleCircle(c1: Circle, c2: Circle): boolean {
-    const dx = c1.center.x - c2.center.x;
-    const dy = c1.center.y - c2.center.y;
+    const c1Center = {x: c1.pivotCenter.x + c1.relCenter.x, y: c1.pivotCenter.y + c1.relCenter.y}
+    const c2Center = {x: c2.pivotCenter.x + c2.relCenter.x, y: c2.pivotCenter.y + c2.relCenter.y}
+    const dx = c1Center.x - c2Center.x;
+    const dy = c1Center.y - c2Center.y;
     return Math.sqrt(dx * dx + dy * dy) <= c1.radius + c2.radius;
 }

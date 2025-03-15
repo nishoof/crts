@@ -1,10 +1,13 @@
-import { Point } from "../shapes.js";
+import { Point, Shape } from "../shapes.js";
 import { Character, Rifleman } from "./characters.js";
 import { Vehicle } from "./vehicles.js"
 
 export default class Player {
+    center: Point; // rotation is done around this point
+
     vehicle: Vehicle;
     character: Character;
+    rotation: number;
 
     score: number;
     level: number;
@@ -18,10 +21,11 @@ export default class Player {
     name: string;
 
     constructor(position: Point) {
-        position = position || { x:0, y:0 };
+        this.center = position;
 
         this.vehicle = new Vehicle("Bike", position);
         this.character = new Rifleman(position);
+        this.rotation = 0;
 
         this.score = 0;
         this.level = 0;
@@ -57,7 +61,7 @@ export default class Player {
     }
 
     fire() {
-        return this.character.fire();
+        return this.character.fire(this.center);
     }
 
     move(delta: number) {
@@ -81,22 +85,24 @@ export default class Player {
         }
     }
 
-    getPosition() {
-        return this.character.shape.center;
+    getRotation() {
+        return this.rotation;
+    }
+
+    detectCollision(other: Shape) {
+        for (const shape of this.vehicle.shapes) {
+            if (other.detectCollision(shape)) return true;
+        }
+        return false;
     }
 
     _move(delta: number) {
-        let direction: number = this.vehicle.shape.rotation;
-        let deltaX = delta * Math.cos(direction);
-        let deltaY = delta * Math.sin(direction);
-
-        this.vehicle.shape.center.x += deltaX;
-        this.vehicle.shape.center.y += deltaY;
-        this.character.shape.center.x += deltaX;
-        this.character.shape.center.y += deltaY;
+        this.vehicle.move(delta);
+        this.character.move(delta, this.rotation);
     }
 
     _rotate(delta: number) {
+        this.rotation += delta;
         this.vehicle.rotate(delta);
     }
 }
