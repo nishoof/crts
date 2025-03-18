@@ -57,11 +57,11 @@
     "Racecar": {
       "shapes": [{
         "type": "Triangle",
-        "color": "green",
+        "color": "black",
         "width": 50,
-        "height": 50,
+        "height": 58,
         "offset": {
-          "x": 0,
+          "x": 8,
           "y": 0
         }
       }],
