@@ -1,4 +1,6 @@
-# [crts.io](https://crts.nishilanand.com)
+# crts.io
+
+Play: https://crts.nishilanand.com
 
 ## Summary
 
@@ -14,6 +16,7 @@
 
 ## To-do
 
+- Hide API Key / Use Firebase Rulesets
 - Fixes/basic improvements
   - ~~Health bar properly under orbs~~
   - ~~Respawning orbs~~
