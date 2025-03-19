@@ -68,16 +68,6 @@ export class Vehicle {
         this.levelUp = vehicleStats.levelUp;
     }
 
-    // TODO:
-
-    // accelerate() {
-    //     throw new Error("accelrate() must be implemented in subclasses.");
-    // }
-
-    // run() {
-    //     throw new Error("run() must be implemented in subclasses.")
-    // }
-
     draw(ctx: CanvasRenderingContext2D, topLeft: { x: number; y: number; }) {
         for (const shape of this.shapes) {
             shape.draw(ctx, topLeft);

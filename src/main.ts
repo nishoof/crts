@@ -13,8 +13,8 @@ const c: HTMLCanvasElement = document.getElementById("main-canvas") as HTMLCanva
 let mousePosition = { x: 0, y: 0 };
 let screenPosition = { x: 0, y: 0 };        // position of the top left corner of the screen relative to the top left corner of the real map
 let plr: Player = new Player({ x: 1000, y: 150 });
-let movingForward = false;
-let movingBack = false;
+let movingForwards = false;
+let movingBackwards = false;
 let turningLeft = false;
 let turningRight = false;
 let firing = false;
@@ -187,13 +187,11 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     handlePlayerWallCollisions(plr, mapObjects);
 
     // Player moving
-    if (movingForward) {
-        plr.moveForward(multiplier);
-    } else if (movingBack) {
-        plr.moveBackwards(multiplier);
-    } else {
-        plr.currentVelocity = 0;
-    }
+    if (movingForwards)
+        plr.accelerateForwards(multiplier);
+    if (movingBackwards)
+        plr.accelerateBackwards(multiplier);
+    plr.move(multiplier);
     handlePlayerWallCollisions(plr, mapObjects);
     handleBulletOrbCollisions(plr, bullets, orbs);
     handleBulletWallCollisions(bullets, mapObjects);
@@ -268,11 +266,11 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
     switch (event.code) {
         case "KeyW":
         case "ArrowUp":
-            movingForward = true;
+            movingForwards = true;
             break;
         case "KeyS":
         case "ArrowDown":
-            movingBack = true;
+            movingBackwards = true;
             break;
         case "KeyA":
         case "ArrowLeft":
@@ -293,11 +291,11 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
     switch (event.code) {
         case "KeyW":
         case "ArrowUp":
-            movingForward = false;
+            movingForwards = false;
             break;
         case "KeyS":
         case "ArrowDown":
-            movingBack = false;
+            movingBackwards = false;
             break;
         case "KeyA":
         case "ArrowLeft":

@@ -11,7 +11,7 @@
         }
       }
     ],
-      "accelerationStat": 0.01,
+      "accelerationStat": 0.028,
       "maxSpeedStat": 4,
       "rotationSpeedStat": 0.03,
       "maxHealth": 100,

@@ -63,18 +63,32 @@ export default class Player {
         return this.character.fire(this.center);
     }
 
-    moveForward(multiplier: number) {
+    accelerateForwards(multiplier: number) {
         this.currentVelocity += this.vehicle.accelerationStat * multiplier;
         if (this.currentVelocity > this.vehicle.maxSpeedStat)
             this.currentVelocity = this.vehicle.maxSpeedStat;
-        this.moveWithHistory(this.currentVelocity * multiplier);
     }
 
-    moveBackwards(multiplier: number) {
+    accelerateBackwards(multiplier: number) {
         this.currentVelocity -= this.vehicle.accelerationStat * multiplier;
         if (this.currentVelocity < -1 * this.vehicle.maxSpeedStat)
             this.currentVelocity = -1 * this.vehicle.maxSpeedStat;
+    }
+
+    move(multiplier: number) {
+        console.log(this.currentVelocity);
+
+        const friction = 0.02;      // higher is more friction
         this.moveWithHistory(this.currentVelocity * multiplier);
+        if (this.currentVelocity > 0) {
+            this.currentVelocity -= friction * multiplier;
+            if (this.currentVelocity < 0)
+                this.currentVelocity = 0;
+        } else if (this.currentVelocity < 0) {
+            this.currentVelocity += friction * multiplier;
+            if (this.currentVelocity > 0)
+                this.currentVelocity = 0;
+        }
     }
 
     rotateLeft(multiplier: number) {
