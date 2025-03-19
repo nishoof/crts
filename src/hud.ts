@@ -18,7 +18,7 @@ function drawVehicleMenu(player: Player): boolean {
         else document.getElementById(`${vehicleName}-upgrades`)!.style.display = "none";
     });
 
-    return true;    
+    return true;
 }
 
 function drawCharacterMenu(player: Player) {
@@ -28,7 +28,7 @@ function drawCharacterMenu(player: Player) {
     upgradeableCharacters.forEach((characterName) => {
         document.getElementById(`${characterName}-upgrades`)!.style.display = "none";
     });
-    
+
     if (player.character.levelUp == -1) return; // max level
     if (player.level < player.character.levelUp) return;
 
@@ -37,7 +37,7 @@ function drawCharacterMenu(player: Player) {
     upgradeableCharacters.forEach((characterName) => {
         if (characterName == player.character.name) document.getElementById(`${characterName}-upgrades`)!.style.display = "flex";
         else document.getElementById(`${characterName}-upgrades`)!.style.display = "none";
-    }); 
+    });
 }
 
 export function drawHUD(player: Player) {
@@ -49,5 +49,5 @@ export function drawHUD(player: Player) {
     document.getElementById("level-progress-bar")!.style.width = `${player.progressToNextLevel / player.calculateNextLevelScore() * 100}%`;
 
     // speedometer
-    document.getElementById("speedometer-fill")!.style.height = `${player.currentSpeed/ player.vehicle.maxSpeedStat* 100}%`;
+    document.getElementById("speedometer-fill")!.style.height = `${Math.abs(player.currentVelocity) / player.vehicle.maxSpeedStat * 100}%`;
 }

@@ -39,7 +39,7 @@ export function handlePlayerOrbCollisions(plr: Player, orbs: Orb[]) {
             const pushY = (yDis / distance) * pushForce;
             orb.shape.pivotCenter.x += pushX;
             orb.shape.pivotCenter.y += pushY;
-            plr.currentSpeed *= 0.95;
+            plr.currentVelocity *= 0.95;
         }
     });
 }
@@ -47,7 +47,7 @@ export function handlePlayerOrbCollisions(plr: Player, orbs: Orb[]) {
 export function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {
     walls.forEach((wall) => {
         while (plr.detectCollision(wall)) {
-            plr.undoLastMovement();
+            plr.undoLastTransformation();
         }
     });
 }

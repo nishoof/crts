@@ -78,7 +78,6 @@ function start() {
     // Players
     plr.draw(ctx, screenPosition);
 
-    // TODO: fix frame rate shit
     function gameLoop() {
         act(ctx, plr, mapObjects, bullets, checkpoints, orbs);
         requestAnimationFrame(gameLoop);
@@ -182,29 +181,24 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
 
     // Player turning
     if (turningLeft)
-        plr.rotate(-plr.vehicle.rotationSpeedStat * multiplier);
+        plr.rotateLeft(multiplier);
     if (turningRight)
-        plr.rotate(plr.vehicle.rotationSpeedStat * multiplier);
+        plr.rotateRight(multiplier);
     handlePlayerWallCollisions(plr, mapObjects);
 
     // Player moving
     if (movingForward) {
-        plr.move(plr.currentSpeed * multiplier);
-        if (plr.currentSpeed < plr.vehicle.maxSpeedStat) {
-            plr.currentSpeed = Math.min(plr.vehicle.maxSpeedStat, plr.currentSpeed + plr.vehicle.accelerationStat);
-        }
+        plr.moveForward(multiplier);
     } else if (movingBack) {
-        plr.move(-plr.currentSpeed * multiplier * 0.8);
-        if (plr.currentSpeed < plr.vehicle.maxSpeedStat) {
-            plr.currentSpeed = Math.min(plr.vehicle.maxSpeedStat, plr.currentSpeed + plr.vehicle.accelerationStat);
-        }
+        plr.moveBackwards(multiplier);
     } else {
-        plr.currentSpeed = 0;
+        plr.currentVelocity = 0;
     }
     handlePlayerWallCollisions(plr, mapObjects);
     handleBulletOrbCollisions(plr, bullets, orbs);
     handleBulletWallCollisions(bullets, mapObjects);
     handlePlayerOrbCollisions(plr, orbs);
+
     // Rotate the Character to point to the mouse
     const angle = Math.atan2(mousePosition.y - (plr.center.y - screenPosition.y), mousePosition.x - (plr.center.x - screenPosition.x));
     plr.character.shape.rotation = angle;

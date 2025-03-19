@@ -14,7 +14,7 @@ export default class Player {
     progressToNextLevel: number;
 
     lastTransformation: { movement: boolean, delta: number };
-    currentSpeed: number;
+    currentVelocity: number;
 
     currentHealth: number;
 
@@ -32,7 +32,7 @@ export default class Player {
         this.progressToNextLevel = 0;
 
         this.lastTransformation = { movement: false, delta: 0 };
-        this.currentSpeed = 0;
+        this.currentVelocity = 0;
 
         this.currentHealth = this.vehicle.maxHealth;
 
@@ -63,24 +63,35 @@ export default class Player {
         return this.character.fire(this.center);
     }
 
-    move(delta: number) {
-        this.lastTransformation = { movement: true, delta: delta };
-        this._move(delta);
+    moveForward(multiplier: number) {
+        this.currentVelocity += this.vehicle.accelerationStat * multiplier;
+        if (this.currentVelocity > this.vehicle.maxSpeedStat)
+            this.currentVelocity = this.vehicle.maxSpeedStat;
+        this.moveWithHistory(this.currentVelocity * multiplier);
     }
 
-    rotate(delta: number) {
-        this.lastTransformation = { movement: false, delta: delta };
-        this._rotate(delta);
+    moveBackwards(multiplier: number) {
+        this.currentVelocity -= this.vehicle.accelerationStat * multiplier;
+        if (this.currentVelocity < -1 * this.vehicle.maxSpeedStat)
+            this.currentVelocity = -1 * this.vehicle.maxSpeedStat;
+        this.moveWithHistory(this.currentVelocity * multiplier);
     }
 
-    undoLastMovement() {
+    rotateLeft(multiplier: number) {
+        this.rotateWithHistory(-1 * this.vehicle.rotationSpeedStat * multiplier);
+    }
+    rotateRight(multiplier: number) {
+        this.rotateWithHistory(this.vehicle.rotationSpeedStat * multiplier);
+    }
+
+    undoLastTransformation() {
         const lastTransformationWasAMovement = this.lastTransformation.movement;
         const delta = this.lastTransformation.delta;
 
         if (lastTransformationWasAMovement) {
-            this._move(-1 * delta);
+            this.moveNoHistory(-1 * delta);
         } else {
-            this._rotate(-1 * delta);
+            this.rotateNoHistory(-1 * delta);
         }
     }
 
@@ -95,12 +106,22 @@ export default class Player {
         return false;
     }
 
-    _move(delta: number) {
+    private moveWithHistory(delta: number) {
+        this.lastTransformation = { movement: true, delta: delta };
+        this.moveNoHistory(delta);
+    }
+
+    private moveNoHistory(delta: number) {
         this.vehicle.move(delta);
         this.character.move(delta, this.rotation);
     }
 
-    _rotate(delta: number) {
+    private rotateWithHistory(delta: number) {
+        this.lastTransformation = { movement: false, delta: delta };
+        this.rotateNoHistory(delta);
+    }
+
+    private rotateNoHistory(delta: number) {
         this.rotation += delta;
         this.vehicle.rotate(delta);
     }
