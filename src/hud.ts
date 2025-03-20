@@ -3,7 +3,6 @@ import Player from "./player/player.js";
 function drawVehicleMenu(player: Player): boolean {
     // set displays to none initially
     const upgradeableVehicles = ["Bike", "Car", "Moped", "Hoverboard"];
-    document.getElementById("vehicle-upgrades")!.style.display = "none";
     upgradeableVehicles.forEach((vehicleName) => {
         document.getElementById(`${vehicleName}-upgrades`)!.style.display = "none";
     });
@@ -24,7 +23,6 @@ function drawVehicleMenu(player: Player): boolean {
 function drawCharacterMenu(player: Player) {
     // set displays to none initially
     const upgradeableCharacters = ["Rifleman", "Gunner", "Sniper", "Cannoneer"];
-    document.getElementById("character-upgrades")!.style.display = "none";
     upgradeableCharacters.forEach((characterName) => {
         document.getElementById(`${characterName}-upgrades`)!.style.display = "none";
     });
@@ -42,6 +40,9 @@ function drawCharacterMenu(player: Player) {
 
 export function drawHUD(player: Player) {
     // upgrade menu
+    document.getElementById("vehicle-upgrades")!.style.display = "none";
+    document.getElementById("character-upgrades")!.style.display = "none";
+
     if (!drawVehicleMenu(player)) drawCharacterMenu(player);
 
     // bottom display
