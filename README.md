@@ -4,8 +4,8 @@ Play: https://crts.nishilanand.com
 
 ## Summary
 
-- Fast-paced racing game concept combined with combat elements.
-- Vehicle and character customization.
+- Fast-paced racing game concept combined with combat elements
+- Vehicle and character customization
 - Real-time leaderboard
 
 ## About the project
@@ -23,14 +23,13 @@ Play: https://crts.nishilanand.com
   - ~~Click to shoot~~
   - Balance vehicle/character stats
     - Some vehicles are faster than bullets
-- Deceleration
-  - Momentum
-  - Braking
-  - Drifting
 - Implement real-time multiplayer
+- Make colliding with walls kill speed
 - Vehicle body damage
+- Vehicle weight (affects acceleration/deceleration, collisions with orbs)
 - More vehicles/characters
 - Cosmetics, eg for reaching certain time/lap number milestones
+- Different maps
 
 ## To-do - backend
 
