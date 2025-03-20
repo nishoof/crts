@@ -26,7 +26,7 @@ export class Shape {
     move(delta: number) {
         this.moveAtRotation(delta, this.rotation);
     }
-    
+
     moveAtRotation(delta: number, rotation: number) {
         // console.log(`${delta}`);
         // this.center.x += Math.cos(rotation) * delta;
@@ -48,13 +48,13 @@ export class Rect extends Shape {
     width: number;
     height: number;
 
-    constructor(color: string, pivotCenter: Point, width: number, height: number, rotation=0, relCenter={x: 0, y: 0}) {
+    constructor(color: string, pivotCenter: Point, width: number, height: number, rotation = 0, relCenter = { x: 0, y: 0 }) {
         super(color, pivotCenter, rotation, relCenter);
         this.width = width;
         this.height = height;
     }
 
-    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke=true): void {
+    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke = true): void {
         let [p1, p2, p3, p4] = this.calculatePoints();
 
         let drawing = new Path2D();
@@ -92,12 +92,12 @@ export class Rect extends Shape {
 export class Circle extends Shape {
     radius: number;
 
-    constructor(color: string, pivotCenter: Point, radius: number, rotation=0, relCenter={x: 0, y: 0}) {
+    constructor(color: string, pivotCenter: Point, radius: number, rotation = 0, relCenter = { x: 0, y: 0 }) {
         super(color, pivotCenter, rotation, relCenter);
         this.radius = radius;
     }
 
-    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke=true) {
+    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke = true) {
 
         const rotatedCenter = this.calculateRotatedCenter()
 
@@ -118,7 +118,7 @@ export class Circle extends Shape {
     }
 
     calculateRotatedCenter() {
-        return rotate(this.pivotCenter, {x: this.pivotCenter.x + this.relCenter.x, y: this.pivotCenter.y + this.relCenter.y}, this.rotation);
+        return rotate(this.pivotCenter, { x: this.pivotCenter.x + this.relCenter.x, y: this.pivotCenter.y + this.relCenter.y }, this.rotation);
     }
 }
 
@@ -126,13 +126,13 @@ export class Triangle extends Shape {
     width: number;
     height: number;
 
-    constructor(color: string, pivotCenter: Point, width: number, height: number, rotation=0, relCenter={x: 0, y: 0}) {
+    constructor(color: string, pivotCenter: Point, width: number, height: number, rotation = 0, relCenter = { x: 0, y: 0 }) {
         super(color, pivotCenter, rotation, relCenter);
         this.width = width;
         this.height = height;
     }
 
-    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke=true) {
+    draw(ctx: CanvasRenderingContext2D, topleft: Point, stroke = true) {
         let [p1, p2, p3] = this.calculatePoints();
 
         let drawing = new Path2D();
@@ -259,7 +259,7 @@ function circleCollidesWithPolygon(circle: Circle, polygon: Polygon): boolean {
     }
 
     // Step 1: Check if the circle's center is inside the polygon
-    const center = {x: circle.pivotCenter.x + circle.relCenter.x, y: circle.pivotCenter.y + circle.relCenter.y}
+    const center = { x: circle.pivotCenter.x + circle.relCenter.x, y: circle.pivotCenter.y + circle.relCenter.y }
 
     if (isPointInsidePolygon(center, polygon)) return true;
 
@@ -278,8 +278,8 @@ function circleCollidesWithPolygon(circle: Circle, polygon: Polygon): boolean {
 }
 
 function detectCollisionCircleCircle(c1: Circle, c2: Circle): boolean {
-    const c1Center = {x: c1.pivotCenter.x + c1.relCenter.x, y: c1.pivotCenter.y + c1.relCenter.y}
-    const c2Center = {x: c2.pivotCenter.x + c2.relCenter.x, y: c2.pivotCenter.y + c2.relCenter.y}
+    const c1Center = { x: c1.pivotCenter.x + c1.relCenter.x, y: c1.pivotCenter.y + c1.relCenter.y }
+    const c2Center = { x: c2.pivotCenter.x + c2.relCenter.x, y: c2.pivotCenter.y + c2.relCenter.y }
     const dx = c1Center.x - c2Center.x;
     const dy = c1Center.y - c2Center.y;
     return Math.sqrt(dx * dx + dy * dy) <= c1.radius + c2.radius;

@@ -8,12 +8,14 @@ export default class Player {
     vehicle: Vehicle;
     character: Character;
     rotation: number;
+    private rotationDiff: number;
+    private drifting: boolean;
 
     score: number;
     level: number;
     progressToNextLevel: number;
 
-    lastTransformation: { movement: boolean, delta: number };
+    private lastTransformation: { movement: boolean, delta: number };
     currentVelocity: number;
 
     currentHealth: number;
@@ -26,6 +28,8 @@ export default class Player {
         this.vehicle = new Vehicle("Bike", position);
         this.character = new Rifleman(position);
         this.rotation = 0;
+        this.rotationDiff = 0;
+        this.drifting = false;
 
         this.score = 0;
         this.level = 0;
@@ -63,6 +67,16 @@ export default class Player {
         return this.character.fire(this.center);
     }
 
+    startDrift() {
+        this.drifting = true;
+    }
+
+    endDrift() {
+        this.drifting = false;
+        this.vehicle.rotate(-this.rotationDiff);
+        this.rotationDiff = 0;
+    }
+
     accelerateForwards(multiplier: number) {
         this.currentVelocity += this.vehicle.accelerationStat * multiplier;
         if (this.currentVelocity > this.vehicle.maxSpeedStat)
@@ -76,9 +90,8 @@ export default class Player {
     }
 
     move(multiplier: number) {
-        console.log(this.currentVelocity);
+        const friction = 0.02;      // higher friction = less slipery
 
-        const friction = 0.02;      // higher is more friction
         this.moveWithHistory(this.currentVelocity * multiplier);
         if (this.currentVelocity > 0) {
             this.currentVelocity -= friction * multiplier;
@@ -109,10 +122,6 @@ export default class Player {
         }
     }
 
-    getRotation() {
-        return this.rotation;
-    }
-
     detectCollision(other: Shape) {
         for (const shape of this.vehicle.shapes) {
             if (other.detectCollision(shape)) return true;
@@ -126,7 +135,7 @@ export default class Player {
     }
 
     private moveNoHistory(delta: number) {
-        this.vehicle.move(delta);
+        this.vehicle.move(delta, this.rotation);
         this.character.move(delta, this.rotation);
     }
 
@@ -136,7 +145,13 @@ export default class Player {
     }
 
     private rotateNoHistory(delta: number) {
+        const driftAmount = 0.5;
         this.rotation += delta;
-        this.vehicle.rotate(delta);
+        if (this.drifting) {
+            this.vehicle.rotate(delta * (1 + driftAmount));
+            this.rotationDiff += delta * driftAmount;
+        } else {
+            this.vehicle.rotate(delta);
+        }
     }
 }

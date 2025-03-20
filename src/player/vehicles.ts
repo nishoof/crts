@@ -1,15 +1,15 @@
 import vehicleData from "./vehicles.json" with { type: "json" };
 import { Point, Circle, Rect, Shape, Triangle } from "../shapes.js";
 
-interface ShapeData{
-    type: string; 
+interface ShapeData {
+    type: string;
     color: string;
-    width: number; 
+    width: number;
     height: number;
     offset: Point;
 }
 
-interface VehicleStats{
+interface VehicleStats {
     shapes: ShapeData[];
     accelerationStat: number;
     maxSpeedStat: number;
@@ -36,7 +36,7 @@ export class Vehicle {
     possibleEvolutions: string[];
     levelUp: number;
 
-    constructor(name: string, center: Point, rotation=0) {
+    constructor(name: string, center: Point, rotation = 0) {
         const vehicleStats = vehicleConfigs[name];
 
         // shapes
@@ -74,9 +74,9 @@ export class Vehicle {
         }
     }
 
-    move(delta: number) {
+    move(delta: number, rotation: number) {
         for (const shape of this.shapes) {
-            shape.move(delta);
+            shape.moveAtRotation(delta, rotation);
         }
     }
 

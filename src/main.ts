@@ -284,6 +284,10 @@ document.addEventListener("keydown", (event: KeyboardEvent) => {
             // plr.gainScore(100);
             firing = true;
             break;
+        case "ShiftLeft":
+        case "ShiftRight":
+            plr.startDrift();
+            break;
     }
 });
 
@@ -308,34 +312,38 @@ document.addEventListener("keyup", (event: KeyboardEvent) => {
         case "Space":
             firing = false;
             break;
+        case "ShiftLeft":
+        case "ShiftRight":
+            plr.endDrift();
+            break;
     }
 });
 
 // Upgrade buttons
 // Vehicle
 document.getElementById("Car-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Car", plr.center, plr.getRotation());
+    plr.vehicle = new Vehicle("Car", plr.center, plr.rotation);
 });
 document.getElementById("Truck-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Truck", plr.center, plr.getRotation());
+    plr.vehicle = new Vehicle("Truck", plr.center, plr.rotation);
 });
 document.getElementById("Racecar-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Racecar", plr.center, plr.getRotation());
+    plr.vehicle = new Vehicle("Racecar", plr.center, plr.rotation);
 });
 document.getElementById("Moped-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Moped", plr.center, plr.getRotation());
+    plr.vehicle = new Vehicle("Moped", plr.center, plr.rotation);
 });
 document.getElementById("Motorcycle-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Motorcycle", plr.center, plr.getRotation());
+    plr.vehicle = new Vehicle("Motorcycle", plr.center, plr.rotation);
 });
 document.getElementById("Hoverboard-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Hoverboard", plr.center, plr.getRotation());
+    plr.vehicle = new Vehicle("Hoverboard", plr.center, plr.rotation);
 });
 document.getElementById("Cybertruck-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("Cybertruck", plr.center, plr.getRotation());
+    plr.vehicle = new Vehicle("Cybertruck", plr.center, plr.rotation);
 });
 document.getElementById("UFO-button")!.addEventListener("click", () => {
-    plr.vehicle = new Vehicle("UFO", plr.center, plr.getRotation());
+    plr.vehicle = new Vehicle("UFO", plr.center, plr.rotation);
 });
 // Character
 document.getElementById("Gunner-button")!.addEventListener("click", () => {
