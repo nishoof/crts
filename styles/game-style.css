@@ -226,7 +226,6 @@ div.upgrade-button>p {
     background-color: yellow;
     position: absolute;
     bottom: 0;
-    transition: height 0.3s ease-in-out;
 }
 
 #current-lap {
