@@ -24,6 +24,7 @@ let lapsCompleted = 0;
 let lastLapTime: number;
 let bestLap = Infinity;
 
+const collisionElasticity = 0.3;    // from 0 to 1, where 0 is no bounce and 1 is full bounce
 const numOrbs = 100;
 const orbSpawn = 20000;
 let lastOrbSpawn = performance.now();
@@ -192,7 +193,9 @@ function act(ctx: CanvasRenderingContext2D, plr: Player, mapObjects: Shape[], bu
     if (movingBackwards)
         plr.accelerateBackwards(multiplier);
     plr.move(multiplier);
-    handlePlayerWallCollisions(plr, mapObjects);
+    const collided = handlePlayerWallCollisions(plr, mapObjects);
+    if (collided)
+        plr.currentVelocity = -plr.currentVelocity * collisionElasticity;
     handleBulletOrbCollisions(plr, bullets, orbs);
     handleBulletWallCollisions(bullets, mapObjects);
     handlePlayerOrbCollisions(plr, orbs);

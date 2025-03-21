@@ -33,7 +33,6 @@ export function handlePlayerOrbCollisions(plr: Player, orbs: Orb[]) {
             const yDis = orb.shape.pivotCenter.y - plr.center.y;
             const distance = Math.sqrt(xDis * xDis + yDis * yDis);
 
-
             const pushForce = 3;
             const pushX = (xDis / distance) * pushForce;
             const pushY = (yDis / distance) * pushForce;
@@ -45,11 +44,14 @@ export function handlePlayerOrbCollisions(plr: Player, orbs: Orb[]) {
 }
 
 export function handlePlayerWallCollisions(plr: Player, walls: Shape[]) {
+    let collided = false;
     walls.forEach((wall) => {
         while (plr.detectCollision(wall)) {
+            collided = true;
             plr.undoLastTransformation();
         }
     });
+    return collided;
 }
 
 export function handleBulletWallCollisions(bullets: Bullet[], walls: Shape[]) {
